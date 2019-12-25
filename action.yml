@@ -1,0 +1,56 @@
+name: terraform-docs
+author: Derek Rada
+description: Generate terraform docs
+inputs:
+  tf_docs_working_dir:
+    description: Directories of terraform modules to generate docs for seperated by commas (conflicts with atlantis/find dirs)
+    required: false
+    default: '.'
+  tf_docs_atlantis_file:
+    description: Generate directories by parsing an atlantis formatted yaml to enable provide the file name to parse (eg atlantis.yaml) (disabled by default)
+    required: false
+    default: 'disabled'
+  tf_docs_find_dir:
+    description: Generate directories by running find ./tf_docs_find_dir -name *.tf (disabled by default)
+    required: false
+    default: 'disabled'
+  tf_docs_output_file:
+    description: File in module directory where the docs should be placed
+    required: false
+    default: 'USAGE.md'
+  tf_docs_content_type:
+    description: Generate document or table
+    required: false
+    default: 'table'
+  tf_docs_indention:
+    description: Indention level of Markdown sections [1, 2, 3, 4, 5] (default 2)
+    required: false
+    default: '2'
+  tf_docs_args:
+    description: Additional args to pass
+    required: false
+    default: '--sort-inputs-by-required'
+  tf_docs_output_method:
+    description: Method should be one of (replace/inject/print) where replace will replace the tf_docs_output_file, inject will inject the content between start and close delims and print will just print the output
+    required: false
+    default: 'inject'
+  tf_docs_git_commit:
+    description: If true it will add and commit the files
+    required: false
+    default: 'true'
+  tf_docs_git_push:
+    description: If true it will push the committed changes
+    required: false
+    default: 'false'
+
+outputs:
+  num_changed:
+    description: Number of files changed
+
+runs:
+  using: docker
+  image: docker://derekrada:terraform-docs-action
+
+branding:
+  icon: file-text
+  color: gray-dark
