@@ -10,8 +10,8 @@ RUN set -x \
 		gcc \
 		git \
 		make \
-    wget \
-  && GO111MODULE="on" go get "github.com/segmentio/terraform-docs@${VERSION}"
+		wget \
+  	&& GO111MODULE="on" go get "github.com/segmentio/terraform-docs@${VERSION}"
 
 RUN set -x \
   && wget -O yq https://github.com/mikefarah/yq/releases/download/2.4.1/yq_linux_amd64 \
@@ -26,6 +26,6 @@ COPY --from=builder /go/bin/terraform-docs /usr/local/bin/terraform-docs
 COPY --from=builder /usr/local/bin/yq /usr/local/bin/yq
 COPY --from=builder /usr/local/bin/gomplate /usr/local/bin/gomplate
 
-RUN apk add --no-cache bash sed git
+RUN apk add --no-cache bash sed git jq
 
 ENTRYPOINT ["/usr/local/bin/terraform-docs"]
