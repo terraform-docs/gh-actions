@@ -1,0 +1,4 @@
+version: 3
+projects:
+- name: examples_atlantis
+  dir: examples/tf12_atlantis

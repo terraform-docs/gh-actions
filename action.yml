@@ -42,6 +42,17 @@ inputs:
     description: If true it will push the committed changes
     required: false
     default: 'false'
+  tf_docs_git_commit_message:
+    description: Commit message
+    required: false
+    default: 'terraform-docs Automated render'
+  tf_docs_template:
+    description: When provided will be used as the template if/when the OUTPUT_FILE does not exist
+    default: |
+      # Usage
+      <!--- BEGIN_TF_DOCS --->
+      <!--- END_TF_DOCS --->
+    required: false
 
 outputs:
   num_changed:
@@ -49,7 +60,7 @@ outputs:
 
 runs:
   using: docker
-  image: docker://derekrada:terraform-docs-action
+  image: Dockerfile
 
 branding:
   icon: file-text

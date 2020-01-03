@@ -3,7 +3,7 @@ set -e
 
 TF_ARGS="--indent ${INPUT_TF_DOCS_INDENTION} ${INPUT_TF_DOCS_ARGS}"
 
-TF_DOCS_TEMPLATE=`printf '# Usage\n\n<!--- BEGIN_TF_DOCS --->\n<!--- END_TF_DOCS --->\n'`
+export TF_DOCS_TEMPLATE=`printf '# Usage\n\n<!--- BEGIN_TF_DOCS --->\n<!--- END_TF_DOCS --->\n'`
 if [ ! -z "$INPUT_TF_DOCS_TEMPLATE" ]; then
   TF_DOCS_TEMPLATE=$INPUT_TF_DOCS_TEMPLATE
 fi

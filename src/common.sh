@@ -19,7 +19,7 @@ git_commit () {
   if [ "${GIT_FILES_CHANGED}" -eq 0 ]; then
     echo "::debug file=common.sh,line=20,col=1 No files changed, skipping commit"
   else
-    git commit -m 'Automated terraform-docs render'
+    git commit -m "${INPUT_TF_DOCS_GIT_COMMIT_MESSAGE}"
 
     if [ "${INPUT_TF_DOCS_GIT_PUSH}" = "true" ]; then
       git push -u origin HEAD
