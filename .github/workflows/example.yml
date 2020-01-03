@@ -5,7 +5,10 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+
     - name: Should generate USAGE.md for tf11_basic
       uses: ./
       with:
@@ -41,15 +44,11 @@ jobs:
       uses: ./
       with:
         tf_docs_find_dir: examples/tf12_find
-        tf_docs_output_file: README.md
 
     - name: Should generate README.md for tf12_inject and push up all changes
       uses: ./
       with:
         tf_docs_find_dir: examples/tf12_inject
         tf_docs_output_file: README.md
-        tf_docs_git_commit_message: terraform-docs automated change
-        tf_docs_git_commit: true
-        tf_docs_git_push: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        tf_docs_git_push: 'true'
+        tf_docs_git_commit_message: 'terraform-docs: automated action'

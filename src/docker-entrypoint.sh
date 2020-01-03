@@ -39,7 +39,7 @@ else
   done
 fi
 
-if [ "${INPUT_TF_DOCS_GIT_COMMIT}" = "true" ]; then
+if [ "${INPUT_TF_DOCS_GIT_PUSH}" = "true" ]; then
   git_commit
 else
   git_changed

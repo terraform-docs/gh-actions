@@ -20,17 +20,14 @@ git_commit () {
     echo "::debug file=common.sh,line=20,col=1 No files changed, skipping commit"
   else
     git commit -m "${INPUT_TF_DOCS_GIT_COMMIT_MESSAGE}"
-
-    if [ "${INPUT_TF_DOCS_GIT_PUSH}" = "true" ]; then
-      git push -u origin HEAD
-    fi
+    git push
   fi
 }
 
 update_doc () {
 
   WORKING_DIR="${1}"
-  echo "::debug file=common.sh,line=33,col=1 WORKING_DIR=${WORKING_DIR}"
+  echo "::debug file=common.sh,line=30,col=1 WORKING_DIR=${WORKING_DIR}"
 
   MY_DOC=`terraform-docs markdown "${INPUT_TF_DOCS_CONTENT_TYPE}" "${WORKING_DIR}" $TF_ARGS`
 
@@ -47,10 +44,10 @@ update_doc () {
     fi
 
     HAS_TF_DOCS=`grep -E '(BEGIN|END)_TF_DOCS' ${WORKING_DIR}/${INPUT_TF_DOCS_OUTPUT_FILE} | wc -l`
-    echo "::debug file=common.sh,line=50,col=1 HAS_TF_DOCS=${HAS_TF_DOCS}"
+    echo "::debug file=common.sh,line=47,col=1 HAS_TF_DOCS=${HAS_TF_DOCS}"
     # Verify it has BEGIN and END markers
     if [ "${HAS_TF_DOCS}" -ne 2 ]; then
-      echo "::error file=common.sh,line=53,col=1::Output file ${WORKING_DIR}/${INPUT_TF_DOCS_OUTPUT_FILE} does not contain BEGIN_TF_DOCS and END_TF_DOCS"
+      echo "::error file=common.sh,line=50,col=1::Output file ${WORKING_DIR}/${INPUT_TF_DOCS_OUTPUT_FILE} does not contain BEGIN_TF_DOCS and END_TF_DOCS"
       exit 2
     fi
 

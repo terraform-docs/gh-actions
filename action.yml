@@ -34,18 +34,14 @@ inputs:
     description: Method should be one of (replace/inject/print) where replace will replace the tf_docs_output_file, inject will inject the content between start and close delims and print will just print the output
     required: false
     default: 'inject'
-  tf_docs_git_commit:
-    description: If true it will add and commit the files
-    required: false
-    default: 'true'
   tf_docs_git_push:
-    description: If true it will push the committed changes
+    description: If true it will commit and push the changes
     required: false
     default: 'false'
   tf_docs_git_commit_message:
     description: Commit message
     required: false
-    default: 'terraform-docs Automated render'
+    default: 'terraform-docs: automated action'
   tf_docs_template:
     description: When provided will be used as the template if/when the OUTPUT_FILE does not exist
     default: |
