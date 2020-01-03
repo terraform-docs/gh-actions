@@ -29,7 +29,16 @@ update_doc () {
   WORKING_DIR="${1}"
   echo "::debug file=common.sh,line=30,col=1 WORKING_DIR=${WORKING_DIR}"
 
-  MY_DOC=`terraform-docs markdown "${INPUT_TF_DOCS_CONTENT_TYPE}" "${WORKING_DIR}" $TF_ARGS`
+  if [ "${INPUT_TF_DOCS_CONTENT_TYPE}" = "json" ]; then
+    MY_DOC=`terraform-docs "${INPUT_TF_DOCS_CONTENT_TYPE}" "${WORKING_DIR}" $TF_ARGS`
+
+    if [ -f "${INPUT_TF_DOCS_TEMPLATE_FILE}" ]; then
+      echo "${MY_DOC}" > "/tmp/config.json"
+      MY_DOC=`gomplate -d "config=/tmp/config.json" -f "${INPUT_TF_DOCS_TEMPLATE_FILE}"`
+    fi
+  else
+    MY_DOC=`terraform-docs markdown "${INPUT_TF_DOCS_CONTENT_TYPE}" "${WORKING_DIR}" $TF_ARGS`
+  fi
 
   if [ "${INPUT_TF_DOCS_OUTPUT_METHOD}" = "replace" ]; then
     echo "${MY_DOC}" > "${WORKING_DIR}/${INPUT_TF_DOCS_OUTPUT_FILE}"

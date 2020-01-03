@@ -16,11 +16,15 @@ RUN set -x \
 RUN set -x \
   && wget -O yq https://github.com/mikefarah/yq/releases/download/2.4.1/yq_linux_amd64 \
   && chmod 755 yq \
-  && mv yq /usr/local/bin/yq
+  && mv yq /usr/local/bin/yq \
+  && wget -O gomplate https://github.com/hairyhenderson/gomplate/releases/download/v3.6.0/gomplate_linux-amd64 \
+  && chmod 755 gomplate \
+  && mv gomplate /usr/local/bin/gomplate
 
 FROM alpine:3.10
 COPY --from=builder /go/bin/terraform-docs /usr/local/bin/terraform-docs
 COPY --from=builder /usr/local/bin/yq /usr/local/bin/yq
+COPY --from=builder /usr/local/bin/gomplate /usr/local/bin/gomplate
 
 RUN apk add --no-cache bash sed git
 
