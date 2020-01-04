@@ -1,0 +1,16 @@
+name: Pre-Release
+on:
+  - pull_request
+jobs:
+  release:
+    if: startsWith(github.event.pull_request.head.ref, 'release')
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+
+    - name: Generate files for release
+      uses: ./
+      with:
+        entrypoint: "/generate-readme.sh"

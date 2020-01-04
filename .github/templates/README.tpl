@@ -1,8 +1,11 @@
-# terraform-docs
-A Github action for generating terraform module documentation using terraform-docs and gomplate.  In addition to statically defined directory modules, this module can search specific sub folders or parse atlantis.yaml for module identification and doc generation.  This action has the ability to auto commit docs to an open PR or after a push to a specific branch.
+{{- define "escape_chars" }}{{ . | strings.ReplaceAll "_" "\\_" | strings.ReplaceAll "|" "\\|" | strings.ReplaceAll "*" "\\*" }}{{- end }}
+{{- define "sanatize_string" }}{{ . | strings.ReplaceAll "\n\n" "<br><br>" | strings.ReplaceAll "  \n" "<br>" | strings.ReplaceAll "\n" "<br>" | tmpl.Exec "escape_chars" }}{{- end }}
+{{- $action := (datasource "action") -}}{{- $meta := (datasource "meta") -}}
+# {{ $action.name }}
+{{ $action.description }}
 
 ## Version
-v1.0.1
+v{{ $meta.version }}
 
 # Usage
 To use terraform-docs github action, configure a YAML workflow file, e.g. `.github/workflows/documentation.yml`, with the following:
@@ -16,10 +19,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        ref: ${{ github.event.pull_request.head.ref }}
+        ref: {{"${{"}} github.event.pull_request.head.ref {{"}}"}}
 
     - name: Render terraform docs inside the USAGE.md and push changes back to PR branch
-      uses: Dirrk/terraform-docs@v1
+      uses: Dirrk/terraform-docs@v{{ $meta.major_version }}
       with:
         tf_docs_working_dir: .
         tf_docs_output_file: USAGE.md
@@ -35,23 +38,17 @@ jobs:
 
 | Name | Description | Default | Required |
 |------|-------------|---------|----------|
-| tf\_docs\_args | Additional args to pass | --sort-inputs-by-required | false |
-| tf\_docs\_atlantis\_file | Generate directories by parsing an atlantis formatted yaml to enable provide the file name to parse (eg atlantis.yaml) (disabled by default) | disabled | false |
-| tf\_docs\_content\_type | Generate document or table | table | false |
-| tf\_docs\_find\_dir | Generate directories by running find ./tf\_docs\_find\_dir -name \*.tf (disabled by default) | disabled | false |
-| tf\_docs\_git\_commit\_message | Commit message | terraform-docs: automated action | false |
-| tf\_docs\_git\_push | If true it will commit and push the changes | false | false |
-| tf\_docs\_indention | Indention level of Markdown sections [1, 2, 3, 4, 5] (default 2) | 2 | false |
-| tf\_docs\_output\_file | File in module directory where the docs should be placed | USAGE.md | false |
-| tf\_docs\_output\_method | Method should be one of (replace/inject/print) where replace will replace the tf\_docs\_output\_file, inject will inject the content between start and close delims and print will just print the output | inject | false |
-| tf\_docs\_template | When provided will be used as the template if/when the OUTPUT\_FILE does not exist | # Usage<br><!--- BEGIN\_TF\_DOCS ---><br><!--- END\_TF\_DOCS ---><br> | false |
-| tf\_docs\_working\_dir | Directories of terraform modules to generate docs for seperated by commas (conflicts with atlantis/find dirs) | . | false |
+{{- range $key, $input := $action.inputs }}
+| {{ tmpl.Exec "escape_chars" $key }} | {{ if (has $input "description") }}{{ tmpl.Exec "sanatize_string" $input.description }}{{ else }}{{ tmpl.Exec "escape_chars" $key }}{{ end }} | {{ if (has $input "default") }}{{ tmpl.Exec "sanatize_string" $input.default }}{{ else }}N/A{{ end }} | {{ if (has $input "required") }}{{ $input.required }}{{ else }}false{{ end }} |
+{{- end }}
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| num\_changed | Number of files changed |
+{{- range $key, $output := $action.outputs }}
+| {{ tmpl.Exec "escape_chars" $key }} | {{ if (has $output "description") }}{{ tmpl.Exec "sanatize_string" $output.description }}{{ else }}{{ tmpl.Exec "escape_chars" $key }}{{ end }} |
+{{- end }}
 
 # Important Notes
 
@@ -83,7 +80,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        ref: ${{ github.event.pull_request.head.ref }}
+        ref: {{"${{"}} github.event.pull_request.head.ref {{"}}"}}
 ```
 
 ### Push
@@ -112,7 +109,7 @@ jobs:
 ## Simple / Single folder
 ```
 - name: Generate TF Docs
-  uses: Dirrk/terraform-docs@v1
+  uses: Dirrk/terraform-docs@v{{ $meta.major_version }}
   with:
     tf_docs_working_dir: .
     tf_docs_output_file: README.md
@@ -121,7 +118,7 @@ jobs:
 ## Use atlantis.yaml v3 to find all dirs
 ```
 - name: Generate TF docs
-  uses: Dirrk/terraform-docs@v1
+  uses: Dirrk/terraform-docs@v{{ $meta.major_version }}
   with:
     tf_docs_atlantis_file: atlantis.yaml
 ```
@@ -129,9 +126,9 @@ jobs:
 ## Find all .tf file folders under a given directory
 ```
 - name: Generate TF docs
-  uses: Dirrk/terraform-docs@v1
+  uses: Dirrk/terraform-docs@v{{ $meta.major_version }}
   with:
     tf_docs_find_dir: examples/
 ```
 
-Complete examples can be found [here](https://github.com/Dirrk/terraform-docs/tree/v1/examples)
+Complete examples can be found [here](https://github.com/Dirrk/terraform-docs/tree/v{{ $meta.major_version }}/examples)

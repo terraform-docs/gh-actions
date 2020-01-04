@@ -1,7 +1,8 @@
-# Changelog
+<a name="unreleased"></a>
+## [Unreleased]
 
-## v1
-- Backwards compatible tag for v1.X.X
 
-### v1.0.0
-- initial release
+<a name="v1.0.1"></a>
+## v1.0.1 - 2020-01-04
+
+[Unreleased]: https://github.com/Dirrk/terraform-docs/compare/v1.0.1...HEAD
