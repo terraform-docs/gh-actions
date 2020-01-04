@@ -10,4 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: env
+    - name: git tag
+      run: |
+        git describe --tags $(git rev-list --tags --max-count=1)
