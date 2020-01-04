@@ -1,7 +1,35 @@
 # terraform-docs
 A Github action for generating terraform module documentation using terraform-docs and gomplate.  In addition to statically defined directory modules, this module can search specific sub folders or parse atlantis.yaml for module identification and doc generation.  This action has the ability to auto commit docs to an open PR or after a push to a specific branch.
 
+## Version
+Unreleased v1.0.1
+
 # Usage
+To use terraform-docs github action, configure a YAML workflow file, e.g. `.github/workflows/documentation.yml`, with the following:
+```yaml
+name: Generate terraform docs
+on:
+  - pull_request
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+
+    - name: Render terraform docs inside the USAGE.md and push changes back to PR branch
+      uses: Dirrk/terraform-docs@v1
+      with:
+        tf_docs_working_dir: .
+        tf_docs_output_file: USAGE.md
+        tf_docs_output_method: inject
+        tf_docs_git_push: 'true'
+```
+| WARNING: If USAGE.md already exists it will need to be updated, with the block delimeters `<!--- BEGIN_TF_DOCS --->` and `<!--- END_TF_DOCS --->`, where the generated markdown will be injected. |
+| --- |
+
+# Configuration
 
 ## Inputs
 
@@ -55,7 +83,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        ref: ${{ github.event.pull\_request.head.ref }}
+        ref: ${{ github.event.pull_request.head.ref }}
 ```
 
 ### Push

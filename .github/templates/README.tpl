@@ -1,10 +1,38 @@
 {{- define "escape_chars" }}{{ . | strings.ReplaceAll "_" "\\_" | strings.ReplaceAll "|" "\\|" | strings.ReplaceAll "*" "\\*" }}{{- end }}
 {{- define "sanatize_string" }}{{ . | strings.ReplaceAll "\n\n" "<br><br>" | strings.ReplaceAll "  \n" "<br>" | strings.ReplaceAll "\n" "<br>" | tmpl.Exec "escape_chars" }}{{- end }}
-{{- $action := (datasource "action") -}}{{- $version := "v1" -}}
+{{- $action := (datasource "action") -}}{{- $meta := (datasource "meta") -}}
 # {{ $action.name }}
 {{ $action.description }}
 
+## Version
+{{ if eq $meta.published_version $meta.version }}v{{ $meta.version }}{{ else }}Unreleased v{{ $meta.version }}{{ end }}
+
 # Usage
+To use terraform-docs github action, configure a YAML workflow file, e.g. `.github/workflows/documentation.yml`, with the following:
+```yaml
+name: Generate terraform docs
+on:
+  - pull_request
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: {{"${{"}} github.event.pull_request.head.ref {{"}}"}}
+
+    - name: Render terraform docs inside the USAGE.md and push changes back to PR branch
+      uses: Dirrk/terraform-docs@v{{ $meta.major_version }}
+      with:
+        tf_docs_working_dir: .
+        tf_docs_output_file: USAGE.md
+        tf_docs_output_method: inject
+        tf_docs_git_push: 'true'
+```
+| WARNING: If USAGE.md already exists it will need to be updated, with the block delimeters `<!--- BEGIN_TF_DOCS --->` and `<!--- END_TF_DOCS --->`, where the generated markdown will be injected. |
+| --- |
+
+# Configuration
 
 ## Inputs
 
@@ -52,7 +80,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        ref: {{"${{"}} github.event.pull\_request.head.ref {{"}}"}}
+        ref: {{"${{"}} github.event.pull_request.head.ref {{"}}"}}
 ```
 
 ### Push
@@ -81,7 +109,7 @@ jobs:
 ## Simple / Single folder
 ```
 - name: Generate TF Docs
-  uses: Dirrk/terraform-docs@{{ $version }}
+  uses: Dirrk/terraform-docs@v{{ $meta.major_version }}
   with:
     tf_docs_working_dir: .
     tf_docs_output_file: README.md
@@ -90,7 +118,7 @@ jobs:
 ## Use atlantis.yaml v3 to find all dirs
 ```
 - name: Generate TF docs
-  uses: Dirrk/terraform-docs@{{ $version }}
+  uses: Dirrk/terraform-docs@v{{ $meta.major_version }}
   with:
     tf_docs_atlantis_file: atlantis.yaml
 ```
@@ -98,9 +126,9 @@ jobs:
 ## Find all .tf file folders under a given directory
 ```
 - name: Generate TF docs
-  uses: Dirrk/terraform-docs@{{ $version }}
+  uses: Dirrk/terraform-docs@v{{ $meta.major_version }}
   with:
     tf_docs_find_dir: examples/
 ```
 
-Complete examples can be found [here](https://github.com/Dirrk/terraform-docs/tree/{{ $version }}/examples)
+Complete examples can be found [here](https://github.com/Dirrk/terraform-docs/tree/v{{ $meta.major_version }}/examples)

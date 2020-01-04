@@ -14,17 +14,19 @@ RUN set -x \
   	&& GO111MODULE="on" go get "github.com/segmentio/terraform-docs@${VERSION}"
 
 RUN set -x \
+	&& mkdir -p /outputs \
   && wget -O yq https://github.com/mikefarah/yq/releases/download/2.4.1/yq_linux_amd64 \
   && chmod 755 yq \
-  && mv yq /usr/local/bin/yq \
+  && mv yq /outputs/yq \
   && wget -O gomplate https://github.com/hairyhenderson/gomplate/releases/download/v3.6.0/gomplate_linux-amd64 \
   && chmod 755 gomplate \
-  && mv gomplate /usr/local/bin/gomplate
+  && mv gomplate /outputs/gomplate \
+	&& wget -O git-chglog https://github.com/git-chglog/git-chglog/releases/download/0.9.1/git-chglog_linux_amd64 \
+	&& chmod 755 git-chglog \
+	&& mv git-chglog /outputs/git-chglog
 
 FROM alpine:3.10
-COPY --from=builder /go/bin/terraform-docs /usr/local/bin/terraform-docs
-COPY --from=builder /usr/local/bin/yq /usr/local/bin/yq
-COPY --from=builder /usr/local/bin/gomplate /usr/local/bin/gomplate
+COPY --from=builder /outputs/* /usr/local/bin/
 
 RUN apk add --no-cache bash sed git jq
 

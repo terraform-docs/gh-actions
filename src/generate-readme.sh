@@ -5,7 +5,7 @@ set -e
 
 cd $GITHUB_WORKSPACE
 
-gomplate -d action=action.yml -f .github/templates/README.tpl -o README.md
+gomplate -d action=action.yml -d meta=.github/meta.yml -f .github/templates/README.tpl -o README.md
 git_add_doc "./README.md"
 
 if [ "${INPUT_TF_DOCS_GIT_PUSH}" = "true" ]; then

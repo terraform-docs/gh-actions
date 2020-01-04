@@ -9,11 +9,6 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.ref }}
 
-    - name: Should generate README.md for this REPO
-      uses: ./
-      with:
-        entrypoint: "/generate-readme.sh"
-
     - name: Should generate USAGE.md for tf11_basic
       uses: ./
       with:
