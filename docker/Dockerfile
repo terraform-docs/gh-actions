@@ -26,6 +26,7 @@ RUN set -x \
 	&& mv git-chglog /outputs/git-chglog
 
 FROM alpine:3.10
+COPY --from=builder /go/bin/terraform-docs /usr/local/bin/terraform-docs
 COPY --from=builder /outputs/* /usr/local/bin/
 
 RUN apk add --no-cache bash sed git jq
