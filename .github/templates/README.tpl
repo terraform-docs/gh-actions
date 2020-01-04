@@ -4,9 +4,6 @@
 # {{ $action.name }}
 {{ $action.description }}
 
-## Version
-{{ if eq $meta.published_version $meta.version }}v{{ $meta.version }}{{ else }}Unreleased v{{ $meta.version }}{{ end }}
-
 # Usage
 To use terraform-docs github action, configure a YAML workflow file, e.g. `.github/workflows/documentation.yml`, with the following:
 ```yaml
