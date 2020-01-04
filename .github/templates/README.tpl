@@ -4,6 +4,9 @@
 # {{ $action.name }}
 {{ $action.description }}
 
+## Version
+v{{ $meta.version }}
+
 # Usage
 To use terraform-docs github action, configure a YAML workflow file, e.g. `.github/workflows/documentation.yml`, with the following:
 ```yaml
