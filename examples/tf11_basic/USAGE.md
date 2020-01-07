@@ -1,9 +1,5 @@
 # Test tf11 basic
 
-## Verify
-Should use the template defined instead of the default
-Should inject the table under usage
-
 # Usage
 <!--- BEGIN_TF_DOCS --->
 ## Inputs
