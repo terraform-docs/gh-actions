@@ -12,15 +12,18 @@ git_changed () {
   echo "::set-output name=num_changed::${GIT_FILES_CHANGED}"
 }
 
-git_commit () {
+git_setup () {
   git config --global user.name ${GITHUB_ACTOR}
   git config --global user.email ${GITHUB_ACTOR}@users.noreply.github.com
+  git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+}
+
+git_commit () {
   git_changed
   if [ "${GIT_FILES_CHANGED}" -eq 0 ]; then
     echo "::debug file=common.sh,line=20,col=1 No files changed, skipping commit"
   else
     git commit -m "${INPUT_TF_DOCS_GIT_COMMIT_MESSAGE}"
-    git push
   fi
 }
 
@@ -67,4 +70,32 @@ update_doc () {
   else
     echo "${MY_DOC}"
   fi
+}
+
+update_meta () {
+  NEW_VERSION="${1}"
+  MAJOR_VERSION=`echo "${NEW_VERSION}" | cut -d. -f1`
+  echo "major_version: ${MAJOR_VERSION}" > /tmp/version.yml
+  echo "version: ${NEW_VERSION}" >> /tmp/version.yml
+  gomplate -d meta=.github/meta.yml -d newmeta=/tmp/version.yml -i '{{ ds "meta" | coll.Merge (ds "newmeta") | data.ToYAML }}' -o /tmp/meta.yml
+  cat /tmp/meta.yml > .github/meta.yml
+  git_add_doc ".github/meta.yml"
+}
+
+update_readme () {
+  # generate README.md with version
+  gomplate -d action=action.yml -d meta=.github/meta.yml -f .github/templates/README.tpl -o README.md
+  git_add_doc "./README.md"
+}
+
+overwrite_docker_tag () {
+  NEW_TAG="${1:-"latest"}"
+  # update the dockerfile to be locked down at this specific version
+  sed -i "s|FROM derekrada/terraform-docs:.*|FROM derekrada/terraform-docs:${NEW_TAG}|" ./Dockerfile
+  git_add_doc "./Dockerfile"
+}
+
+generate_change_log () {
+  git-chglog --tag-filter-pattern '^v[0-9]+.+' -o CHANGELOG.md
+  git_add_doc "./CHANGELOG.md"
 }

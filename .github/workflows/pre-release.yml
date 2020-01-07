@@ -13,4 +13,4 @@ jobs:
     - name: Generate files for release
       uses: ./
       with:
-        entrypoint: "/generate-readme.sh"
+        entrypoint: "/pre-release.sh"

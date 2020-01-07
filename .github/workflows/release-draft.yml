@@ -6,7 +6,20 @@ on:
       - master
 
 jobs:
+  readme:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: master
+    - name: Should generate README.md and CHANGELOG for this REPO
+      uses: ./
+      with:
+        entrypoint: "/generate-readme.sh"
+        tf_docs_git_push: 'true'
+
   update_release_draft:
+    needs: ['readme']
     runs-on: ubuntu-latest
     steps:
       - uses: release-drafter/release-drafter@v5

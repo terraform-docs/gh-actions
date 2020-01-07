@@ -12,6 +12,7 @@ fi
 
 # go to github repo
 cd $GITHUB_WORKSPACE
+git_setup
 
 if [ -f "${GITHUB_WORKSPACE}/${INPUT_TF_DOCS_ATLANTIS_FILE}" ]; then
 
@@ -41,6 +42,7 @@ fi
 
 if [ "${INPUT_TF_DOCS_GIT_PUSH}" = "true" ]; then
   git_commit
+  git push
 else
   git_changed
 fi
