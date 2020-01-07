@@ -1,5 +1,9 @@
 <a name="unreleased"></a>
 ## [Unreleased]
+### Bug Fixes
+- fix chglog generation
+- fix chglog generation
+
 ### Chore
 - automated generate readme
 - automated release process
@@ -14,6 +18,9 @@
 - Add release draft action
 - Updated example documentation
 - on semvar tag also update the major tag
+
+### Skip
+- automated generate readme
 
 
 <a name="v1.0.3"></a>
