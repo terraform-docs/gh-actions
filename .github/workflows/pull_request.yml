@@ -2,7 +2,18 @@ name: Generate terraform docs
 on:
   - pull_request
 jobs:
-  docs:
+
+  label:
+    if: github.event.action == 'opened'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: TimonVS/pr-labeler-action@v3
+        with:
+          configuration-path: .github/pr-labeler.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -53,3 +64,18 @@ jobs:
         tf_docs_output_file: README.md
         tf_docs_git_push: 'true'
         tf_docs_git_commit_message: 'terraform-docs: automated action'
+
+  release:
+    needs: build
+    if: startsWith(github.event.pull_request.head.ref, 'release')
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+        fetch-depth: 0
+
+    - name: Generate files for release
+      uses: ./
+      with:
+        entrypoint: "/pre-release.sh"
