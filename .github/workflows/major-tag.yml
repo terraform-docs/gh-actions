@@ -10,7 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        ref: master
     - name: git tag
       run: |
         git fetch --depth=1 origin +refs/tags/*:refs/tags/*
         git describe --tags $(git rev-list --tags --max-count=1)
+        git describe --contains $(git rev-parse HEAD) || true
