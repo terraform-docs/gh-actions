@@ -1,0 +1,15 @@
+name: Release Tasks
+on:
+  release:
+    types: [published]
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Should generate README.md for this REPO
+      uses: ./
+      with:
+        entrypoint: "/release.sh"
+        tf_docs_git_push: 'true'
