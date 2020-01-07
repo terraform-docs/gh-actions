@@ -1,8 +1,38 @@
-name: Generate terraform docs
+name: Pull Request actions
 on:
   - pull_request
 jobs:
-  docs:
+
+  label:
+    name: 'PR Labeler'
+    if: github.event.action == 'opened'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: TimonVS/pr-labeler-action@v3
+        with:
+          configuration-path: .github/pr-labeler.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  fmt:
+    name: 'Terraform fmt'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@master
+
+      - name: fmt
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_working_dir: examples
+          tf_actions_version: '0.12.17'
+          tf_actions_subcommand: 'fmt'
+          tf_actions_comment: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build:
+    name: 'Build example docs'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -53,3 +83,19 @@ jobs:
         tf_docs_output_file: README.md
         tf_docs_git_push: 'true'
         tf_docs_git_commit_message: 'terraform-docs: automated action'
+
+  release:
+    name: 'Release'
+    needs: build
+    if: startsWith(github.event.pull_request.head.ref, 'release')
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+        fetch-depth: 0
+
+    - name: Generate files for release
+      uses: ./
+      with:
+        entrypoint: "/pre-release.sh"

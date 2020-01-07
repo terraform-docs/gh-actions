@@ -3,7 +3,7 @@ set -e
 
 . /common.sh
 
-export INPUT_TF_DOCS_GIT_COMMIT_MESSAGE="chore: automated release process"
+export INPUT_TF_DOCS_GIT_COMMIT_MESSAGE="skip: automated release process"
 cd $GITHUB_WORKSPACE
 git_setup
 
