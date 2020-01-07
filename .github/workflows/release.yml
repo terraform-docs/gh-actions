@@ -8,8 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Should generate README.md for this REPO
+    - name: push up major version tag
       uses: ./
       with:
         entrypoint: "/release.sh"
-        tf_docs_git_push: 'true'
