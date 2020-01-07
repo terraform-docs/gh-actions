@@ -53,8 +53,8 @@ create_release () {
   # generate changelog.md for the next tag
   git-chglog --tag-filter-pattern '^v[0-9]+.+' \
     --next-tag "${TAG_PREFIX}${NEW_VERSION}" \
-    "${TAG_PREFIX}${NEW_VERSION}" \
-    -o /tmp/tag_msg.md
+    -o /tmp/tag_msg.md \
+    "${TAG_PREFIX}${NEW_VERSION}"
 
   git-chglog --tag-filter-pattern '^v[0-9]+.+' --next-tag "${TAG_PREFIX}${NEW_VERSION}" -o CHANGELOG.md
   git_add_doc "./CHANGELOG.md"
