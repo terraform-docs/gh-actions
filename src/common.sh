@@ -94,8 +94,3 @@ overwrite_docker_tag () {
   sed -i "s|FROM derekrada/terraform-docs:.*|FROM derekrada/terraform-docs:${NEW_TAG}|" ./Dockerfile
   git_add_doc "./Dockerfile"
 }
-
-generate_change_log () {
-  git-chglog --tag-filter-pattern '^v[0-9]+.+' -o CHANGELOG.md
-  git_add_doc "./CHANGELOG.md"
-}

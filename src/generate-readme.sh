@@ -8,7 +8,6 @@ cd $GITHUB_WORKSPACE
 git_setup
 
 update_readme
-generate_change_log
 
 git_commit
 git push

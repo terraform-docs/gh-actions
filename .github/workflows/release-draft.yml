@@ -14,7 +14,7 @@ jobs:
         ref: master
         fetch-depth: '10000'
 
-    - name: Should generate README.md and CHANGELOG for this REPO
+    - name: Should generate README.md for this REPO
       uses: ./
       with:
         entrypoint: "/generate-readme.sh"
