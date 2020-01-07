@@ -12,10 +12,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         ref: master
-        fetch-depth: '0'
-
-    - run: |
-        git fetch --prune --unshallow
+        fetch-depth: '10000'
 
     - name: Should generate README.md and CHANGELOG for this REPO
       uses: ./
