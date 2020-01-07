@@ -27,6 +27,7 @@ parse_version () {
 }
 
 is_sha_tagged () {
+  SHA="${1}"
   set +e
   git describe --contains "${SHA}" 2>/dev/null
   IS_TAGGED=$?
