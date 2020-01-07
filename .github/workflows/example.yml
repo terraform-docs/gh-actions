@@ -16,23 +16,24 @@ jobs:
         tf_docs_template: |
           # Test tf11 basic
 
-          ## Verify
-          Should use the template defined instead of the default
-          Should inject the table under usage
-
           # Usage
           <!--- BEGIN_TF_DOCS --->
           <!--- END_TF_DOCS --->
 
-    - name: Should generate README.md for tf11_extra_args
+    - name: Should generate USAGE.md for tf11_extra_args
       uses: ./
       with:
         tf_docs_working_dir: examples/tf11_extra_args
-        tf_docs_output_file: README.md
         tf_docs_content_type: document
         tf_docs_indention: '3'
         tf_docs_args: '--with-aggregate-type-defaults --no-required'
         tf_docs_output_method: replace
+
+    - name: Should inject into README.md
+      uses: ./
+      with:
+        tf_docs_working_dir: examples/tf12_basic
+        tf_docs_output_file: README.md
 
     - name: Should generate README.md for tf12_atlantis
       uses: ./

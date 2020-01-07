@@ -1,6 +1,19 @@
 # Test Inject
 
-Should inject below Usage
+## Input
+```
+- name: Should generate README.md for tf12_inject and push up all changes
+  uses: ./
+  with:
+    tf_docs_find_dir: examples/tf12_inject
+    tf_docs_output_file: README.md
+    tf_docs_git_push: 'true'
+    tf_docs_git_commit_message: 'terraform-docs: automated action'
+```
+
+## Verify
+- Should inject below Usage
+- Should push up changes on build with commit message 'terraform-docs: automated action'
 
 # Usage
 <!--- BEGIN_TF_DOCS --->
