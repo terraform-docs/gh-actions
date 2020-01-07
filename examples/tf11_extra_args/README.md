@@ -1,59 +1,22 @@
-### Inputs
+# TF 11 Extra Args
 
-The following input variables are supported:
+## Input
+```
+- name: Should generate USAGE.md for tf11_extra_args
+  uses: ./
+  with:
+    tf_docs_working_dir: examples/tf11_extra_args
+    tf_docs_content_type: document
+    tf_docs_indention: '3'
+    tf_docs_args: '--with-aggregate-type-defaults --no-required'
+    tf_docs_output_method: replace
+```
 
-#### extra\_environment
+## Verify
+- Creates a document instead of table
+- Indents the "##" by 3 instead of 2 ie: "###"
+- Should not document required fields
+- Should replace USAGE.md
 
-Description: List of additional environment variables
-
-Type: `list`
-
-Default: `[]`
-
-#### extra\_tags
-
-Description: Additional tags
-
-Type: `map`
-
-Default: `{}`
-
-#### instance\_count
-
-Description: Number of instances to create
-
-Type: `string`
-
-Default: `"1"`
-
-#### instance\_name
-
-Description: Instance name prefix
-
-Type: `string`
-
-Default: `"test-"`
-
-#### subnet\_ids
-
-Description: A list of subnet ids to use
-
-Type: `list`
-
-Default: n/a
-
-#### vpc\_id
-
-Description: The id of the vpc
-
-Type: `string`
-
-Default: n/a
-
-### Outputs
-
-The following outputs are exported:
-
-#### vpc\_id
-
-Description: The Id of the VPC
+# Usage
+See USAGE.md

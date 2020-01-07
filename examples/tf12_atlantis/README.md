@@ -1,6 +1,16 @@
 # Test Atlantis
 
-Should inject below Usage 
+## Input
+```
+- name: Should generate README.md for tf12_atlantis
+  uses: ./
+  with:
+    tf_docs_atlantis_file: atlantis.yaml
+    tf_docs_output_file: README.md
+```
+
+## Verify
+- Should inject below Usage in README.md
 
 # Usage
 <!--- BEGIN_TF_DOCS --->
