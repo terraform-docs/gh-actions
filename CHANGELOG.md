@@ -1,8 +1,12 @@
-<a name="unreleased"></a>
-## [Unreleased]
-
 
 <a name="v1.0.1"></a>
-## v1.0.1 - 2020-01-04
+## [v1.0.1] - 2020-01-04
+### Chore
+- automated release process
 
-[Unreleased]: https://github.com/Dirrk/terraform-docs/compare/v1.0.1...HEAD
+
+<a name="v1.0.0"></a>
+## v1.0.0 - 2020-01-02
+
+
+[v1.0.1]: https://github.com/Dirrk/terraform-docs/compare/v1.0.0...v1.0.1
