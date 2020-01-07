@@ -2,9 +2,11 @@
 <a name="v1.0.3"></a>
 ## [v1.0.3] - 2020-01-06
 ### Bug Fixes
+- consolidated workflows
 - release action failed
 
 ### Chore
+- automated release process
 - automated generate readme
 - automated generate readme
 - automated release process
