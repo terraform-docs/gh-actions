@@ -12,11 +12,12 @@ jobs:
     - uses: actions/checkout@v2
       with:
         ref: master
+        fetch-depth: 0
+
     - name: Should generate README.md and CHANGELOG for this REPO
       uses: ./
       with:
         entrypoint: "/generate-readme.sh"
-        tf_docs_git_push: 'true'
 
   update_release_draft:
     needs: ['readme']

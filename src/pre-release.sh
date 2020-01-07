@@ -50,20 +50,25 @@ create_release () {
   # replace the module Dockerfile only done for v1.x.x
   overwrite_docker_tag "${TAG_PREFIX}${NEW_VERSION}"
 
-  # generate changelog.md for the next tag
-  git-chglog --tag-filter-pattern '^v[0-9]+.+' \
-    --next-tag "${TAG_PREFIX}${NEW_VERSION}" \
-    -o /tmp/tag_msg.md \
-    "${TAG_PREFIX}${NEW_VERSION}"
+  # update the tag temporarily
+  git tag -f "${TAG_PREFIX}${NEW_VERSION}"
 
-  git-chglog --tag-filter-pattern '^v[0-9]+.+' --next-tag "${TAG_PREFIX}${NEW_VERSION}" -o CHANGELOG.md
+  # generate changelog.md for the next tag
+  git-chglog --tag-filter-pattern '^v[0-9]+.+' -o /tmp/tag_msg.md "${TAG_PREFIX}${NEW_VERSION}"
+
+  # generate entire change log
+  git-chglog --tag-filter-pattern '^v[0-9]+.+' -o CHANGELOG.md
   git_add_doc "./CHANGELOG.md"
+  echo "debug: created changelog"
 
   # commit and push
   git_commit
   git push
+  echo "debug: pushed changes"
+
   git tag -f "${TAG_PREFIX}${NEW_VERSION}" -a --file /tmp/tag_msg.md
-  git push --tags
+  git push -f --tags
+  echo "debug: pushed tags"
 }
 
 RELEASE_BRANCH_VERSION=`git rev-parse --abbrev-ref HEAD | sed "s|release/||" | sed "s/${TAG_PREFIX}//"`

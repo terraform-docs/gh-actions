@@ -9,4 +9,4 @@ git_setup
 
 VERSION=`gomplate -d meta=.github/meta.yml 'v{{ (ds "meta").major_version }}'`
 git tag -f "${VERSION}"
-git push --tags
+git push -f --tags

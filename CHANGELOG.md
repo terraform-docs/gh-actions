@@ -1,9 +1,6 @@
 
 <a name="v1.0.2"></a>
 ## [v1.0.2] - 2020-01-07
-### Bug Fixes
-- ensure sha was passed into pre-release script properly
-
 
 <a name="v1.0.1"></a>
 ## [v1.0.1] - 2020-01-04
