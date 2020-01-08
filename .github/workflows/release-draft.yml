@@ -1,24 +1,9 @@
 name: Release Drafter
-
 on:
   push:
     branches:
       - master
-
 jobs:
-  readme:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: master
-        fetch-depth: '10000'
-
-    - name: Should generate README.md for this REPO
-      uses: ./
-      with:
-        entrypoint: "/generate-readme.sh"
-
   update_release_draft:
     needs: ['readme']
     runs-on: ubuntu-latest
