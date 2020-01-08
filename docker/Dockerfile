@@ -20,10 +20,7 @@ RUN set -x \
   && mv yq /outputs/yq \
   && wget -O gomplate https://github.com/hairyhenderson/gomplate/releases/download/v3.6.0/gomplate_linux-amd64 \
   && chmod 755 gomplate \
-  && mv gomplate /outputs/gomplate \
-	&& wget -O git-chglog https://github.com/git-chglog/git-chglog/releases/download/0.9.1/git-chglog_linux_amd64 \
-	&& chmod 755 git-chglog \
-	&& mv git-chglog /outputs/git-chglog
+  && mv gomplate /outputs/gomplate
 
 FROM alpine:3.10
 COPY --from=builder /go/bin/terraform-docs /usr/local/bin/terraform-docs

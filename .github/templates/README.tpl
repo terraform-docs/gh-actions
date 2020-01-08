@@ -33,6 +33,7 @@ jobs:
 | WARNING: If USAGE.md already exists it will need to be updated, with the block delimeters `<!--- BEGIN_TF_DOCS --->` and `<!--- END_TF_DOCS --->`, where the generated markdown will be injected. |
 | --- |
 
+### Renders
 ![Example](examples/example.png?raw=true "Example Output")
 
 # Configuration
@@ -115,6 +116,15 @@ jobs:
   uses: Dirrk/terraform-docs@v{{ $meta.version }}
   with:
     tf_docs_working_dir: .
+    tf_docs_output_file: README.md
+```
+
+## Multi folder
+```
+- name: Generate TF Docs
+  uses: Dirrk/terraform-docs@v{{ $meta.version }}
+  with:
+    tf_docs_working_dir: .,example1,example3/modules/test
     tf_docs_output_file: README.md
 ```
 
