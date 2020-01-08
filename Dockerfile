@@ -1,4 +1,4 @@
-FROM derekrada/terraform-docs:v1.0.3
+FROM derekrada/terraform-docs:v1.0.4
 COPY ./src/common.sh /common.sh
 COPY ./src/docker-entrypoint.sh /docker-entrypoint.sh
 COPY ./src/pre-release.sh /pre-release.sh
