@@ -5,7 +5,6 @@ on:
       - master
 jobs:
   update_release_draft:
-    needs: ['readme']
     runs-on: ubuntu-latest
     steps:
       - uses: release-drafter/release-drafter@v5
