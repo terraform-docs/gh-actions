@@ -1,6 +1,6 @@
 FROM golang:1.13-alpine3.10 as builder
 # Locked down to a specific commit until v0.8 is released
-ARG VERSION=8fe71fde97e6fc47ed4fb292f5f187f0207352dd
+ARG VERSION=d52122db3dddf40e089b4c5f61cd2ecd6970edbc
 
 # Install dependencies
 RUN set -x \
