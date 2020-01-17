@@ -33,7 +33,7 @@ update_doc () {
   echo "::debug file=common.sh,line=30,col=1 WORKING_DIR=${WORKING_DIR}"
 
   if [ "${INPUT_TF_DOCS_CONTENT_TYPE}" = "json" ]; then
-    MY_DOC=`terraform-docs "${INPUT_TF_DOCS_CONTENT_TYPE}" "${WORKING_DIR}" $TF_ARGS`
+    MY_DOC=`terraform-docs "${INPUT_TF_DOCS_CONTENT_TYPE}" "${WORKING_DIR}" $INPUT_TF_DOCS_ARGS`
 
     if [ -f "${INPUT_TF_DOCS_TEMPLATE_FILE}" ]; then
       echo "${MY_DOC}" > "/tmp/config.json"
@@ -70,27 +70,4 @@ update_doc () {
   else
     echo "${MY_DOC}"
   fi
-}
-
-update_meta () {
-  NEW_VERSION="${1}"
-  MAJOR_VERSION=`echo "${NEW_VERSION}" | cut -d. -f1`
-  echo "major_version: ${MAJOR_VERSION}" > /tmp/version.yml
-  echo "version: ${NEW_VERSION}" >> /tmp/version.yml
-  gomplate -d meta=.github/meta.yml -d newmeta=/tmp/version.yml -i '{{ ds "meta" | coll.Merge (ds "newmeta") | data.ToYAML }}' -o /tmp/meta.yml
-  cat /tmp/meta.yml > .github/meta.yml
-  git_add_doc ".github/meta.yml"
-}
-
-update_readme () {
-  # generate README.md with version
-  gomplate -d action=action.yml -d meta=.github/meta.yml -f .github/templates/README.tpl -o README.md
-  git_add_doc "./README.md"
-}
-
-overwrite_docker_tag () {
-  NEW_TAG="${1:-"latest"}"
-  # update the dockerfile to be locked down at this specific version
-  sed -i "s|FROM derekrada/terraform-docs:.*|FROM derekrada/terraform-docs:${NEW_TAG}|" ./Dockerfile
-  git_add_doc "./Dockerfile"
 }

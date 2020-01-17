@@ -1,3 +1,11 @@
+### Providers
+
+The following providers are used by this module:
+
+- aws (< 2.2.0)
+
+- consul (>= 1.0.0)
+
 ### Inputs
 
 The following input variables are supported:

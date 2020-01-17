@@ -1,3 +1,32 @@
+provider "aws" {
+  version = "~> 2.20.0"
+
+  region = "us-east-1"
+}
+
+provider "consul" {
+  alias = "test"
+}
+
+terraform {
+  required_providers {
+    consul = ">= 2.4.0"
+  }
+}
+
+data "aws_acm_certificate" "test-cert" {
+  domain   = "test.example.com"
+  statuses = ["ISSUED"]
+}
+
+data "consul_key" "test" {
+  key {
+    name    = "test"
+    path    = "examples/test.json"
+    default = "{}"
+  }
+}
+
 variable "vpc_id" {
   description = "The id of the vpc"
   type        = string

@@ -1,10 +1,15 @@
 {{- define "escape_chars" }}{{ . | strings.ReplaceAll "_" "\\_" | strings.ReplaceAll "|" "\\|" | strings.ReplaceAll "*" "\\*" }}{{- end }}
 {{- define "sanatize_string" }}{{ . | strings.ReplaceAll "\n\n" "<br><br>" | strings.ReplaceAll "  \n" "<br>" | strings.ReplaceAll "\n" "<br>" | tmpl.Exec "escape_chars" }}{{- end }}
-{{- $action := (datasource "action") -}}{{- $meta := (datasource "meta") -}}
+{{- $action := (datasource "action") -}}{{- $version := or (getenv "VERSION") "master" -}}
 # {{ $action.name }}
 {{ $action.description }} In addition to statically defined directory modules, this module can search specific sub folders or parse atlantis.yaml for module identification and doc generation.  This action has the ability to auto commit docs to an open PR or after a push to a specific branch.
 ## Version
-v{{ $meta.version }}
+{{ $version }}
+
+{{- if eq $version "master" }}
+| WARNING:  You should not rely on master being stable or to have accurate documentation.  Please use a git tagged semver or major version tag like `v1`. |
+| --- |
+{{ end -}}
 
 Supported and tested on terraform version 0.11+ & 0.12+ but may work for others.
 
@@ -23,7 +28,7 @@ jobs:
         ref: {{"${{"}} github.event.pull_request.head.ref {{"}}"}}
 
     - name: Render terraform docs inside the USAGE.md and push changes back to PR branch
-      uses: Dirrk/terraform-docs@v{{ $meta.version }}
+      uses: Dirrk/terraform-docs@{{ $version }}
       with:
         tf_docs_working_dir: .
         tf_docs_output_file: USAGE.md
@@ -113,7 +118,7 @@ jobs:
 ## Simple / Single folder
 ```
 - name: Generate TF Docs
-  uses: Dirrk/terraform-docs@v{{ $meta.version }}
+  uses: Dirrk/terraform-docs@{{ $version }}
   with:
     tf_docs_working_dir: .
     tf_docs_output_file: README.md
@@ -122,7 +127,7 @@ jobs:
 ## Multi folder
 ```
 - name: Generate TF Docs
-  uses: Dirrk/terraform-docs@v{{ $meta.version }}
+  uses: Dirrk/terraform-docs@{{ $version }}
   with:
     tf_docs_working_dir: .,example1,example3/modules/test
     tf_docs_output_file: README.md
@@ -131,7 +136,7 @@ jobs:
 ## Use atlantis.yaml v3 to find all dirs
 ```
 - name: Generate TF docs
-  uses: Dirrk/terraform-docs@v{{ $meta.version }}
+  uses: Dirrk/terraform-docs@{{ $version }}
   with:
     tf_docs_atlantis_file: atlantis.yaml
 ```
@@ -139,9 +144,9 @@ jobs:
 ## Find all .tf file folders under a given directory
 ```yaml
 - name: Generate TF docs
-  uses: Dirrk/terraform-docs@v{{ $meta.version }}
+  uses: Dirrk/terraform-docs@{{ $version }}
   with:
     tf_docs_find_dir: examples/
 ```
 
-Complete examples can be found [here](https://github.com/Dirrk/terraform-docs/tree/v{{ $meta.version }}/examples)
+Complete examples can be found [here](https://github.com/Dirrk/terraform-docs/tree/{{ $version }}/examples)

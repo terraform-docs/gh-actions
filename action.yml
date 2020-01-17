@@ -29,7 +29,7 @@ inputs:
   tf_docs_args:
     description: Additional args to pass
     required: false
-    default: '--sort-inputs-by-required'
+    default: '--sort-inputs-by-required --no-providers'
   tf_docs_output_method:
     description: Method should be one of (replace/inject/print) where replace will replace the tf_docs_output_file, inject will inject the content between start and close delims and print will just print the output
     required: false
