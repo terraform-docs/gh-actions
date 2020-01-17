@@ -60,6 +60,10 @@ create_release () {
   git_commit
   git push
   echo "::debug pushed changes"
+
+  git tag -f "${TAG_PREFIX}${NEW_VERSION}"
+  git push -f --tags
+  echo "debug: pushed tags"
 }
 
 master_release () {
