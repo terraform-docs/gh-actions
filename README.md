@@ -1,10 +1,13 @@
 # terraform-docs
 A Github action for generating terraform module documentation using terraform-docs and gomplate. In addition to statically defined directory modules, this module can search specific sub folders or parse atlantis.yaml for module identification and doc generation.  This action has the ability to auto commit docs to an open PR or after a push to a specific branch.
 ## Version
-v1.0.5
+master
 
 Using [terraform-docs](https://github.com/segmentio/terraform-docs) v0.8.0, which is supported and tested on terraform version 0.11+ & 0.12+ but may work for others.
 
+
+| WARNING:  You should not rely on master being stable or to have accurate documentation.  Please use a git tagged semver or major version tag like `v1`. |
+| --- |
 
 
 # Usage
@@ -22,7 +25,7 @@ jobs:
         ref: ${{ github.event.pull_request.head.ref }}
 
     - name: Render terraform docs inside the USAGE.md and push changes back to PR branch
-      uses: Dirrk/terraform-docs@v1.0.5
+      uses: Dirrk/terraform-docs@master
       with:
         tf_docs_working_dir: .
         tf_docs_output_file: USAGE.md
@@ -118,7 +121,7 @@ jobs:
 ## Simple / Single folder
 ```
 - name: Generate TF Docs
-  uses: Dirrk/terraform-docs@v1.0.5
+  uses: Dirrk/terraform-docs@master
   with:
     tf_docs_working_dir: .
     tf_docs_output_file: README.md
@@ -127,7 +130,7 @@ jobs:
 ## Multi folder
 ```
 - name: Generate TF Docs
-  uses: Dirrk/terraform-docs@v1.0.5
+  uses: Dirrk/terraform-docs@master
   with:
     tf_docs_working_dir: .,example1,example3/modules/test
     tf_docs_output_file: README.md
@@ -136,7 +139,7 @@ jobs:
 ## Use atlantis.yaml v3 to find all dirs
 ```
 - name: Generate TF docs
-  uses: Dirrk/terraform-docs@v1.0.5
+  uses: Dirrk/terraform-docs@master
   with:
     tf_docs_atlantis_file: atlantis.yaml
 ```
@@ -144,9 +147,9 @@ jobs:
 ## Find all .tf file folders under a given directory
 ```yaml
 - name: Generate TF docs
-  uses: Dirrk/terraform-docs@v1.0.5
+  uses: Dirrk/terraform-docs@master
   with:
     tf_docs_find_dir: examples/
 ```
 
-Complete examples can be found [here](https://github.com/Dirrk/terraform-docs/tree/v1.0.5/examples)
+Complete examples can be found [here](https://github.com/Dirrk/terraform-docs/tree/master/examples)
