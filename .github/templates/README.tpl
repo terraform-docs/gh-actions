@@ -6,12 +6,12 @@
 ## Version
 {{ $version }}
 
-{{- if eq $version "master" }}
+Using [terraform-docs](https://github.com/segmentio/terraform-docs) v0.8.0, which is supported and tested on terraform version 0.11+ & 0.12+ but may work for others.
+
+{{ if eq $version "master" }}
 | WARNING:  You should not rely on master being stable or to have accurate documentation.  Please use a git tagged semver or major version tag like `v1`. |
 | --- |
-{{ end -}}
-
-Supported and tested on terraform version 0.11+ & 0.12+ but may work for others.
+{{ end }}
 
 # Usage
 To use terraform-docs github action, configure a YAML workflow file, e.g. `.github/workflows/documentation.yml`, with the following:
