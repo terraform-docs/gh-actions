@@ -1,8 +1,9 @@
 # terraform-docs
 A Github action for generating terraform module documentation using terraform-docs and gomplate. In addition to statically defined directory modules, this module can search specific sub folders or parse atlantis.yaml for module identification and doc generation.  This action has the ability to auto commit docs to an open PR or after a push to a specific branch.
 ## Version
-v1.0.4
-
+master
+| WARNING:  You should not rely on master being stable or to have accurate documentation.  Please use a git tagged semver or major version tag like `v1`. |
+| --- |
 Supported and tested on terraform version 0.11+ & 0.12+ but may work for others.
 
 # Usage
@@ -20,7 +21,7 @@ jobs:
         ref: ${{ github.event.pull_request.head.ref }}
 
     - name: Render terraform docs inside the USAGE.md and push changes back to PR branch
-      uses: Dirrk/terraform-docs@v1.0.4
+      uses: Dirrk/terraform-docs@master
       with:
         tf_docs_working_dir: .
         tf_docs_output_file: USAGE.md
@@ -39,7 +40,7 @@ jobs:
 
 | Name | Description | Default | Required |
 |------|-------------|---------|----------|
-| tf\_docs\_args | Additional args to pass | --sort-inputs-by-required | false |
+| tf\_docs\_args | Additional args to pass | --sort-inputs-by-required --no-providers | false |
 | tf\_docs\_atlantis\_file | Generate directories by parsing an atlantis formatted yaml to enable provide the file name to parse (eg atlantis.yaml) (disabled by default) | disabled | false |
 | tf\_docs\_content\_type | Generate document or table | table | false |
 | tf\_docs\_find\_dir | Generate directories by running find ./tf\_docs\_find\_dir -name \*.tf (disabled by default) | disabled | false |
@@ -116,7 +117,7 @@ jobs:
 ## Simple / Single folder
 ```
 - name: Generate TF Docs
-  uses: Dirrk/terraform-docs@v1.0.4
+  uses: Dirrk/terraform-docs@master
   with:
     tf_docs_working_dir: .
     tf_docs_output_file: README.md
@@ -125,7 +126,7 @@ jobs:
 ## Multi folder
 ```
 - name: Generate TF Docs
-  uses: Dirrk/terraform-docs@v1.0.4
+  uses: Dirrk/terraform-docs@master
   with:
     tf_docs_working_dir: .,example1,example3/modules/test
     tf_docs_output_file: README.md
@@ -134,7 +135,7 @@ jobs:
 ## Use atlantis.yaml v3 to find all dirs
 ```
 - name: Generate TF docs
-  uses: Dirrk/terraform-docs@v1.0.4
+  uses: Dirrk/terraform-docs@master
   with:
     tf_docs_atlantis_file: atlantis.yaml
 ```
@@ -142,9 +143,9 @@ jobs:
 ## Find all .tf file folders under a given directory
 ```yaml
 - name: Generate TF docs
-  uses: Dirrk/terraform-docs@v1.0.4
+  uses: Dirrk/terraform-docs@master
   with:
     tf_docs_find_dir: examples/
 ```
 
-Complete examples can be found [here](https://github.com/Dirrk/terraform-docs/tree/v1.0.4/examples)
+Complete examples can be found [here](https://github.com/Dirrk/terraform-docs/tree/master/examples)
