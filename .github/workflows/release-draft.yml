@@ -4,20 +4,6 @@ on:
     branches:
       - master
 jobs:
-  update:
-    name: 'Update docs'
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: master
-        fetch-depth: '10000'
-
-    - name: Perform master release
-      uses: ./
-      with:
-        entrypoint: "/pre-release.sh"
-
   update_release_draft:
     runs-on: ubuntu-latest
     steps:

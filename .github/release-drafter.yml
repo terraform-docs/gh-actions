@@ -10,3 +10,5 @@ template: |
   ## What’s Changed
 
   $CHANGES
+
+tag-template: v$NEXT_PATCH_VERSION

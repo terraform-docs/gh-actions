@@ -97,20 +97,4 @@ jobs:
         tf_docs_content_type: json
         tf_docs_output_method: print
         tf_docs_git_push: 'true'
-        tf_docs_git_commit_message: 'terraform-docs: automated action'
-
-  release:
-    name: 'Release'
-    needs: build
-    if: startsWith(github.event.pull_request.head.ref, 'release') && github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: ${{ github.event.pull_request.head.ref }}
-        fetch-depth: '10000'
-
-    - name: Generate files for release
-      uses: ./
-      with:
-        entrypoint: "/pre-release.sh"
+        tf_docs_git_commit_message: 'chore: terraform-docs build'
