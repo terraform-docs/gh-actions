@@ -1,0 +1,65 @@
+name: Build
+on:
+  - push
+jobs:
+  build:
+    name: 'Build example docs'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Should generate USAGE.md for tf11_basic
+      uses: ./
+      with:
+        tf_docs_working_dir: examples/tf11_basic
+        tf_docs_template: |
+          # Test tf11 basic
+
+          # Usage
+          <!--- BEGIN_TF_DOCS --->
+          <!--- END_TF_DOCS --->
+
+    - name: Should generate USAGE.md for tf11_extra_args
+      uses: ./
+      with:
+        tf_docs_working_dir: examples/tf11_extra_args
+        tf_docs_content_type: document
+        tf_docs_indention: '3'
+        tf_docs_args: '--no-required'
+        tf_docs_output_method: replace
+
+    - name: Should inject into README.md
+      uses: ./
+      with:
+        tf_docs_working_dir: examples/tf12_basic
+        tf_docs_output_file: README.md
+        tf_docs_args: ''
+
+    - name: Should generate README.md for tf12_atlantis
+      uses: ./
+      with:
+        tf_docs_atlantis_file: atlantis.yaml
+        tf_docs_output_file: README.md
+        tf_docs_args: '--no-providers'
+
+    - name: Should generate README.md for tf12_find and its submodules
+      uses: ./
+      with:
+        tf_docs_find_dir: examples/tf12_find
+
+    - name: Should generate README.md for tf12_inject
+      uses: ./
+      with:
+        tf_docs_find_dir: examples/tf12_inject
+        tf_docs_output_file: README.md
+        tf_docs_args: '--sort-inputs-by-required'
+
+    - name: Push up changes
+      uses: ./
+      with:
+        tf_docs_working_dir: examples/tf12_basic
+        tf_docs_content_type: json
+        tf_docs_output_method: print
+        tf_docs_git_push: 'true'
+        tf_docs_git_commit_message: 'chore: terraform-docs build'

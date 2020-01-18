@@ -7,11 +7,11 @@ inputs:
     required: false
     default: '.'
   tf_docs_atlantis_file:
-    description: Generate directories by parsing an atlantis formatted yaml to enable provide the file name to parse (eg atlantis.yaml) (disabled by default)
+    description: Generate directories by parsing an atlantis formatted yaml to enable provide the file name to parse (eg atlantis.yaml)
     required: false
     default: 'disabled'
   tf_docs_find_dir:
-    description: Generate directories by running find ./tf_docs_find_dir -name *.tf (disabled by default)
+    description: Generate directories by running find ./tf_docs_find_dir -name *.tf
     required: false
     default: 'disabled'
   tf_docs_output_file:
@@ -23,13 +23,13 @@ inputs:
     required: false
     default: 'table'
   tf_docs_indention:
-    description: Indention level of Markdown sections [1, 2, 3, 4, 5] (default 2)
+    description: Indention level of Markdown sections [1, 2, 3, 4, 5]
     required: false
     default: '2'
   tf_docs_args:
-    description: Additional args to pass
+    description: Additional args to pass to the command see https://github.com/segmentio/terraform-docs/tree/master/docs
     required: false
-    default: '--sort-inputs-by-required --no-providers'
+    default: ''
   tf_docs_output_method:
     description: Method should be one of (replace/inject/print) where replace will replace the tf_docs_output_file, inject will inject the content between start and close delims and print will just print the output
     required: false

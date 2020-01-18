@@ -17,6 +17,13 @@
 
 # Usage
 <!--- BEGIN_TF_DOCS --->
+## Providers
+
+| Name | Version |
+|------|---------|
+| aws | ~> 2.20.0 |
+| consul | >= 2.4.0 |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
