@@ -16,5 +16,6 @@ if [ -z "${NEW_VERSION}" ]; then
 fi
 
 git pull origin master
+git pull --tags --all -f
 git tag "${NEW_VERSION}"
 git push --tags
