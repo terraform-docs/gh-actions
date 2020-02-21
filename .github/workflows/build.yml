@@ -1,6 +1,8 @@
 name: Build
 on:
-  - push
+  push:
+    branches-ignore:
+      - master
 jobs:
   build:
     name: 'Build example docs'

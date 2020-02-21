@@ -6,7 +6,7 @@
 ## Version
 {{ $version }}
 
-Using [terraform-docs](https://github.com/segmentio/terraform-docs) v0.8.0, which is supported and tested on terraform version 0.11+ & 0.12+ but may work for others.
+Using [terraform-docs](https://github.com/segmentio/terraform-docs) v0.8.2, which is supported and tested on terraform version 0.11+ & 0.12+ but may work for others.
 
 {{ if eq $version "master" }}
 | WARNING:  You should not rely on master being stable or to have accurate documentation.  Please use a git tagged semver or major version tag like `v1`. |
