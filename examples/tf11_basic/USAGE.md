@@ -2,6 +2,13 @@
 
 # Usage
 <!--- BEGIN_TF_DOCS --->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| aws | < 2.2.0 |
+| consul | >= 1.0.0 |
+
 ## Providers
 
 | Name | Version |
@@ -12,7 +19,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:-----:|
+|------|-------------|------|---------|:--------:|
 | extra\_environment | List of additional environment variables | `list` | `[]` | no |
 | extra\_tags | Additional tags | `map` | `{}` | no |
 | instance\_count | Number of instances to create | `string` | `"1"` | no |

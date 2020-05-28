@@ -1,5 +1,9 @@
 # Usage
 <!--- BEGIN_TF_DOCS --->
+## Requirements
+
+No requirements.
+
 ## Providers
 
 No provider.
@@ -7,7 +11,7 @@ No provider.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:-----:|
+|------|-------------|------|---------|:--------:|
 | extra\_environment | List of additional environment variables | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | `[]` | no |
 | extra\_tags | Additional tags | `map(string)` | `{}` | no |
 | instance\_count | Number of instances to create | `number` | `1` | no |

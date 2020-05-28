@@ -14,10 +14,17 @@
 
 # Usage
 <!--- BEGIN_TF_DOCS --->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| aws | ~> 2.20.0 |
+| consul | >= 2.4.0 |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:-----:|
+|------|-------------|------|---------|:--------:|
 | extra\_environment | List of additional environment variables | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | `[]` | no |
 | extra\_tags | Additional tags | `map(string)` | `{}` | no |
 | instance\_count | Number of instances to create | `number` | `1` | no |

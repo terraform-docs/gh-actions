@@ -8,7 +8,7 @@
     tf_docs_working_dir: examples/tf11_extra_args
     tf_docs_content_type: document
     tf_docs_indention: '3'
-    tf_docs_args: '--with-aggregate-type-defaults --no-required'
+    tf_docs_args: '--no-sensitive --no-requirements --no-required'
     tf_docs_output_method: replace
 ```
 

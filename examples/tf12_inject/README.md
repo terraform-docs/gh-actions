@@ -17,6 +17,13 @@
 
 # Usage
 <!--- BEGIN_TF_DOCS --->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| aws | ~> 2.20.0 |
+| consul | >= 2.4.0 |
+
 ## Providers
 
 | Name | Version |
@@ -27,7 +34,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:-----:|
+|------|-------------|------|---------|:--------:|
 | subnet\_ids | A list of subnet ids to use | `list(string)` | n/a | yes |
 | vpc\_id | The id of the vpc | `string` | n/a | yes |
 | extra\_environment | List of additional environment variables | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | `[]` | no |
