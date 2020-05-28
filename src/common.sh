@@ -63,8 +63,9 @@ update_doc () {
       exit 2
     fi
 
-    # Output generated markdown to temporary file and then replace the block
+    # Output generated markdown to temporary file with a trailing newline and then replace the block
     echo "${MY_DOC}" > /tmp/tf_doc.md
+    echo "" >> /tmp/tf_doc.md
     sed -i -ne '/<!--- BEGIN_TF_DOCS --->/ {p; r /tmp/tf_doc.md' -e ':a; n; /<!--- END_TF_DOCS --->/ {p; b}; ba}; p' "${WORKING_DIR}/${INPUT_TF_DOCS_OUTPUT_FILE}"
     git_add_doc "${WORKING_DIR}/${INPUT_TF_DOCS_OUTPUT_FILE}"
   else
