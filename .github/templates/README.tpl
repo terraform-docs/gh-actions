@@ -6,7 +6,7 @@
 ## Version
 {{ $version }}
 
-Using [terraform-docs](https://github.com/segmentio/terraform-docs) v0.8.2, which is supported and tested on terraform version 0.11+ & 0.12+ but may work for others.
+Using [terraform-docs](https://github.com/terraform-docs/terraform-docs) `v0.8.2`, which is supported and tested on terraform version 0.11+ & 0.12+ but may work for others.
 
 {{ if eq $version "master" }}
 | WARNING:  You should not rely on master being stable or to have accurate documentation.  Please use a git tagged semver or major version tag like `v1`. |
@@ -28,7 +28,7 @@ jobs:
         ref: {{"${{"}} github.event.pull_request.head.ref {{"}}"}}
 
     - name: Render terraform docs inside the USAGE.md and push changes back to PR branch
-      uses: Dirrk/terraform-docs@{{ $version }}
+      uses: terraform-docs/gh-actions@{{ $version }}
       with:
         tf_docs_working_dir: .
         tf_docs_output_file: USAGE.md
@@ -61,7 +61,7 @@ jobs:
 
 # Important Notes
 
-In addition to the below notes, further documentation on terraform-docs can be found [here](https://github.com/segmentio/terraform-docs)
+In addition to the below notes, further documentation on terraform-docs can be found [here](https://github.com/terraform-docs/terraform-docs).
 
 ## Output Method (tf\_docs\_output\_method)
 
@@ -118,7 +118,7 @@ jobs:
 ## Simple / Single folder
 ```
 - name: Generate TF Docs
-  uses: Dirrk/terraform-docs@{{ $version }}
+  uses: terraform-docs/gh-actions@{{ $version }}
   with:
     tf_docs_working_dir: .
     tf_docs_output_file: README.md
@@ -127,7 +127,7 @@ jobs:
 ## Multi folder
 ```
 - name: Generate TF Docs
-  uses: Dirrk/terraform-docs@{{ $version }}
+  uses: terraform-docs/gh-actions@{{ $version }}
   with:
     tf_docs_working_dir: .,example1,example3/modules/test
     tf_docs_output_file: README.md
@@ -136,7 +136,7 @@ jobs:
 ## Use atlantis.yaml v3 to find all dirs
 ```
 - name: Generate TF docs
-  uses: Dirrk/terraform-docs@{{ $version }}
+  uses: terraform-docs/gh-actions@{{ $version }}
   with:
     tf_docs_atlantis_file: atlantis.yaml
 ```
@@ -144,9 +144,9 @@ jobs:
 ## Find all .tf file folders under a given directory
 ```yaml
 - name: Generate TF docs
-  uses: Dirrk/terraform-docs@{{ $version }}
+  uses: terraform-docs/gh-actions@{{ $version }}
   with:
     tf_docs_find_dir: examples/
 ```
 
-Complete examples can be found [here](https://github.com/Dirrk/terraform-docs/tree/{{ $version }}/examples)
+Complete examples can be found [here](https://github.com/terraform-docs/gh-actions/tree/{{ $version }}/examples)

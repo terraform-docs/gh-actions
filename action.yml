@@ -1,6 +1,7 @@
 name: terraform-docs
-author: Derek Rada
-description: A Github action for generating terraform module documentation using terraform-docs and gomplate.
+author: terraform-docs Authors
+description: A Github action for generating Terraform module documentation using terraform-docs and gomplate.
+
 inputs:
   tf_docs_working_dir:
     description: Directories of terraform modules to generate docs for seperated by commas (conflicts with atlantis/find dirs)
@@ -27,7 +28,7 @@ inputs:
     required: false
     default: '2'
   tf_docs_args:
-    description: Additional args to pass to the command see https://github.com/segmentio/terraform-docs/tree/master/docs
+    description: Additional args to pass to the command see https://github.com/terraform-docs/terraform-docs/tree/master/docs
     required: false
     default: ''
   tf_docs_output_method:
