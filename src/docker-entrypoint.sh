@@ -25,7 +25,7 @@ fi
 git_setup() {
   git config --global user.name "${GITHUB_ACTOR}"
   git config --global user.email "${GITHUB_ACTOR}"@users.noreply.github.com
-  git fetch --depth=0 origin +refs/tags/*:refs/tags/*
+  git fetch --depth=1 origin +refs/tags/*:refs/tags/*
 }
 
 git_add() {
