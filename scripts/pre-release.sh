@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
+
 set -e
 
 NEW_VERSION=$1
+PWD=$(cd "$(dirname "$0")" && pwd -P)
 
 if [ -z "${NEW_VERSION}" ]; then
   echo "Must have version like: v1.0.1"
@@ -21,7 +23,8 @@ else
 fi
 
 # Update the README
-VERSION=$NEW_VERSION gomplate -d action=action.yml -f .github/templates/README.tpl -o README.md
+VERSION=$NEW_VERSION gomplate -d action="${PWD}"/../action.yml -f "${PWD}"/../.github/templates/README.tpl -o "${PWD}"/../README.md
 
-git commit -a -s -m "chore: prepare release ${NEW_VERSION}"
+git add "${PWD}"/../README.md
+git commit -s -m "chore: prepare release ${NEW_VERSION}"
 git push --set-upstream origin "release/${NEW_VERSION}"

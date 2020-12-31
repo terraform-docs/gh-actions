@@ -1,4 +1,4 @@
-# terraform-docs
+# terraform-docs-gh-actions
 
 A Github action for generating Terraform module documentation using terraform-docs and gomplate.
 In addition to statically defined directory modules, this module can search specific
@@ -48,12 +48,13 @@ jobs:
 |------|-------------|---------|----------|
 | args | Additional arguments to pass to the command (see [full documentation](https://github.com/terraform-docs/terraform-docs/tree/master/docs)) | `` | false |
 | atlantis-file | Name of Atlantis file to extract list of directories by parsing it. To enable, provide the file name (e.g. `atlantis.yaml`) | `disabled` | false |
+| config-file | Name of terraform-docs config file. To enable, provide the file name (e.g. `.terraform-docs.yml`) | `disabled` | false |
 | find-dir | Name of root directory to extract list of directories by running `find ./find\_dir -name \*.tf` (ignored if `atlantis-file` is set) | `disabled` | false |
 | git-commit-message | Commit message | `terraform-docs: automated action` | false |
 | git-push | If true it will commit and push the changes | `false` | false |
 | indention | Indention level of Markdown sections [1, 2, 3, 4, 5] | `2` | false |
 | output-file | File in module directory where the docs should be placed | `USAGE.md` | false |
-| output-format | terraform-docs format to generate content (see [all formats](https://github.com/terraform-docs/terraform-docs/blob/master/docs/FORMATS\_GUIDE.md)) | `markdown table` | false |
+| output-format | terraform-docs format to generate content (see [all formats](https://github.com/terraform-docs/terraform-docs/blob/master/docs/FORMATS\_GUIDE.md)) (ignored if `config-file` is set) | `markdown table` | false |
 | output-method | Method should be one of `replace`, `inject`, or `print` | `inject` | false |
 | template | When provided will be used as the template if/when the `output-file` does not exist | `# Usage<br><br><!--- BEGIN\_TF\_DOCS ---><br><!--- END\_TF\_DOCS ---><br>` | false |
 | working-dir | Comma separated list of directories to generate docs for (ignored if `atlantis-file` or `find-dir` is set) | `.` | false |
