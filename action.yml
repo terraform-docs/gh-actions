@@ -1,4 +1,4 @@
-name: terraform-docs
+name: terraform-docs-gh-actions
 author: terraform-docs Authors
 description: A Github action for generating Terraform module documentation using terraform-docs and gomplate.
 
