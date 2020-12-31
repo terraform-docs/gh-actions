@@ -30,10 +30,10 @@ jobs:
         uses: ./
         with:
           working-dir: examples/tf11_extra_args
-          content-type: document
-          indention: 3
-          args: --no-sensitive --no-requirements --no-required
+          output-format: markdown document
           output-method: replace
+          indention: 3
+          args: --sensitive=false --hide requirements --required=false
 
       - name: Should inject into README.md
         uses: ./
@@ -45,9 +45,9 @@ jobs:
       - name: Should generate README.md for tf12_atlantis
         uses: ./
         with:
-          atlantis_file: atlantis.yaml
+          atlantis-file: atlantis.yaml
           output-file: README.md
-          args: --no-providers
+          args: --hide providers
 
       - name: Should generate README.md for tf12_find and its submodules
         uses: ./
@@ -59,13 +59,4 @@ jobs:
         with:
           find-dir: examples/tf12_inject
           output-file: README.md
-          args: --sort-inputs-by-required
-
-      - name: Push up changes
-        uses: ./
-        with:
-          working-dir: examples/tf12_basic
-          content-type: json
-          output-method: print
-          git-push: true
-          git-commit-message: "chore: terraform-docs build"
+          args: --sort-by-required

@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 set -e
-set -o pipefail
 
 # Ensure all variables are present
 WORKING_DIR="${1}"
@@ -16,7 +15,15 @@ INDENTION="${9}"
 GIT_PUSH="${10}"
 GIT_COMMIT_MESSAGE="${11}"
 
-ARGS="--indent ${INDENTION} ${ARGS}"
+case "$OUTPUT_FORMAT" in
+"asciidoc" | "asciidoc table" | "asciidoc document")
+  ARGS="--indent ${INDENTION} ${ARGS}"
+  ;;
+
+"markdown" | "markdown table" | "markdown document")
+  ARGS="--indent ${INDENTION} ${ARGS}"
+  ;;
+esac
 
 if [ -z "${TEMPLATE}" ]; then
   TEMPLATE=$(printf '# Usage\n\n<!--- BEGIN_TF_DOCS --->\n<!--- END_TF_DOCS --->\n')
@@ -25,13 +32,14 @@ fi
 git_setup() {
   git config --global user.name "${GITHUB_ACTOR}"
   git config --global user.email "${GITHUB_ACTOR}"@users.noreply.github.com
-  git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+  git fetch --depth=1 origin +refs/tags/*:refs/tags/* || true
 }
 
 git_add() {
   local files
-  files="${0}"
+  files="$1"
   git add "${files}"
+  echo "::debug file=entrypoint.sh,line=34,col=1 Added ${files} to git staging area"
 }
 
 git_status() {
@@ -41,8 +49,8 @@ git_status() {
 git_commit() {
   local is_clean
   is_clean=$(git_status)
-  if [ "${is_clean}" -eq -1 ]; then
-    echo "::debug file=docker-entrypoint.sh,line=47,col=1 No files changed, skipping commit"
+  if [ "${is_clean}" -eq 0 ]; then
+    echo "::debug file=entrypoint.sh,line=45,col=1 No files changed, skipping commit"
   else
     git commit -m "${GIT_COMMIT_MESSAGE}"
   fi
@@ -52,10 +60,11 @@ update_doc() {
   local working_dir
   local generated
 
-  working_dir="${0}"
-  echo "::debug file=docker-entrypoint.sh,line=55,col=1 working_dir=${working_dir}"
+  working_dir="$1"
+  echo "::debug file=entrypoint.sh,line=56,col=1 working_dir=${working_dir}"
 
-  generated=$(terraform-docs "${OUTPUT_FORMAT}" "${ARGS}" "${working_dir}")
+  # shellcheck disable=SC2086
+  generated=$(terraform-docs ${OUTPUT_FORMAT} ${ARGS} ${working_dir})
 
   case "${OUTPUT_METHOD}" in
   print)
@@ -75,11 +84,11 @@ update_doc() {
 
     local has_delimiter
     has_delimiter=$(grep -c -E '(BEGIN|END)_TF_DOCS' "${working_dir}/${OUTPUT_FILE}")
-    echo "::debug file=common.sh,line=46,col=1 has_delimiter=${has_delimiter}"
+    echo "::debug file=entrypoint.sh,line=78,col=1 has_delimiter=${has_delimiter}"
 
     # Verify it has BEGIN and END markers
-    if [ "${has_delimiter}" -ne 1 ]; then
-      echo "::error file=common.sh,line=49,col=1::Output file ${working_dir}/${OUTPUT_FILE} does not contain BEGIN_TF_DOCS and END_TF_DOCS"
+    if [ "${has_delimiter}" -ne 2 ]; then
+      echo "::error file=entrypoint.sh,line=82,col=1::Output file ${working_dir}/${OUTPUT_FILE} does not contain BEGIN_TF_DOCS and END_TF_DOCS"
       exit 1
     fi
 
@@ -119,8 +128,7 @@ if [ "${GIT_PUSH}" = "true" ]; then
   git_commit
   git push
 else
-  num_changed=$(git_status)
-  echo "::set-output name=num-changed::${num_changed}"
+  echo "::set-output name=num-changed::$(git_status)"
 fi
 
 exit 0
