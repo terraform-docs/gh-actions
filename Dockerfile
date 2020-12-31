@@ -6,14 +6,15 @@ FROM quay.io/terraform-docs/terraform-docs:0.10.1
 RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
 
 RUN set -x \
+    && apk update \
     && apk add --no-cache \
         bash \
         git \
         jq \
+        openssh \
         sed \
         yq
 
-COPY ./src/common.sh /common.sh
 COPY ./src/docker-entrypoint.sh /docker-entrypoint.sh
 
 ENTRYPOINT ["/docker-entrypoint.sh"]

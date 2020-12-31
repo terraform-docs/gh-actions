@@ -1,17 +1,15 @@
 # terraform-docs
 
-A Github action for generating Terraform module documentation using terraform-docs
+A Github action for generating Terraform module documentation using [terraform-docs](terraform-docs)
 and gomplate. In addition to statically defined directory modules, this module can
-search specific sub folders or parse `atlantis.yaml` for module identification and
+search specific subfolders or parse `atlantis.yaml` for module identification and
 doc generation. This action has the ability to auto commit docs to an open PR or
 after a push to a specific branch.
 
 ## Version
 
-`v0.1.0`
-
-Using [terraform-docs](https://github.com/terraform-docs/terraform-docs) v0.9.1, which
-is supported and tested on terraform version 0.11+ & 0.12+ but may work for others.
+`v0.1.0` (uses terraform-docs v0.10.1, which is supported and tested on terraform version 0.11+ and
+0.12+ but may work for others.)
 
 ## Usage
 
@@ -33,18 +31,14 @@ jobs:
     - name: Render terraform docs inside the USAGE.md and push changes back to PR branch
       uses: terraform-docs/gh-actions@v0.1.0
       with:
-        tf_docs_working_dir: .
-        tf_docs_output_file: USAGE.md
-        tf_docs_output_method: inject
-        tf_docs_git_push: 'true'
+        working-dir: .
+        output-file: USAGE.md
+        output-method: inject
+        git-push: "true"
 ```
 
 | WARNING: If USAGE.md already exists it will need to be updated, with the block delimeters `<!--- BEGIN_TF_DOCS --->` and `<!--- END_TF_DOCS --->`, where the generated markdown will be injected. |
 | --- |
-
-### Renders
-
-![Example](examples/example.png?raw=true "Example Output")
 
 ## Configuration
 
@@ -52,100 +46,88 @@ jobs:
 
 | Name | Description | Default | Required |
 |------|-------------|---------|----------|
-| tf\_docs\_args | Additional args to pass to the command see [https://github.com/terraform-docs/terraform-docs/tree/master/docs](https://github.com/terraform-docs/terraform-docs/tree/master/docs) | `""` | false |
-| tf\_docs\_atlantis\_file | Generate directories by parsing an atlantis formatted yaml to enable provide the file name to parse (eg atlantis.yaml) | `disabled` | false |
-| tf\_docs\_content\_type | Generate document or table | `table` | false |
-| tf\_docs\_find\_dir | Generate directories by running `find ./tf_docs_find_dir -name \*.tf` | `disabled` | false |
-| tf\_docs\_git\_commit\_message | Commit message | `terraform-docs: automated action` | false |
-| tf\_docs\_git\_push | If true it will commit and push the changes | `false` | false |
-| tf\_docs\_indention | Indention level of Markdown sections [1, 2, 3, 4, 5] | `2` | false |
-| tf\_docs\_output\_file | File in module directory where the docs should be placed | `USAGE.md` | false |
-| tf\_docs\_output\_method | Method should be one of (replace/inject/print) where:<br>- `replace` the `tf_docs_output_file`<br />- `inject` the content between start and close delims<br />- `print` the output | `inject` | false |
-| tf\_docs\_template | When provided will be used as the template if/when the `output-file` does not exist | # Usage<br><!--- BEGIN\_TF\_DOCS ---><br><!--- END\_TF\_DOCS ---><br> | false |
-| tf\_docs\_working\_dir | Directories of terraform modules to generate docs for seperated by commas (conflicts with atlantis/find dirs) | `.` | false |
+| working-dir | Comma separated list of directories to generate docs for (ignored if `atlantis-file` or `find-dir` is set) | `.` | false |
+| atlantis-file | Name of Atlantis file to extract list of directories by parsing it. To enable, provide the file name (e.g. `atlantis.yaml`) | `disabled` | false |
+| find-dir | Name of root directory to extract list of directories by running `find ./find_dir -name *.tf` (ignored if atlantis-file is set) | `disabled` | false |
+| output-format | terraform-docs format to generate content (see [all formats]) | `markdown table` | false |
+| output-method | Method should be one of `replace`, `inject`, or `print` (see below for detail) | `inject` | false |
+| output-file | File in module directory where the docs should be placed | `USAGE.md` | false |
+| template | When provided will be used as the template if/when the `output-file` does not exist | <pre># Usage<br><br><!--- BEGIN\_TF\_DOCS ---><br><!--- END\_TF\_DOCS ---><br></pre> | false |
+| args | Additional arguments to pass down to the command (see [full documentation]) | `""` | false |
+| indention | Indention level of Markdown sections [1, 2, 3, 4, 5] | `2` | false |
+| git-push | If true it will commit and push the changes | `false` | false |
+| git-commit-message | Commit message | `terraform-docs: automated action` | false |
+
+#### Output Method (output-method)
+
+- `print`
+
+  This will just print the generated output
+
+- `replace`
+
+  This will create or replace the `output-file` at the determined module path(s)
+
+- `inject`
+
+  Instead of replacing the `output-file`, this will inject the generated documentation
+  into the existing file between the predefined delimeters: `<!--- BEGIN_TF_DOCS --->`
+  and `<!--- END_TF_DOCS --->`. If the file exists but does not contain the delimeters,
+  the action will fail for the given module. If the file doesn't exist, it will create
+  it using the value template which MUST have the delimeters.
+
+#### Auto commit changes
+
+To enable you need to ensure a few things first:
+
+- set `git-push` to `true`
+- use `actions/checkout@v2` with the head ref for PRs or branch name for pushes
+  - PR
+
+    ```yaml
+    on:
+      - pull_request
+    jobs:
+      docs:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v2
+          with:
+            ref: ${{ github.event.pull_request.head.ref }}
+    ```
+
+  - Push
+
+    ```yaml
+    on:
+      push:
+        branches:
+          - master
+    jobs:
+      docs:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v2
+          with:
+            ref: master
+    ```
 
 ### Outputs
 
 | Name | Description |
 |------|-------------|
-| num\_changed | Number of files changed |
-
-## Important Notes
-
-In addition to the below notes, further documentation on terraform-docs can be found
-[here](https://github.com/terraform-docs/terraform-docs).
-
-## Output Method (tf\_docs\_output\_method)
-
-#### print
-
-This will just print the generated file
-
-#### replace
-
-This will create/replace the tf\_docs\_output\_file at the determined module path(s)
-
-#### inject
-
-Instead of replacing the output file, this will inject the generated documentation into
-the existing file between the predefined delimeters: `<!--- BEGIN_TF_DOCS --->` and
-`<!--- END_TF_DOCS --->`.  If the file exists but does not contain the delimeters, the
-action will fail for the given module.  If the file doesn't exist, it will create it
-using the value template which MUST have the delimeters.
-
-### Auto commit changes
-
-To enable you need to ensure a few things first:
-
-- set `tf\_docs\_git\_push` to `true`
-- use `actions/checkout@v2` with the head ref for PRs or branch name for pushes
-
-#### PR
-
-```yaml
-on:
-  - pull_request
-jobs:
-  docs:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: ${{ github.event.pull_request.head.ref }}
-```
-
-#### Push
-
-```yaml
-on:
-  push:
-    branches:
-      - master
-jobs:
-  docs:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: master
-```
-
-### Content type (tf\_docs\_content\_type)
-
-- document - long form document
-- table - github formatted table
-- json - pure json output
+| num-changed | Number of files changed |
 
 ## Examples
 
-### Simple / Single folder
+### Single folder
 
 ```yaml
 - name: Generate TF Docs
   uses: terraform-docs/gh-actions@v0.1.0
   with:
-    tf_docs_working_dir: .
-    tf_docs_output_file: README.md
+    working-dir: .
+    output-file: README.md
 ```
 
 ### Multi folder
@@ -154,17 +136,17 @@ jobs:
 - name: Generate TF Docs
   uses: terraform-docs/gh-actions@v0.1.0
   with:
-    tf_docs_working_dir: .,example1,example3/modules/test
-    tf_docs_output_file: README.md
+    working-dir: .,example1,example3/modules/test
+    output-file: README.md
 ```
 
-### Use `atlantis.yaml` v3 to find all dirs
+### Use `atlantis.yaml` v3 to find all directories
 
 ```yaml
 - name: Generate TF docs
   uses: terraform-docs/gh-actions@v0.1.0
   with:
-    tf_docs_atlantis_file: atlantis.yaml
+    atlantis-file: atlantis.yaml
 ```
 
 ### Find all `.tf` file under a given directory
@@ -173,7 +155,11 @@ jobs:
 - name: Generate TF docs
   uses: terraform-docs/gh-actions@v0.1.0
   with:
-    tf_docs_find_dir: examples/
+    find-dir: examples/
 ```
 
-Complete examples can be found [here](https://github.com/terraform-docs/gh-actions/tree/v0.1.0/examples).
+Complete examples can be found [here](https://github.com/terraform-docs/gh-actions/tree/master/examples).
+
+[terraform-docs]: https://github.com/terraform-docs/terraform-docs
+[all formats]: https://github.com/terraform-docs/terraform-docs/blob/master/docs/FORMATS_GUIDE.md
+[full documentation]: https://github.com/terraform-docs/terraform-docs/tree/master/docs
