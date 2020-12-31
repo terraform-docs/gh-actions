@@ -1,15 +1,15 @@
 # terraform-docs
 
-A Github action for generating Terraform module documentation using [terraform-docs](terraform-docs)
-and gomplate. In addition to statically defined directory modules, this module can
-search specific subfolders or parse `atlantis.yaml` for module identification and
-doc generation. This action has the ability to auto commit docs to an open PR or
-after a push to a specific branch.
+A Github action for generating Terraform module documentation using terraform-docs and gomplate.
+In addition to statically defined directory modules, this module can search specific
+subfolders or parse `atlantis.yaml` for module identification and doc generation. This
+action has the ability to auto commit docs to an open PR or after a push to a specific
+branch.
 
 ## Version
 
-`v0.1.0` (uses terraform-docs v0.10.1, which is supported and tested on terraform version 0.11+ and
-0.12+ but may work for others.)
+`v0.1.0` (uses [terraform-docs] v0.10.1, which is supported and tested on Terraform version
+0.11+ and 0.12+ but may work for others.)
 
 ## Usage
 
@@ -46,17 +46,17 @@ jobs:
 
 | Name | Description | Default | Required |
 |------|-------------|---------|----------|
-| working-dir | Comma separated list of directories to generate docs for (ignored if `atlantis-file` or `find-dir` is set) | `.` | false |
+| args | Additional arguments to pass to the command (see [full documentation](https://github.com/terraform-docs/terraform-docs/tree/master/docs)) | `` | false |
 | atlantis-file | Name of Atlantis file to extract list of directories by parsing it. To enable, provide the file name (e.g. `atlantis.yaml`) | `disabled` | false |
-| find-dir | Name of root directory to extract list of directories by running `find ./find_dir -name *.tf` (ignored if atlantis-file is set) | `disabled` | false |
-| output-format | terraform-docs format to generate content (see [all formats]) | `markdown table` | false |
-| output-method | Method should be one of `replace`, `inject`, or `print` (see below for detail) | `inject` | false |
-| output-file | File in module directory where the docs should be placed | `USAGE.md` | false |
-| template | When provided will be used as the template if/when the `output-file` does not exist | <pre># Usage<br><br><!--- BEGIN\_TF\_DOCS ---><br><!--- END\_TF\_DOCS ---><br></pre> | false |
-| args | Additional arguments to pass down to the command (see [full documentation]) | `""` | false |
-| indention | Indention level of Markdown sections [1, 2, 3, 4, 5] | `2` | false |
-| git-push | If true it will commit and push the changes | `false` | false |
+| find-dir | Name of root directory to extract list of directories by running `find ./find\_dir -name \*.tf` (ignored if `atlantis-file` is set) | `disabled` | false |
 | git-commit-message | Commit message | `terraform-docs: automated action` | false |
+| git-push | If true it will commit and push the changes | `false` | false |
+| indention | Indention level of Markdown sections [1, 2, 3, 4, 5] | `2` | false |
+| output-file | File in module directory where the docs should be placed | `USAGE.md` | false |
+| output-format | terraform-docs format to generate content (see [all formats](https://github.com/terraform-docs/terraform-docs/blob/master/docs/FORMATS\_GUIDE.md)) | `markdown table` | false |
+| output-method | Method should be one of `replace`, `inject`, or `print` | `inject` | false |
+| template | When provided will be used as the template if/when the `output-file` does not exist | `# Usage<br><br><!--- BEGIN\_TF\_DOCS ---><br><!--- END\_TF\_DOCS ---><br>` | false |
+| working-dir | Comma separated list of directories to generate docs for (ignored if `atlantis-file` or `find-dir` is set) | `.` | false |
 
 #### Output Method (output-method)
 
@@ -116,7 +116,7 @@ To enable you need to ensure a few things first:
 
 | Name | Description |
 |------|-------------|
-| num-changed | Number of files changed |
+| num\_changed | Number of files changed |
 
 ## Examples
 
@@ -158,8 +158,6 @@ To enable you need to ensure a few things first:
     find-dir: examples/
 ```
 
-Complete examples can be found [here](https://github.com/terraform-docs/gh-actions/tree/master/examples).
+Complete examples can be found [here](https://github.com/terraform-docs/gh-actions/tree/v0.1.0/examples).
 
 [terraform-docs]: https://github.com/terraform-docs/terraform-docs
-[all formats]: https://github.com/terraform-docs/terraform-docs/blob/master/docs/FORMATS_GUIDE.md
-[full documentation]: https://github.com/terraform-docs/terraform-docs/tree/master/docs

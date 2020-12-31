@@ -2,19 +2,28 @@
 {{- define "sanatize_string" }}{{ . | strings.ReplaceAll "\n\n" "<br><br>" | strings.ReplaceAll "  \n" "<br>" | strings.ReplaceAll "\n" "<br>" | tmpl.Exec "escape_chars" }}{{- end }}
 {{- $action := (datasource "action") -}}{{- $version := or (getenv "VERSION") "master" -}}
 # {{ $action.name }}
-{{ $action.description }} In addition to statically defined directory modules, this module can search specific sub folders or parse atlantis.yaml for module identification and doc generation.  This action has the ability to auto commit docs to an open PR or after a push to a specific branch.
+
+{{ $action.description }}
+In addition to statically defined directory modules, this module can search specific
+subfolders or parse `atlantis.yaml` for module identification and doc generation. This
+action has the ability to auto commit docs to an open PR or after a push to a specific
+branch.
+
 ## Version
-{{ $version }}
 
-Using [terraform-docs](https://github.com/terraform-docs/terraform-docs) `v0.8.2`, which is supported and tested on terraform version 0.11+ & 0.12+ but may work for others.
+`{{ $version }}` (uses [terraform-docs] v0.10.1, which is supported and tested on Terraform version
+0.11+ and 0.12+ but may work for others.)
 
-{{ if eq $version "master" }}
+{{- if eq $version "master" }}
 | WARNING:  You should not rely on master being stable or to have accurate documentation.  Please use a git tagged semver or major version tag like `v1`. |
 | --- |
-{{ end }}
+{{- end }}
 
-# Usage
-To use terraform-docs github action, configure a YAML workflow file, e.g. `.github/workflows/documentation.yml`, with the following:
+## Usage
+
+To use terraform-docs github action, configure a YAML workflow file, e.g.
+`.github/workflows/documentation.yml`, with the following:
+
 ```yaml
 name: Generate terraform docs
 on:
@@ -30,28 +39,80 @@ jobs:
     - name: Render terraform docs inside the USAGE.md and push changes back to PR branch
       uses: terraform-docs/gh-actions@{{ $version }}
       with:
-        tf_docs_working_dir: .
-        tf_docs_output_file: USAGE.md
-        tf_docs_output_method: inject
-        tf_docs_git_push: 'true'
+        working-dir: .
+        output-file: USAGE.md
+        output-method: inject
+        git-push: "true"
 ```
+
 | WARNING: If USAGE.md already exists it will need to be updated, with the block delimeters `<!--- BEGIN_TF_DOCS --->` and `<!--- END_TF_DOCS --->`, where the generated markdown will be injected. |
 | --- |
 
-### Renders
-![Example](examples/example.png?raw=true "Example Output")
+## Configuration
 
-# Configuration
-
-## Inputs
+### Inputs
 
 | Name | Description | Default | Required |
 |------|-------------|---------|----------|
 {{- range $key, $input := $action.inputs }}
-| {{ tmpl.Exec "escape_chars" $key }} | {{ if (has $input "description") }}{{ tmpl.Exec "sanatize_string" $input.description }}{{ else }}{{ tmpl.Exec "escape_chars" $key }}{{ end }} | {{ if (has $input "default") }}{{ tmpl.Exec "sanatize_string" $input.default }}{{ else }}N/A{{ end }} | {{ if (has $input "required") }}{{ $input.required }}{{ else }}false{{ end }} |
+| {{ tmpl.Exec "escape_chars" $key }} | {{ if (has $input "description") }}{{ tmpl.Exec "sanatize_string" $input.description }}{{ else }}{{ tmpl.Exec "escape_chars" $key }}{{ end }} | {{ if (has $input "default") }}`{{ tmpl.Exec "sanatize_string" $input.default }}`{{ else }}N/A{{ end }} | {{ if (has $input "required") }}{{ $input.required }}{{ else }}false{{ end }} |
 {{- end }}
 
-## Outputs
+#### Output Method (output-method)
+
+- `print`
+
+  This will just print the generated output
+
+- `replace`
+
+  This will create or replace the `output-file` at the determined module path(s)
+
+- `inject`
+
+  Instead of replacing the `output-file`, this will inject the generated documentation
+  into the existing file between the predefined delimeters: `<!--- BEGIN_TF_DOCS --->`
+  and `<!--- END_TF_DOCS --->`. If the file exists but does not contain the delimeters,
+  the action will fail for the given module. If the file doesn't exist, it will create
+  it using the value template which MUST have the delimeters.
+
+#### Auto commit changes
+
+To enable you need to ensure a few things first:
+
+- set `git-push` to `true`
+- use `actions/checkout@v2` with the head ref for PRs or branch name for pushes
+  - PR
+
+    ```yaml
+    on:
+      - pull_request
+    jobs:
+      docs:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v2
+          with:
+            ref: {{"${{"}} github.event.pull_request.head.ref {{"}}"}}
+    ```
+
+  - Push
+
+    ```yaml
+    on:
+      push:
+        branches:
+          - master
+    jobs:
+      docs:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v2
+          with:
+            ref: master
+    ```
+
+### Outputs
 
 | Name | Description |
 |------|-------------|
@@ -59,94 +120,46 @@ jobs:
 | {{ tmpl.Exec "escape_chars" $key }} | {{ if (has $output "description") }}{{ tmpl.Exec "sanatize_string" $output.description }}{{ else }}{{ tmpl.Exec "escape_chars" $key }}{{ end }} |
 {{- end }}
 
-# Important Notes
+## Examples
 
-In addition to the below notes, further documentation on terraform-docs can be found [here](https://github.com/terraform-docs/terraform-docs).
+### Single folder
 
-## Output Method (tf\_docs\_output\_method)
-
-### print
-This will just print the generated file
-
-### replace
-This will create/replace the tf\_docs\_output\_file at the determined module path(s)
-
-### inject
-Instead of replacing the output file, this will inject the generated documentation into the existing file between the predefined delimeters: `<!--- BEGIN_TF_DOCS --->` and `<!--- END_TF_DOCS --->`.  If the file exists but does not contain the delimeters, the action will fail for the given module.  If the file doesn't exist, it will create it using the value tf\_docs\_template which MUST have the delimeters.
-
-## Auto commit changes
-To enable you need to ensure a few things first:
-- set tf\_docs\_git\_push to 'true'
-- use actions/checkout@v2 with the head ref for PRs or branch name for pushes
-
-### PR
 ```yaml
-on:
-  - pull_request
-jobs:
-  docs:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: {{"${{"}} github.event.pull_request.head.ref {{"}}"}}
-```
-
-### Push
-```yaml
-on:
-  push:
-    branches:
-      - master
-jobs:
-  docs:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: master
-```
-
-## Content type (tf\_docs\_content\_type)
-- document - long form document
-- table - github formatted table
-- json - pure json output
-
-
-# Examples
-
-## Simple / Single folder
-```
 - name: Generate TF Docs
   uses: terraform-docs/gh-actions@{{ $version }}
   with:
-    tf_docs_working_dir: .
-    tf_docs_output_file: README.md
+    working-dir: .
+    output-file: README.md
 ```
 
-## Multi folder
-```
+### Multi folder
+
+```yaml
 - name: Generate TF Docs
   uses: terraform-docs/gh-actions@{{ $version }}
   with:
-    tf_docs_working_dir: .,example1,example3/modules/test
-    tf_docs_output_file: README.md
+    working-dir: .,example1,example3/modules/test
+    output-file: README.md
 ```
 
-## Use atlantis.yaml v3 to find all dirs
-```
-- name: Generate TF docs
-  uses: terraform-docs/gh-actions@{{ $version }}
-  with:
-    tf_docs_atlantis_file: atlantis.yaml
-```
+### Use `atlantis.yaml` v3 to find all directories
 
-## Find all .tf file folders under a given directory
 ```yaml
 - name: Generate TF docs
   uses: terraform-docs/gh-actions@{{ $version }}
   with:
-    tf_docs_find_dir: examples/
+    atlantis-file: atlantis.yaml
 ```
 
-Complete examples can be found [here](https://github.com/terraform-docs/gh-actions/tree/{{ $version }}/examples)
+### Find all `.tf` file under a given directory
+
+```yaml
+- name: Generate TF docs
+  uses: terraform-docs/gh-actions@{{ $version }}
+  with:
+    find-dir: examples/
+```
+
+Complete examples can be found [here](https://github.com/terraform-docs/gh-actions/tree/{{ $version }}/examples).
+
+[terraform-docs]: https://github.com/terraform-docs/terraform-docs

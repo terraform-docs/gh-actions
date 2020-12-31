@@ -23,8 +23,5 @@ fi
 # Update the README
 VERSION=$NEW_VERSION gomplate -d action=action.yml -f .github/templates/README.tpl -o README.md
 
-# Update Dockerfile
-gsed -i "s|FROM derekrada/terraform-docs:.*|FROM derekrada/terraform-docs:${NEW_VERSION}|" ./Dockerfile
-
-git commit -am "chore: prepare release ${NEW_VERSION}"
+git commit -a -s -m "chore: prepare release ${NEW_VERSION}"
 git push --set-upstream origin "release/${NEW_VERSION}"
