@@ -4,23 +4,23 @@ description: A Github action for generating Terraform module documentation using
 
 inputs:
   working-dir:
-    description: Comma separated list of directories to generate docs for (ignored if atlantis-file or find-dir is set)
+    description: Comma separated list of directories to generate docs for (ignored if `atlantis-file` or `find-dir` is set)
     required: false
     default: "."
   atlantis-file:
-    description: Name of Atlantis file to extract list of directories by parsing it. To enable, provide the file name (e.g. atlantis.yaml)
+    description: Name of Atlantis file to extract list of directories by parsing it. To enable, provide the file name (e.g. `atlantis.yaml`)
     required: false
     default: "disabled"
   find-dir:
-    description: Name of root directory to extract list of directories by running 'find ./find_dir -name *.tf' (ignored if atlantis-file is set)
+    description: Name of root directory to extract list of directories by running `find ./find_dir -name *.tf` (ignored if `atlantis-file` is set)
     required: false
     default: "disabled"
   output-format:
-    description: terraform-docs format to generate content (see https://github.com/terraform-docs/terraform-docs/blob/master/docs/FORMATS_GUIDE.md)
+    description: terraform-docs format to generate content (see [all formats](https://github.com/terraform-docs/terraform-docs/blob/master/docs/FORMATS_GUIDE.md))
     required: false
     default: "markdown table"
   output-method:
-    description: Method should be one of (replace, inject, or print) where replace will replace the output_file, inject will inject the content between start and close delims and print will just print the output
+    description: Method should be one of `replace`, `inject`, or `print`
     required: false
     default: "inject"
   output-file:
@@ -28,7 +28,7 @@ inputs:
     required: false
     default: "USAGE.md"
   template:
-    description: When provided will be used as the template if/when the OUTPUT_FILE does not exist
+    description: When provided will be used as the template if/when the `output-file` does not exist
     default: |
       # Usage
 
@@ -36,7 +36,7 @@ inputs:
       <!--- END_TF_DOCS --->
     required: false
   args:
-    description: Additional arguments to pass to the command (see https://github.com/terraform-docs/terraform-docs/tree/master/docs)
+    description: Additional arguments to pass to the command (see [full documentation](https://github.com/terraform-docs/terraform-docs/tree/master/docs))
     required: false
     default: ""
   indention:
