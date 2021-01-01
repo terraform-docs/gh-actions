@@ -21,10 +21,16 @@ jobs:
           template: |
             # Test tf11 basic
 
+            ## Verify
+
+            Should use the template defined instead of the default
+            Should inject the table under usage
+
             # Usage
 
             <!--- BEGIN_TF_DOCS --->
             <!--- END_TF_DOCS --->
+          indention: 3
 
       - name: Should generate USAGE.md for tf11_extra_args
         uses: ./
@@ -32,15 +38,15 @@ jobs:
           working-dir: examples/tf11_extra_args
           output-format: markdown document
           output-method: replace
-          indention: 3
           args: --sensitive=false --hide requirements --required=false
+          indention: 3
 
-      - name: Should inject into README.md
+      - name: Should generate README.md for tf12_bsic
         uses: ./
         with:
           working-dir: examples/tf12_basic
           output-file: README.md
-          args: ""
+          indention: 3
 
       - name: Should generate README.md for tf12_atlantis
         uses: ./
@@ -48,22 +54,26 @@ jobs:
           atlantis-file: atlantis.yaml
           output-file: README.md
           args: --hide providers
+          indention: 3
 
       - name: Should generate README.md for tf12_find and its submodules
         uses: ./
         with:
           find-dir: examples/tf12_find
 
-      - name: Should generate README.md for tf12_inject
+      - name: Should generate README.md for tf12_inject and push up all changes
         uses: ./
         with:
-          find-dir: examples/tf12_inject
+          working-dir: examples/tf12_inject
           output-file: README.md
           args: --sort-by-required
+          indention: 3
+          git-push: true
+          git-commit-message: "terraform-docs: automated action"
 
       - name: Should generate README.md for tf12_config
         uses: ./
         with:
-          find-dir: examples/tf12_config
+          working-dir: examples/tf12_config
           output-file: README.md
           config-file: .terraform-docs.yml

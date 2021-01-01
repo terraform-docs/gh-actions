@@ -1,15 +1,19 @@
-# Test TF12 with Config File
+# Test tf12 with config file
 
 ## Input
-```
-- name: Should inject into README.md
+
+```yaml
+- name: Should generate README.md for tf12_config
   uses: ./
   with:
-    tf_docs_working_dir: examples/tf12_basic
-    tf_docs_output_file: README.md
+    working-dir: examples/tf12_config
+    output-file: README.md
+    config-file: .terraform-docs.yml
 ```
 
 ## Verify
+
+- Should generate based on `examples/tf12_config/.terraform-docs.yml` spec
 - Should inject below Usage in README.md
 
 ## Usage

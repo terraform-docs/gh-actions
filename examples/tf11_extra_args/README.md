@@ -1,22 +1,25 @@
-# TF 11 Extra Args
+# Test tf11 extra args
 
 ## Input
-```
+
+```yaml
 - name: Should generate USAGE.md for tf11_extra_args
   uses: ./
   with:
-    tf_docs_working_dir: examples/tf11_extra_args
-    tf_docs_content_type: document
-    tf_docs_indention: '3'
-    tf_docs_args: '--no-sensitive --no-requirements --no-required'
-    tf_docs_output_method: replace
+    working-dir: examples/tf11_extra_args
+    output-format: markdown document
+    output-method: replace
+    args: --sensitive=false --hide requirements --required=false
+    indention: 3
 ```
 
 ## Verify
+
 - Creates a document instead of table
 - Indents the "##" by 3 instead of 2 ie: "###"
-- Should not document required fields
+- Should not show required fields
 - Should replace USAGE.md
 
-# Usage
+## Usage
+
 See USAGE.md

@@ -1,35 +1,38 @@
-# Test TF12 Basic
+# Test tf12 basic
 
 ## Input
-```
-- name: Should inject into README.md
+
+```yaml
+- name: Should generate README.md for tf12_bsic
   uses: ./
   with:
-    tf_docs_working_dir: examples/tf12_basic
-    tf_docs_output_file: README.md
+    working-dir: examples/tf12_basic
+    output-file: README.md
+    indention: 3
 ```
 
 ## Verify
+
 - Should inject below Usage in README.md
 
-# Usage
+## Usage
 
 <!--- BEGIN_TF_DOCS --->
-## Requirements
+### Requirements
 
 | Name | Version |
 |------|---------|
 | aws | ~> 2.20.0 |
 | consul | >= 2.4.0 |
 
-## Providers
+### Providers
 
 | Name | Version |
 |------|---------|
 | aws | ~> 2.20.0 |
 | consul | >= 2.4.0 |
 
-## Inputs
+### Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
@@ -40,7 +43,7 @@
 | subnet\_ids | A list of subnet ids to use | `list(string)` | n/a | yes |
 | vpc\_id | The id of the vpc | `string` | n/a | yes |
 
-## Outputs
+### Outputs
 
 | Name | Description |
 |------|-------------|

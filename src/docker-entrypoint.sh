@@ -39,10 +39,14 @@ git_setup() {
 }
 
 git_add() {
-  local files
-  files="$1"
-  git add "${files}"
-  echo "::debug file=entrypoint.sh,line=43,col=1 Added ${files} to git staging area"
+  local file
+  file="$1"
+  git add "${file}"
+  if [ "$(git status --porcelain | grep "$file" | grep -c -E '([MA]\W).+')" -eq 1 ]; then
+    echo "::debug file=entrypoint.sh,line=46 Added ${file} to git staging area"
+  else
+    echo "::debug file=entrypoint.sh,line=48 No change in ${file} detected"
+  fi
 }
 
 git_status() {
@@ -51,9 +55,13 @@ git_status() {
 
 git_commit() {
   local is_clean
+  set +e
   is_clean=$(git_status)
+  # echo "$is_clean"
+  set -e
   if [ "${is_clean}" -eq 0 ]; then
-    echo "::debug file=entrypoint.sh,line=54,col=1 No files changed, skipping commit"
+    echo "::debug file=entrypoint.sh,line=54 No files changed, skipping commit"
+    exit 0
   else
     git commit -m "${GIT_COMMIT_MESSAGE}"
   fi
@@ -65,17 +73,17 @@ update_doc() {
   local success
 
   working_dir="$1"
-  echo "::debug file=entrypoint.sh,line=66,col=1 working_dir=${working_dir}"
+  echo "::debug file=entrypoint.sh,line=66 working_dir=${working_dir}"
 
   set +e
 
   # shellcheck disable=SC2086
   if [ -n "${CONFIG_FILE}" ] && [ "${CONFIG_FILE}" != "disabled" ]; then
-    echo "terraform-docs --config ${CONFIG_FILE} ${ARGS} ${working_dir}"
+    echo "::debug file=entrypoint.sh,line=80 command=terraform-docs --config ${CONFIG_FILE} ${ARGS} ${working_dir}"
     terraform-docs --config ${CONFIG_FILE} ${ARGS} ${working_dir} >/tmp/tf_generated
     success=$?
   else
-    echo "terraform-docs ${OUTPUT_FORMAT} ${ARGS} ${working_dir}"
+    echo "::debug file=entrypoint.sh,line=84 command=terraform-docs ${OUTPUT_FORMAT} ${ARGS} ${working_dir}"
     terraform-docs ${OUTPUT_FORMAT} ${ARGS} ${working_dir} >/tmp/tf_generated
     success=$?
   fi
@@ -83,7 +91,7 @@ update_doc() {
   set -e
 
   if [ $success -ne 0 ]; then
-    cat /tmp/tf_generated
+    echo "::error file=entrypoint.sh,line=89::$(cat /tmp/tf_generated)"
     rm -f /tmp/tf_generated
     exit $success
   fi
@@ -109,11 +117,11 @@ update_doc() {
 
     local has_delimiter
     has_delimiter=$(grep -c -E '(BEGIN|END)_TF_DOCS' "${working_dir}/${OUTPUT_FILE}")
-    echo "::debug file=entrypoint.sh,line=78,col=1 has_delimiter=${has_delimiter}"
+    echo "::debug file=entrypoint.sh,line=115 has_delimiter=${has_delimiter}"
 
     # Verify it has BEGIN and END markers
     if [ "${has_delimiter}" -ne 2 ]; then
-      echo "::error file=entrypoint.sh,line=82,col=1::Output file ${working_dir}/${OUTPUT_FILE} does not contain BEGIN_TF_DOCS and END_TF_DOCS"
+      echo "::error file=entrypoint.sh,line=119::Output file ${working_dir}/${OUTPUT_FILE} does not contain BEGIN_TF_DOCS and END_TF_DOCS"
       exit 1
     fi
 
@@ -154,7 +162,7 @@ if [ "${GIT_PUSH}" = "true" ]; then
   git_commit
   git push
 else
-  echo "::set-output name=num-changed::$(git_status)"
+  echo "::set-output name=num_changed::$(git_status)"
 fi
 
 exit 0

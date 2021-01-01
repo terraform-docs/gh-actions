@@ -1,27 +1,33 @@
-# Test Atlantis
+# Test tf12 Atlantis
 
 ## Input
-```
+
+```yaml
 - name: Should generate README.md for tf12_atlantis
   uses: ./
   with:
-    tf_docs_atlantis_file: atlantis.yaml
-    tf_docs_output_file: README.md
+    atlantis-file: atlantis.yaml
+    output-file: README.md
+    args: --hide providers
+    indention: 3
 ```
 
 ## Verify
-- Should inject below Usage in README.md
 
-# Usage
+- Should inject below Usage in README.md
+- Should not show providers section
+
+## Usage
+
 <!--- BEGIN_TF_DOCS --->
-## Requirements
+### Requirements
 
 | Name | Version |
 |------|---------|
 | aws | ~> 2.20.0 |
 | consul | >= 2.4.0 |
 
-## Inputs
+### Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
@@ -32,7 +38,7 @@
 | subnet\_ids | A list of subnet ids to use | `list(string)` | n/a | yes |
 | vpc\_id | The id of the vpc | `string` | n/a | yes |
 
-## Outputs
+### Outputs
 
 | Name | Description |
 |------|-------------|
