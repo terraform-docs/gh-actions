@@ -14,19 +14,22 @@ ARGS="${8}"
 INDENTION="${9}"
 GIT_PUSH="${10}"
 GIT_COMMIT_MESSAGE="${11}"
+CONFIG_FILE="${12}"
 
-case "$OUTPUT_FORMAT" in
-"asciidoc" | "asciidoc table" | "asciidoc document")
-  ARGS="--indent ${INDENTION} ${ARGS}"
-  ;;
+if [ "${CONFIG_FILE}" == "disabled" ]; then
+  case "$OUTPUT_FORMAT" in
+  "asciidoc" | "asciidoc table" | "asciidoc document")
+    ARGS="--indent ${INDENTION} ${ARGS}"
+    ;;
 
-"markdown" | "markdown table" | "markdown document")
-  ARGS="--indent ${INDENTION} ${ARGS}"
-  ;;
-esac
+  "markdown" | "markdown table" | "markdown document")
+    ARGS="--indent ${INDENTION} ${ARGS}"
+    ;;
+  esac
 
-if [ -z "${TEMPLATE}" ]; then
-  TEMPLATE=$(printf '# Usage\n\n<!--- BEGIN_TF_DOCS --->\n<!--- END_TF_DOCS --->\n')
+  if [ -z "${TEMPLATE}" ]; then
+    TEMPLATE=$(printf '# Usage\n\n<!--- BEGIN_TF_DOCS --->\n<!--- END_TF_DOCS --->\n')
+  fi
 fi
 
 git_setup() {
@@ -39,7 +42,7 @@ git_add() {
   local files
   files="$1"
   git add "${files}"
-  echo "::debug file=entrypoint.sh,line=34,col=1 Added ${files} to git staging area"
+  echo "::debug file=entrypoint.sh,line=43,col=1 Added ${files} to git staging area"
 }
 
 git_status() {
@@ -50,7 +53,7 @@ git_commit() {
   local is_clean
   is_clean=$(git_status)
   if [ "${is_clean}" -eq 0 ]; then
-    echo "::debug file=entrypoint.sh,line=45,col=1 No files changed, skipping commit"
+    echo "::debug file=entrypoint.sh,line=54,col=1 No files changed, skipping commit"
   else
     git commit -m "${GIT_COMMIT_MESSAGE}"
   fi
@@ -59,12 +62,34 @@ git_commit() {
 update_doc() {
   local working_dir
   local generated
+  local success
 
   working_dir="$1"
-  echo "::debug file=entrypoint.sh,line=56,col=1 working_dir=${working_dir}"
+  echo "::debug file=entrypoint.sh,line=66,col=1 working_dir=${working_dir}"
+
+  set +e
 
   # shellcheck disable=SC2086
-  generated=$(terraform-docs ${OUTPUT_FORMAT} ${ARGS} ${working_dir})
+  if [ -n "${CONFIG_FILE}" ] && [ "${CONFIG_FILE}" != "disabled" ]; then
+    echo "terraform-docs --config ${CONFIG_FILE} ${ARGS} ${working_dir}"
+    terraform-docs --config ${CONFIG_FILE} ${ARGS} ${working_dir} >/tmp/tf_generated
+    success=$?
+  else
+    echo "terraform-docs ${OUTPUT_FORMAT} ${ARGS} ${working_dir}"
+    terraform-docs ${OUTPUT_FORMAT} ${ARGS} ${working_dir} >/tmp/tf_generated
+    success=$?
+  fi
+
+  set -e
+
+  if [ $success -ne 0 ]; then
+    cat /tmp/tf_generated
+    rm -f /tmp/tf_generated
+    exit $success
+  fi
+
+  generated=$(cat /tmp/tf_generated)
+  rm -f /tmp/tf_generated
 
   case "${OUTPUT_METHOD}" in
   print)
@@ -97,6 +122,7 @@ update_doc() {
     echo "" >>/tmp/tf_doc.md
     sed -i -ne '/<!--- BEGIN_TF_DOCS --->/ {p; r /tmp/tf_doc.md' -e ':a; n; /<!--- END_TF_DOCS --->/ {p; b}; ba}; p' "${working_dir}/${OUTPUT_FILE}"
     git_add "${working_dir}/${OUTPUT_FILE}"
+    rm -f /tmp/tf_doc.md
     ;;
   esac
 }

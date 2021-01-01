@@ -3,6 +3,10 @@ author: terraform-docs Authors
 description: A Github action for generating Terraform module documentation using terraform-docs and gomplate.
 
 inputs:
+  config-file:
+    description: Name of terraform-docs config file. To enable, provide the file name (e.g. `.terraform-docs.yml`)
+    required: false
+    default: "disabled"
   working-dir:
     description: Comma separated list of directories to generate docs for (ignored if `atlantis-file` or `find-dir` is set)
     required: false
@@ -16,7 +20,7 @@ inputs:
     required: false
     default: "disabled"
   output-format:
-    description: terraform-docs format to generate content (see [all formats](https://github.com/terraform-docs/terraform-docs/blob/master/docs/FORMATS_GUIDE.md))
+    description: terraform-docs format to generate content (see [all formats](https://github.com/terraform-docs/terraform-docs/blob/master/docs/FORMATS_GUIDE.md)) (ignored if `config-file` is set)
     required: false
     default: "markdown table"
   output-method:
@@ -71,6 +75,7 @@ runs:
     - ${{ inputs.indention }}
     - ${{ inputs.git-push }}
     - ${{ inputs.git-commit-message }}
+    - ${{ inputs.config-file }}
 
 branding:
   icon: file-text

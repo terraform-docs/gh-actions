@@ -60,3 +60,10 @@ jobs:
           find-dir: examples/tf12_inject
           output-file: README.md
           args: --sort-by-required
+
+      - name: Should generate README.md for tf12_config
+        uses: ./
+        with:
+          find-dir: examples/tf12_config
+          output-file: README.md
+          config-file: .terraform-docs.yml
