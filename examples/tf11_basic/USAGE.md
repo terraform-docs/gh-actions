@@ -1,22 +1,28 @@
 # Test tf11 basic
 
-# Usage
+## Verify
+
+Should use the template defined instead of the default
+Should inject the table under usage
+
+## Usage
+
 <!--- BEGIN_TF_DOCS --->
-## Requirements
+### Requirements
 
 | Name | Version |
 |------|---------|
 | aws | < 2.2.0 |
 | consul | >= 1.0.0 |
 
-## Providers
+### Providers
 
 | Name | Version |
 |------|---------|
 | aws | < 2.2.0 |
 | consul | >= 1.0.0 |
 
-## Inputs
+### Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
@@ -27,7 +33,7 @@
 | subnet\_ids | A list of subnet ids to use | `list` | n/a | yes |
 | vpc\_id | The id of the vpc | `string` | n/a | yes |
 
-## Outputs
+### Outputs
 
 | Name | Description |
 |------|-------------|
