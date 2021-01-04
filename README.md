@@ -159,6 +159,6 @@ To enable you need to ensure a few things first:
     find-dir: examples/
 ```
 
-Complete examples can be found [here](https://github.com/terraform-docs/terraform-docs-gh-actions/tree/v0.2.0/examples).
+Complete examples can be found [here](https://github.com/terraform-docs/gh-actions/tree/v0.2.0/examples).
 
 [terraform-docs]: https://github.com/terraform-docs/terraform-docs
