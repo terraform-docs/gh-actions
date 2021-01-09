@@ -15,6 +15,7 @@ INDENTION="${9}"
 GIT_PUSH="${10}"
 GIT_COMMIT_MESSAGE="${11}"
 CONFIG_FILE="${12}"
+FAIL_ON_DIFF="${13}"
 
 if [ "${CONFIG_FILE}" == "disabled" ]; then
   case "$OUTPUT_FORMAT" in
@@ -57,7 +58,6 @@ git_commit() {
   local is_clean
   set +e
   is_clean=$(git_status)
-  # echo "$is_clean"
   set -e
   if [ "${is_clean}" -eq 0 ]; then
     echo "::debug file=entrypoint.sh,line=54 No files changed, skipping commit"
@@ -162,7 +162,14 @@ if [ "${GIT_PUSH}" = "true" ]; then
   git_commit
   git push
 else
-  echo "::set-output name=num_changed::$(git_status)"
+  set +e
+  num_changed=$(git_status)
+  set -e
+  if [ "${FAIL_ON_DIFF}" == "true" ] && [ "${num_changed}" -ne 0 ]; then
+    echo "::error file=entrypoint.sh,line=169::Uncommitted change(s) has been found!"
+    exit 1
+  fi
+  echo "::set-output name=num_changed::${num_changed}"
 fi
 
 exit 0

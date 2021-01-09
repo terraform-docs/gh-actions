@@ -1,0 +1,1 @@
+../tf12_basic/main.tf

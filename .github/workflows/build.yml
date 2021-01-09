@@ -77,3 +77,11 @@ jobs:
           working-dir: examples/tf12_config
           output-file: README.md
           config-file: .terraform-docs.yml
+
+      - name: Should generate README.md for tf12_fail_diff and fail on diff
+        uses: ./
+        with:
+          working-dir: examples/tf12_fail_diff
+          output-file: README.md
+          indention: 3
+          fail-on-diff: true

@@ -49,6 +49,7 @@ jobs:
 | args | Additional arguments to pass to the command (see [full documentation](https://github.com/terraform-docs/terraform-docs/tree/master/docs)) | `` | false |
 | atlantis-file | Name of Atlantis file to extract list of directories by parsing it. To enable, provide the file name (e.g. `atlantis.yaml`) | `disabled` | false |
 | config-file | Name of terraform-docs config file. To enable, provide the file name (e.g. `.terraform-docs.yml`) | `disabled` | false |
+| fail-on-diff | Fail the job if there is any diff found between the generated output and existing file (ignored if `git-push` is set) | `false` | false |
 | find-dir | Name of root directory to extract list of directories by running `find ./find\_dir -name \*.tf` (ignored if `atlantis-file` is set) | `disabled` | false |
 | git-commit-message | Commit message | `terraform-docs: automated action` | false |
 | git-push | If true it will commit and push the changes | `false` | false |
