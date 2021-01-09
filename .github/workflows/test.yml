@@ -1,4 +1,4 @@
-name: Test
+name: Validate
 
 on:
   push:
@@ -18,4 +18,24 @@ jobs:
       - name: Run ShellCheck
         uses: ludeeus/action-shellcheck@master
         with:
-          scandir: './src'
+          scandir: "./src"
+
+  readme:
+    name: README content
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install gomplate
+        run: |
+          sudo curl -o /usr/local/bin/gomplate -sSL https://github.com/hairyhenderson/gomplate/releases/download/v3.8.0/gomplate_linux-amd64
+          sudo chmod 755 /usr/local/bin/gomplate
+
+      - name: Check README content based on action.yml
+        run: |
+          ./scripts/update-readme.sh
+          if [ $(git status --porcelain | grep -c 'M README.md') -eq 1 ]; then
+            exit 1
+          fi
