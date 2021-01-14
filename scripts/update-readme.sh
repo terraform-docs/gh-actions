@@ -7,7 +7,7 @@ NEW_VERSION=$1
 PWD=$(cd "$(dirname "$0")" && pwd -P)
 
 if [ -z "${NEW_VERSION}" ]; then
-    NEW_VERSION=$(grep "uses: terraform-docs/terraform-docs-gh-actions" "${PWD}"/../README.md | tr -s ' ' | uniq | cut -d"@" -f2)
+    NEW_VERSION=$(grep "uses: terraform-docs/gh-actions" "${PWD}"/../README.md | tr -s ' ' | uniq | cut -d"@" -f2)
 fi
 
 if [ -z "${NEW_VERSION}" ]; then
