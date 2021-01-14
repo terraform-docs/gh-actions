@@ -1,6 +1,6 @@
 {{- define "escape_chars" }}{{ . | strings.ReplaceAll "_" "\\_" | strings.ReplaceAll "|" "\\|" | strings.ReplaceAll "*" "\\*" }}{{- end }}
 {{- define "sanatize_string" }}{{ . | strings.ReplaceAll "\n\n" "<br><br>" | strings.ReplaceAll "  \n" "<br>" | strings.ReplaceAll "\n" "<br>" | tmpl.Exec "escape_chars" }}{{- end }}
-{{- $action := (datasource "action") -}}{{- $version := or (getenv "VERSION") "master" -}}
+{{- $action := (datasource "action") -}}{{- $version := or (getenv "VERSION") "main" -}}
 # {{ $action.name }}
 
 {{ $action.description }}
@@ -14,8 +14,8 @@ branch.
 `{{ $version }}` (uses [terraform-docs] v0.10.1, which is supported and tested on Terraform version
 0.11+ and 0.12+ but may work for others.)
 
-{{- if eq $version "master" }}
-| WARNING:  You should not rely on master being stable or to have accurate documentation.  Please use a git tagged semver or major version tag like `v1`. |
+{{- if eq $version "main" }}
+| WARNING:  You should not rely on main being stable or to have accurate documentation.  Please use a git tagged semver or major version tag like `v1`. |
 | --- |
 {{- end }}
 
