@@ -51,6 +51,14 @@ inputs:
     description: If true it will commit and push the changes
     required: false
     default: "false"
+  git-push-user-name:
+    description: If empty the name of the PR author will be used (i.e. `${GITHUB_ACTOR}`)
+    required: false
+    default: ""
+  git-push-user-email:
+    description: If empty the no-reply email of the PR author will be used (i.e. `${GITHUB_ACTOR}@users.noreply.github.com`)
+    required: false
+    default: ""
   git-commit-message:
     description: Commit message
     required: false
@@ -86,6 +94,8 @@ runs:
     - ${{ inputs.config-file }}
     - ${{ inputs.fail-on-diff }}
     - ${{ inputs.git-push-sign-off }}
+    - ${{ inputs.git-push-user-name }}
+    - ${{ inputs.git-push-user-email }}
 
 branding:
   icon: file-text

@@ -16,7 +16,9 @@ GIT_PUSH="${10}"
 GIT_COMMIT_MESSAGE="${11}"
 CONFIG_FILE="${12}"
 FAIL_ON_DIFF="${13}"
-GIT_PUSH_SIGN_OFF="${13}"
+GIT_PUSH_SIGN_OFF="${14}"
+GIT_PUSH_USER_NAME="${15}"
+GIT_PUSH_USER_EMAIL="${16}"
 
 if [ "${CONFIG_FILE}" == "disabled" ]; then
   case "$OUTPUT_FORMAT" in
@@ -35,8 +37,18 @@ if [ "${CONFIG_FILE}" == "disabled" ]; then
 fi
 
 git_setup() {
-  git config --global user.name "${GITHUB_ACTOR}"
-  git config --global user.email "${GITHUB_ACTOR}"@users.noreply.github.com
+  if [ -n "${GIT_PUSH_USER_NAME}" ]; then
+    git config --global user.name "${GIT_PUSH_USER_NAME}"
+  else
+    git config --global user.name "${GITHUB_ACTOR}"
+  fi
+
+  if [ -n "${GIT_PUSH_USER_EMAIL}" ]; then
+    git config --global user.email "${GIT_PUSH_USER_EMAIL}"
+  else
+    git config --global user.email "${GITHUB_ACTOR}"@users.noreply.github.com
+  fi
+
   git fetch --depth=1 origin +refs/tags/*:refs/tags/* || true
 }
 
