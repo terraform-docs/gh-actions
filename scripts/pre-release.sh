@@ -12,11 +12,11 @@ fi
 
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
-if [[ "${CURRENT_BRANCH}" == "master" ]]; then
-  git pull origin master
+if [[ "${CURRENT_BRANCH}" == "main" ]]; then
+  git pull origin main
   git checkout -b "release/${NEW_VERSION}"
 elif [[ "${CURRENT_BRANCH}" == "release/${NEW_VERSION}" ]]; then
-  git pull origin master
+  git pull origin main
 else
   echo "Invalid branch"
   exit 1
