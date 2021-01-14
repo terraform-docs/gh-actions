@@ -54,6 +54,8 @@ jobs:
 | git-commit-message | Commit message | `terraform-docs: automated action` | false |
 | git-push | If true it will commit and push the changes | `false` | false |
 | git-push-sign-off | If true it will sign-off commit | `false` | false |
+| git-push-user-email | If empty the no-reply email of the PR author will be used (i.e. `${GITHUB\_ACTOR}@users.noreply.github.com`) | `` | false |
+| git-push-user-name | If empty the name of the PR author will be used (i.e. `${GITHUB\_ACTOR}`) | `` | false |
 | indention | Indention level of Markdown sections [1, 2, 3, 4, 5] | `2` | false |
 | output-file | File in module directory where the docs should be placed | `USAGE.md` | false |
 | output-format | terraform-docs format to generate content (see [all formats](https://github.com/terraform-docs/terraform-docs/blob/master/docs/FORMATS\_GUIDE.md)) (ignored if `config-file` is set) | `markdown table` | false |
