@@ -53,6 +53,7 @@ jobs:
 | find-dir | Name of root directory to extract list of directories by running `find ./find\_dir -name \*.tf` (ignored if `atlantis-file` is set) | `disabled` | false |
 | git-commit-message | Commit message | `terraform-docs: automated action` | false |
 | git-push | If true it will commit and push the changes | `false` | false |
+| git-push-sign-off | If true it will sign-off commit | `false` | false |
 | indention | Indention level of Markdown sections [1, 2, 3, 4, 5] | `2` | false |
 | output-file | File in module directory where the docs should be placed | `USAGE.md` | false |
 | output-format | terraform-docs format to generate content (see [all formats](https://github.com/terraform-docs/terraform-docs/blob/master/docs/FORMATS\_GUIDE.md)) (ignored if `config-file` is set) | `markdown table` | false |

@@ -16,6 +16,7 @@ GIT_PUSH="${10}"
 GIT_COMMIT_MESSAGE="${11}"
 CONFIG_FILE="${12}"
 FAIL_ON_DIFF="${13}"
+GIT_PUSH_SIGN_OFF="${13}"
 
 if [ "${CONFIG_FILE}" == "disabled" ]; then
   case "$OUTPUT_FORMAT" in
@@ -63,7 +64,12 @@ git_commit() {
     echo "::debug file=entrypoint.sh,line=54 No files changed, skipping commit"
     exit 0
   else
-    git commit -m "${GIT_COMMIT_MESSAGE}"
+    local signoff
+    signoff=""
+    if [ "${GIT_PUSH_SIGN_OFF}" = "true" ]; then
+      signoff="-s"
+    fi
+    git commit ${signoff} -m "${GIT_COMMIT_MESSAGE}"
   fi
 }
 
