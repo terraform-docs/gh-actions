@@ -1,8 +1,33 @@
-# Description
+<!--
+Thank you for helping to improve terraform-docs!
 
+Please read through https://git.io/Jt3K5 if this is your first time opening a
+terraform-docs pull request.
+-->
 
-# Changes
--
+### Description of your changes
 
-# TODO
-- [ ] TODO
+<!--
+Briefly describe what this pull request does. Be sure to direct your reviewers'
+attention to anything that needs special consideration.
+
+We love pull requests that resolve an open terraform-docs issue. If yours does, you
+can uncomment the below line to indicate which issue your PR fixes, for example
+"Fixes #500":
+-->
+
+<!-- Fixes # -->
+
+I have:
+
+- [ ] Read and followed terraform-docs' [contribution process].
+
+### How has this code been tested
+
+<!--
+Before reviewers can be confident in the correctness of this pull request, it
+needs to tested and shown to be correct. Briefly describe the testing that has
+already been done or which is planned for this change.
+-->
+
+[contribution process]: https://git.io/Jt3K5
