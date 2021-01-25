@@ -4,7 +4,7 @@ Welcome, and thank you for considering contributing to terraform-docs GitHub
 Action. We encourage you to help out by raising issues, improving documentation,
 fixing bugs, or adding new features
 
-## Contributing Codev
+## Contributing Code
 
 To contribute bug fixes or features to terraform-docs GitHub Action:
 
