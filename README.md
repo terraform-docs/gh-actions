@@ -1,4 +1,4 @@
-# terraform-docs-gh-actions
+# terraform-docs GitHub Actions
 
 A Github action for generating Terraform module documentation using terraform-docs and gomplate.
 In addition to statically defined directory modules, this module can search specific
@@ -8,8 +8,8 @@ branch.
 
 ## Version
 
-`v0.4.0` (uses [terraform-docs] v0.10.1, which is supported and tested on Terraform version
-0.11+ and 0.12+ but may work for others.)
+`v0.4.0` (uses [terraform-docs] v0.10.1, which is supported and tested on Terraform
+version 0.11+ and 0.12+ but may work for others.)
 
 ## Usage
 
