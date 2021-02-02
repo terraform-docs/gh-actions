@@ -4,6 +4,10 @@ Welcome, and thank you for considering contributing to terraform-docs GitHub
 Action. We encourage you to help out by raising issues, improving documentation,
 fixing bugs, or adding new features
 
+If you're interested in contributing please start by reading this document. If
+you have any questions at all, or don't know where to start, please reach out to
+us on [Slack].
+
 ## Contributing Code
 
 To contribute bug fixes or features to terraform-docs GitHub Action:
@@ -53,5 +57,6 @@ Thank you for reading through our contributing guide! We appreciate you taking
 the time to ensure your contributions are high quality and easy for our community
 to review and accept.
 
+[Slack]: https://terraform-docs.slack.com/
 [good git commit hygiene]: https://www.futurelearn.com/info/blog/telling-stories-with-your-git-history
 [Developer Certificate of Origin]: https://github.com/apps/dco

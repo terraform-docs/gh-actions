@@ -10,7 +10,8 @@ Thank you for helping to improve terraform-docs!
 Please be sure to search for open issues before raising a new one. We use issues
 for bug reports and feature requests. Please note, this template is for feature
 requests, not bugs report. For more information, see the Contributing Guidelines
-at https://git.io/Jt3K5.
+at https://git.io/Jt3K5. Please find us at https://terraform-docs.slack.com for
+questions, support, and discussion.
 -->
 
 ### What problem are you facing?
