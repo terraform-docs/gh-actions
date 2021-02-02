@@ -2,7 +2,8 @@
 Thank you for helping to improve terraform-docs!
 
 Please read through https://git.io/Jt3K5 if this is your first time opening a
-terraform-docs pull request.
+terraform-docs pull request. Find us in https://terraform-docs.slack.com/messages/dev if
+you need any help contributing.
 -->
 
 ### Description of your changes
