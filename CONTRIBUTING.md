@@ -57,6 +57,6 @@ Thank you for reading through our contributing guide! We appreciate you taking
 the time to ensure your contributions are high quality and easy for our community
 to review and accept.
 
-[Slack]: https://terraform-docs.slack.com/
+[Slack]: https://slack.terraform-docs.io/
 [good git commit hygiene]: https://www.futurelearn.com/info/blog/telling-stories-with-your-git-history
 [Developer Certificate of Origin]: https://github.com/apps/dco
