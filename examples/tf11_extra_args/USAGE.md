@@ -6,6 +6,17 @@ The following providers are used by this module:
 
 - consul (>= 1.0.0)
 
+### Modules
+
+No Modules.
+
+### Resources
+
+The following resources are used by this module:
+
+- [aws_acm_certificate](https://registry.terraform.io/providers/hashicorp/aws/2.2.0/docs/data-sources/acm_certificate)
+- [consul_key](https://registry.terraform.io/providers/hashicorp/consul/1.0.0/docs/data-sources/key)
+
 ### Inputs
 
 The following input variables are supported:

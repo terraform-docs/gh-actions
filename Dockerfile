@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM quay.io/terraform-docs/terraform-docs:0.10.1
+FROM quay.io/terraform-docs/terraform-docs:0.11.0
 
 # this can be removed when base image
 # was upgraded to alpine:3.13 which has

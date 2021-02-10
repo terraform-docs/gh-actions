@@ -8,7 +8,7 @@ branch.
 
 ## Version
 
-`v0.4.0` (uses [terraform-docs] v0.10.1, which is supported and tested on Terraform
+`v0.4.0` (uses [terraform-docs] v0.11.0, which is supported and tested on Terraform
 version 0.11+ and 0.12+ but may work for others.)
 
 ## Usage
