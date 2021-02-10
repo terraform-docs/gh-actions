@@ -70,6 +70,7 @@ jobs:
           args: --sort-by-required
           indention: 3
           git-push: true
+          git-push-sign-off: true
           git-commit-message: "terraform-docs: automated action"
 
       - name: Should generate README.md for tf12_config
