@@ -36,6 +36,17 @@
 | aws | ~> 2.20.0 |
 | consul | >= 2.4.0 |
 
+### Modules
+
+No Modules.
+
+### Resources
+
+| Name |
+|------|
+| [aws_acm_certificate](https://registry.terraform.io/providers/hashicorp/aws/2.20.0/docs/data-sources/acm_certificate) |
+| [consul_key](https://registry.terraform.io/providers/hashicorp/consul/2.4.0/docs/data-sources/key) |
+
 ### Inputs
 
 | Name | Description | Type | Default | Required |

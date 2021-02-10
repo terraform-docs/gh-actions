@@ -22,6 +22,17 @@ Should inject the table under usage
 | aws | < 2.2.0 |
 | consul | >= 1.0.0 |
 
+### Modules
+
+No Modules.
+
+### Resources
+
+| Name |
+|------|
+| [aws_acm_certificate](https://registry.terraform.io/providers/hashicorp/aws/2.2.0/docs/data-sources/acm_certificate) |
+| [consul_key](https://registry.terraform.io/providers/hashicorp/consul/1.0.0/docs/data-sources/key) |
+
 ### Inputs
 
 | Name | Description | Type | Default | Required |
