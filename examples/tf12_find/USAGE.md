@@ -23,8 +23,8 @@ No Modules.
 
 | Name |
 |------|
-| [aws_acm_certificate](https://registry.terraform.io/providers/hashicorp/aws/2.20.0/docs/data-sources/acm_certificate) |
-| [consul_key](https://registry.terraform.io/providers/hashicorp/consul/2.4.0/docs/data-sources/key) |
+| [aws_acm_certificate](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/acm_certificate) |
+| [consul_key](https://registry.terraform.io/providers/hashicorp/consul/latest/docs/data-sources/key) |
 
 ## Inputs
 

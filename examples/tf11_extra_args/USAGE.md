@@ -14,8 +14,8 @@ No Modules.
 
 The following resources are used by this module:
 
-- [aws_acm_certificate](https://registry.terraform.io/providers/hashicorp/aws/2.2.0/docs/data-sources/acm_certificate)
-- [consul_key](https://registry.terraform.io/providers/hashicorp/consul/1.0.0/docs/data-sources/key)
+- [aws_acm_certificate](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/acm_certificate)
+- [consul_key](https://registry.terraform.io/providers/hashicorp/consul/latest/docs/data-sources/key)
 
 ### Inputs
 
