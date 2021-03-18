@@ -1,6 +1,7 @@
 {{- define "escape_chars" }}{{ . | strings.ReplaceAll "_" "\\_" | strings.ReplaceAll "|" "\\|" | strings.ReplaceAll "*" "\\*" }}{{- end }}
 {{- define "sanatize_string" }}{{ . | strings.ReplaceAll "\n\n" "<br><br>" | strings.ReplaceAll "  \n" "<br>" | strings.ReplaceAll "\n" "<br>" | tmpl.Exec "escape_chars" }}{{- end }}
-{{- $action := (datasource "action") -}}{{- $version := or (getenv "VERSION") "main" -}}
+{{- $action := (datasource "action") -}}
+{{- $version := or (getenv "VERSION") "main" -}}
 # terraform-docs GitHub Actions
 
 {{ $action.description }}
