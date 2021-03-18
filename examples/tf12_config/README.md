@@ -29,5 +29,4 @@
 | extra\_tags | Additional tags | `map(string)` | `{}` | no |
 | instance\_count | Number of instances to create | `number` | `1` | no |
 | instance\_name | Instance name prefix | `string` | `"test-"` | no |
-
 <!--- END_TF_DOCS --->

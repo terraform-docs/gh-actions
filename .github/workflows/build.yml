@@ -1,10 +1,7 @@
 name: Build
 
 on:
-  push:
-    branches-ignore:
-      - main
-  pull_request:
+  - pull_request
 
 jobs:
   build:
@@ -14,6 +11,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Should generate USAGE.md for tf11_basic
         uses: ./
@@ -62,6 +61,13 @@ jobs:
         with:
           find-dir: examples/tf12_find
 
+      - name: Should generate README.md for tf12_config
+        uses: ./
+        with:
+          working-dir: examples/tf12_config
+          output-file: README.md
+          config-file: .terraform-docs.yml
+
       - name: Should generate README.md for tf12_inject and push up all changes
         uses: ./
         with:
@@ -72,13 +78,6 @@ jobs:
           git-push: true
           git-push-sign-off: true
           git-commit-message: "terraform-docs: automated action"
-
-      - name: Should generate README.md for tf12_config
-        uses: ./
-        with:
-          working-dir: examples/tf12_config
-          output-file: README.md
-          config-file: .terraform-docs.yml
 
       - name: Should generate README.md for tf12_fail_diff and fail on diff
         uses: ./

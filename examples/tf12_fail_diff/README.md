@@ -32,6 +32,17 @@
 | aws | ~> 2.20.0 |
 | consul | >= 2.4.0 |
 
+### Modules
+
+No Modules.
+
+### Resources
+
+| Name |
+|------|
+| [aws_acm_certificate](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/acm_certificate) |
+| [consul_key](https://registry.terraform.io/providers/hashicorp/consul/latest/docs/data-sources/key) |
+
 ### Inputs
 
 | Name | Description | Type | Default | Required |
@@ -48,5 +59,4 @@
 | Name | Description |
 |------|-------------|
 | vpc\_id | The Id of the VPC |
-
 <!--- END_TF_DOCS --->
