@@ -55,7 +55,7 @@ jobs:
 | Name | Description | Default | Required |
 |------|-------------|---------|----------|
 {{- range $key, $input := $action.inputs }}
-| {{ tmpl.Exec "escape_chars" $key }} | {{ if (has $input "description") }}{{ tmpl.Exec "sanatize_string" $input.description }}{{ else }}{{ tmpl.Exec "escape_chars" $key }}{{ end }} | {{ if (has $input "default") }}`{{ tmpl.Exec "sanatize_string" $input.default }}`{{ else }}N/A{{ end }} | {{ if (has $input "required") }}{{ $input.required }}{{ else }}false{{ end }} |
+| {{ tmpl.Exec "escape_chars" $key }} | {{ if (has $input "description") }}{{ tmpl.Exec "sanatize_string" $input.description }}{{ else }}{{ tmpl.Exec "escape_chars" $key }}{{ end }} | {{ if (has $input "default") }}`{{ if $input.default }}{{ tmpl.Exec "sanatize_string" $input.default }}{{ else }}""{{ end }}`{{ else }}N/A{{ end }} | {{ if (has $input "required") }}{{ $input.required }}{{ else }}false{{ end }} |
 {{- end }}
 
 #### Output Method (output-method)
