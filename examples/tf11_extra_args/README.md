@@ -1,25 +1,41 @@
-# Test tf11 extra args
+## Requirements
 
-## Input
+| Name | Version |
+|------|---------|
+| aws | < 2.2.0 |
+| consul | >= 1.0.0 |
 
-```yaml
-- name: Should generate USAGE.md for tf11_extra_args
-  uses: ./
-  with:
-    working-dir: examples/tf11_extra_args
-    output-format: markdown document
-    output-method: replace
-    args: --sensitive=false --hide requirements --required=false
-    indention: 3
-```
+## Providers
 
-## Verify
+| Name | Version |
+|------|---------|
+| aws | < 2.2.0 |
+| consul | >= 1.0.0 |
 
-- Creates a document instead of table
-- Indents the "##" by 3 instead of 2 ie: "###"
-- Should not show required fields
-- Should replace USAGE.md
+## Modules
 
-## Usage
+No Modules.
 
-See USAGE.md
+## Resources
+
+| Name |
+|------|
+| [aws_acm_certificate](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/acm_certificate) |
+| [consul_key](https://registry.terraform.io/providers/hashicorp/consul/latest/docs/data-sources/key) |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| extra\_environment | List of additional environment variables | `list` | `[]` | no |
+| extra\_tags | Additional tags | `map` | `{}` | no |
+| instance\_count | Number of instances to create | `string` | `"1"` | no |
+| instance\_name | Instance name prefix | `string` | `"test-"` | no |
+| subnet\_ids | A list of subnet ids to use | `list` | n/a | yes |
+| vpc\_id | The id of the vpc | `string` | n/a | yes |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| vpc\_id | The Id of the VPC |
