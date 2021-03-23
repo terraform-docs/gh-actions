@@ -177,7 +177,7 @@ if [ -f "${GITHUB_WORKSPACE}/${ATLANTIS_FILE}" ]; then
   while read -r line; do
     project_dir=${line//- /}
     update_doc "${project_dir}"
-  done < <(yq r "${GITHUB_WORKSPACE}/${ATLANTIS_FILE}" 'projects[*].dir') # NOTE(khos2ow): this is v3 specific syntax
+  done < <(yq e '.projects[].dir' "${GITHUB_WORKSPACE}/${ATLANTIS_FILE}")
 elif [ -n "${FIND_DIR}" ] && [ "${FIND_DIR}" != "disabled" ]; then
   # Find all tf
   while read -r project_dir; do
