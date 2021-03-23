@@ -15,6 +15,9 @@ jobs:
           ref: ${{github.event.pull_request.head.ref}}
           repository: ${{github.event.pull_request.head.repo.full_name}}
 
+      - name: Build Docker image
+        run: docker build --pull --tag quay.io/terraform-docs/gh-actions:edge .
+
       - name: Should generate USAGE.md for tf11_basic
         uses: ./
         with:
