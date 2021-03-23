@@ -11,6 +11,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: ${{github.event.pull_request.head.ref}}
+          repository: ${{github.event.pull_request.head.repo.full_name}}
 
       - name: Should generate USAGE.md for tf11_basic
         uses: ./
@@ -65,6 +69,13 @@ jobs:
           working-dir: examples/tf12_config
           output-file: README.md
           config-file: .terraform-docs.yml
+
+      - name: Should generate README.md for tf12_fail_diff
+        uses: ./
+        with:
+          working-dir: examples/tf12_fail_diff
+          output-file: README.md
+          indention: 3
 
       - name: Should generate README.md for tf12_inject and push up all changes
         uses: ./
