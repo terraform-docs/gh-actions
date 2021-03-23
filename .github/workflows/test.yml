@@ -1,4 +1,4 @@
-name: Validate
+name: validate
 
 on:
   push:
@@ -8,7 +8,6 @@ on:
 
 jobs:
   shellcheck:
-    name: ShellCheck
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
     steps:
@@ -21,7 +20,6 @@ jobs:
           scandir: "./src"
 
   readme:
-    name: README content
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
     steps:
