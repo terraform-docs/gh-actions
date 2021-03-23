@@ -78,7 +78,7 @@ outputs:
 
 runs:
   using: docker
-  image: Dockerfile
+  image: "docker://quay.io/terraform-docs/gh-actions:edge"
   args:
     - ${{ inputs.working-dir }}
     - ${{ inputs.atlantis-file }}
