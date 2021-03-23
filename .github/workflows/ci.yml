@@ -1,11 +1,10 @@
-name: Build
+name: ci
 
 on:
-  - pull_request
+  pull_request:
 
 jobs:
   build:
-    name: Build example docs
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
     steps:
@@ -95,3 +94,20 @@ jobs:
           output-file: README.md
           indention: 3
           fail-on-diff: true
+
+  format:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform format
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_working_dir: examples
+          tf_actions_version: '0.12.17'
+          tf_actions_subcommand: 'fmt'
+          tf_actions_comment: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

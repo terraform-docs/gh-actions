@@ -1,12 +1,12 @@
 categories:
-  - title: 'Features'
-    label: 'feature'
-  - title: 'Bug Fixes'
-    label: 'fix'
-  - title: 'Maintenance'
-    label: 'chore'
+  - title: "Features"
+    label: "feature"
+  - title: "Bug Fixes"
+    label: "fix"
+  - title: "Maintenance"
+    label: "chore"
 
-template: |
+template: |-
   ## What’s Changed
 
   $CHANGES
