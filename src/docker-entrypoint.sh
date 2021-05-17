@@ -112,7 +112,13 @@ update_doc() {
   # shellcheck disable=SC2086
   if [ -n "${CONFIG_FILE}" ] && [ "${CONFIG_FILE}" != "disabled" ]; then
     echo "::debug file=entrypoint.sh,line=80 command=terraform-docs --config ${CONFIG_FILE} ${ARGS} ${working_dir}"
-    terraform-docs --config ${CONFIG_FILE} ${ARGS} ${working_dir} >/tmp/tf_generated
+    local config_file
+    if [ -f "${CONFIG_FILE}" ]; then
+        config_file="${CONFIG_FILE}"
+    else
+        config_file="${working_dir}/${CONFIG_FILE}"
+    fi
+    terraform-docs --config ${config_file} ${ARGS} ${working_dir} >/tmp/tf_generated
     success=$?
   else
     echo "::debug file=entrypoint.sh,line=84 command=terraform-docs ${OUTPUT_FORMAT} ${ARGS} ${working_dir}"
