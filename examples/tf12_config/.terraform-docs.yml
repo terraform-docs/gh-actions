@@ -5,7 +5,6 @@ sections:
     - inputs
 sort:
   enabled: true
-  by:
-    - required
+  by: required
 settings:
   indent: 3

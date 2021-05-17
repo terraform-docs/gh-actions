@@ -12,12 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM quay.io/terraform-docs/terraform-docs:0.12.1
-
-# this can be removed when base image
-# was upgraded to alpine:3.13 which has
-# 'yq' in its repository out of the box.
-RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
+FROM quay.io/terraform-docs/terraform-docs:0.13.0
 
 RUN set -x \
     && apk update \
