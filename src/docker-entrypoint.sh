@@ -185,7 +185,7 @@ elif [ -n "${FIND_DIR}" ] && [ "${FIND_DIR}" != "disabled" ]; then
   done < <(find "${FIND_DIR}" -name '*.tf' -exec dirname {} \; | uniq)
 else
   # Split WORKING_DIR by commas
-  for project_dir in ${WORKING_DIR//,/}; do
+  for project_dir in ${WORKING_DIR//,/ }; do
     update_doc "${project_dir}"
   done
 fi
