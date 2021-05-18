@@ -14,6 +14,9 @@
 
 FROM quay.io/terraform-docs/terraform-docs:0.13.0
 
+# this is explicitly needed because yq v4.x only exists in this repo.
+RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
+
 RUN set -x \
     && apk update \
     && apk add --no-cache \
