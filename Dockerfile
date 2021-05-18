@@ -19,6 +19,7 @@ RUN set -x \
     && apk add --no-cache \
         bash \
         git \
+        git-lfs \
         jq \
         openssh \
         sed \
