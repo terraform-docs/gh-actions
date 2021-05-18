@@ -17,7 +17,7 @@ jobs:
       - name: Run ShellCheck
         uses: ludeeus/action-shellcheck@master
         with:
-          scandir: "./src"
+          scandir: "."
 
   readme:
     runs-on: ubuntu-latest

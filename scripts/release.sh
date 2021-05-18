@@ -14,20 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -e
+set -o errexit
+set -o pipefail
+set -o errtrace
 
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 if [[ "${CURRENT_BRANCH}" != "main" ]]; then
-  echo "Must be on main branch"
-  exit 1
+    echo "Must be on main branch"
+    exit 1
 fi
 
 NEW_VERSION=$1
 
 if [ -z "${NEW_VERSION}" ]; then
-  echo "Must have version like: v1.0.1"
-  exit 1
+    echo "Must have version like: v1.0.1"
+    exit 1
 fi
 
 git pull origin main

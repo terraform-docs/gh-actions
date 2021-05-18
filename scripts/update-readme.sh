@@ -14,7 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -e
+set -o errexit
+set -o pipefail
+set -o errtrace
 
 NEW_VERSION=$1
 
@@ -25,8 +27,8 @@ if [ -z "${NEW_VERSION}" ]; then
 fi
 
 if [ -z "${NEW_VERSION}" ]; then
-  echo "Must have version like: v1.0.1"
-  exit 1
+    echo "Must have version like: v1.0.1"
+    exit 1
 fi
 
 # Update the README
