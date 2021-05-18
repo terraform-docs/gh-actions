@@ -14,7 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -e
+set -o errexit
+set -o pipefail
+set -o errtrace
 
 # Ensure all variables are present
 WORKING_DIR="${1}"
@@ -71,9 +73,9 @@ git_add() {
     file="$1"
     git add "${file}"
     if [ "$(git status --porcelain | grep "$file" | grep -c -E '([MA]\W).+')" -eq 1 ]; then
-        echo "::debug file=entrypoint.sh,line=46 Added ${file} to git staging area"
+        echo "::debug Added ${file} to git staging area"
     else
-        echo "::debug file=entrypoint.sh,line=48 No change in ${file} detected"
+        echo "::debug No change in ${file} detected"
     fi
 }
 
@@ -82,95 +84,69 @@ git_status() {
 }
 
 git_commit() {
-    local is_clean
-    set +e
-    is_clean=$(git_status)
-    set -e
-    if [ "${is_clean}" -eq 0 ]; then
-        echo "::debug file=entrypoint.sh,line=54 No files changed, skipping commit"
+    if [ "$(git_status)" -eq 0 ]; then
+        echo "::debug No files changed, skipping commit"
         exit 0
-    else
-        local signoff
-        signoff=""
-        if [ "${GIT_PUSH_SIGN_OFF}" = "true" ]; then
-            signoff="-s"
-        fi
-        git commit ${signoff} -m "${GIT_COMMIT_MESSAGE}"
     fi
+
+    local signoff
+    if [ "${GIT_PUSH_SIGN_OFF}" = "true" ]; then
+        signoff="-s"
+    fi
+    git commit ${signoff} -m "${GIT_COMMIT_MESSAGE}"
 }
 
 update_doc() {
     local working_dir
-    local generated
-    local success
 
     working_dir="$1"
-    echo "::debug file=entrypoint.sh,line=66 working_dir=${working_dir}"
+    echo "::debug working_dir=${working_dir}"
 
-    set +e
+    local config_file
 
-    # shellcheck disable=SC2086
     if [ -n "${CONFIG_FILE}" ] && [ "${CONFIG_FILE}" != "disabled" ]; then
-        echo "::debug file=entrypoint.sh,line=80 command=terraform-docs --config ${CONFIG_FILE} ${ARGS} ${working_dir}"
-        local config_file
         if [ -f "${CONFIG_FILE}" ]; then
             config_file="${CONFIG_FILE}"
         else
             config_file="${working_dir}/${CONFIG_FILE}"
         fi
-        terraform-docs --config ${config_file} ${ARGS} ${working_dir} >/tmp/tf_generated
-        success=$?
-    else
-        echo "::debug file=entrypoint.sh,line=84 command=terraform-docs ${OUTPUT_FORMAT} ${ARGS} ${working_dir}"
-        terraform-docs ${OUTPUT_FORMAT} ${ARGS} ${working_dir} >/tmp/tf_generated
-        success=$?
+
+        echo "::debug config_file=${config_file}"
+        config_file="--config ${config_file}"
     fi
 
-    set -e
+    local output_mode
+    local output_file
+
+    if [ "${OUTPUT_METHOD}" == "inject" ] || [ "${OUTPUT_METHOD}" == "replace" ]; then
+        echo "::debug output_mode=${OUTPUT_METHOD}"
+        output_mode="--output-mode ${OUTPUT_METHOD}"
+
+        echo "::debug output_file=${OUTPUT_FILE}"
+        output_file="--output-file ${OUTPUT_FILE}"
+    fi
+
+    local success
+
+    echo "::debug terraform-docs ${config_file} ${OUTPUT_FORMAT} ${ARGS} ${output_mode} ${output_file} ${working_dir}"
+    # shellcheck disable=SC2086
+    terraform-docs \
+        ${config_file} \
+        ${OUTPUT_FORMAT} \
+        ${ARGS} \
+        ${output_mode} \
+        ${output_file} \
+        ${working_dir}
+    success=$?
 
     if [ $success -ne 0 ]; then
-        echo "::error file=entrypoint.sh,line=89::$(cat /tmp/tf_generated)"
-        rm -f /tmp/tf_generated
         exit $success
     fi
 
-    generated=$(cat /tmp/tf_generated)
-    rm -f /tmp/tf_generated
-
-    case "${OUTPUT_METHOD}" in
-    print)
-        echo "${generated}"
-        ;;
-
-    replace)
-        echo "${generated}" >"${working_dir}/${OUTPUT_FILE}"
+    if [ "${OUTPUT_METHOD}" == "inject" ] || [ "${OUTPUT_METHOD}" == "replace" ]; then
         git_add "${working_dir}/${OUTPUT_FILE}"
-        ;;
+    fi
 
-    inject)
-        # Create file if it doesn't exist
-        if [ ! -f "${working_dir}/${OUTPUT_FILE}" ]; then
-            echo "${TEMPLATE}" >"${working_dir}/${OUTPUT_FILE}"
-        fi
-
-        local has_delimiter
-        has_delimiter=$(grep -c -E '(BEGIN|END)_TF_DOCS' "${working_dir}/${OUTPUT_FILE}")
-        echo "::debug file=entrypoint.sh,line=115 has_delimiter=${has_delimiter}"
-
-        # Verify it has BEGIN and END markers
-        if [ "${has_delimiter}" -ne 2 ]; then
-            echo "::error file=entrypoint.sh,line=119::Output file ${working_dir}/${OUTPUT_FILE} does not contain BEGIN_TF_DOCS and END_TF_DOCS"
-            exit 1
-        fi
-
-        # Output generated markdown to temporary file with a trailing newline and then replace the block
-        echo "${generated}" >/tmp/tf_doc.md
-        echo "" >>/tmp/tf_doc.md
-        sed -i -ne '/<!--- BEGIN_TF_DOCS --->/ {p; r /tmp/tf_doc.md' -e ':a; n; /<!--- END_TF_DOCS --->/ {p; b}; ba}; p' "${working_dir}/${OUTPUT_FILE}"
-        git_add "${working_dir}/${OUTPUT_FILE}"
-        rm -f /tmp/tf_doc.md
-        ;;
-    esac
 }
 
 # go to github repo
@@ -180,15 +156,15 @@ git_setup
 
 if [ -f "${GITHUB_WORKSPACE}/${ATLANTIS_FILE}" ]; then
     # Parse an atlantis yaml file
-    while read -r line; do
+    for line in $(yq e '.projects[].dir' "${GITHUB_WORKSPACE}/${ATLANTIS_FILE}"); do
         project_dir=${line//- /}
         update_doc "${project_dir}"
-    done < <(yq e '.projects[].dir' "${GITHUB_WORKSPACE}/${ATLANTIS_FILE}")
+    done
 elif [ -n "${FIND_DIR}" ] && [ "${FIND_DIR}" != "disabled" ]; then
     # Find all tf
-    while read -r project_dir; do
+    for project_dir in $(find "${FIND_DIR}" -name '*.tf' -exec dirname {} \; | uniq); do
         update_doc "${project_dir}"
-    done < <(find "${FIND_DIR}" -name '*.tf' -exec dirname {} \; | uniq)
+    done
 else
     # Split WORKING_DIR by commas
     for project_dir in ${WORKING_DIR//,/ }; do
@@ -200,11 +176,9 @@ if [ "${GIT_PUSH}" = "true" ]; then
     git_commit
     git push
 else
-    set +e
     num_changed=$(git_status)
-    set -e
     if [ "${FAIL_ON_DIFF}" = "true" ] && [ "${num_changed}" -ne 0 ]; then
-        echo "::error file=entrypoint.sh,line=169::Uncommitted change(s) has been found!"
+        echo "::error ::Uncommitted change(s) has been found!"
         exit 1
     fi
     echo "::set-output name=num_changed::${num_changed}"
