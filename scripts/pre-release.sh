@@ -14,26 +14,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -e
+set -o errexit
+set -o pipefail
+set -o errtrace
 
 NEW_VERSION=$1
 PWD=$(cd "$(dirname "$0")" && pwd -P)
 
 if [ -z "${NEW_VERSION}" ]; then
-  echo "Must have version like: v1.0.1"
-  exit 1
+    echo "Must have version like: v1.0.1"
+    exit 1
 fi
 
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
-if [[ "${CURRENT_BRANCH}" == "main" ]]; then
-  git pull origin main
-  git checkout -b "release/${NEW_VERSION}"
-elif [[ "${CURRENT_BRANCH}" == "release/${NEW_VERSION}" ]]; then
-  git pull origin main
+if [ "${CURRENT_BRANCH}" = "main" ]; then
+    git pull origin main
+    git checkout -b "release/${NEW_VERSION}"
+elif [ "${CURRENT_BRANCH}" = "release/${NEW_VERSION}" ]; then
+    git pull origin main
 else
-  echo "Invalid branch"
-  exit 1
+    echo "Invalid branch"
+    exit 1
 fi
 
 # Update README
