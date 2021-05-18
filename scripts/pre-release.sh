@@ -36,9 +36,12 @@ else
   exit 1
 fi
 
-# Update the README
+# Update README
 VERSION=$NEW_VERSION gomplate -d action="${PWD}"/../action.yml -f "${PWD}"/../.github/templates/README.tpl -o "${PWD}"/../README.md
 
-git add "${PWD}"/../README.md
+# Update action.yml
+sed -i "s|docker://quay.io/terraform-docs/gh-actions:edge|docker://quay.io/terraform-docs/gh-actions:${NEW_VERSION//v/}|g" "${PWD}"/../action.yml
+
+git add "${PWD}"/../README.md "${PWD}"/../action.yml
 git commit -s -m "chore: prepare release ${NEW_VERSION}"
 git push --set-upstream origin "release/${NEW_VERSION}"
