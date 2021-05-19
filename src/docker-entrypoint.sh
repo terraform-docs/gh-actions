@@ -54,13 +54,13 @@ git_setup() {
     if [ -n "${GIT_PUSH_USER_NAME}" ]; then
         git config --global user.name "${GIT_PUSH_USER_NAME}"
     else
-        git config --global user.name "${GITHUB_ACTOR}"
+        git config --global user.name github-actions[bot]
     fi
 
     if [ -n "${GIT_PUSH_USER_EMAIL}" ]; then
         git config --global user.email "${GIT_PUSH_USER_EMAIL}"
     else
-        git config --global user.email "${GITHUB_ACTOR}"@users.noreply.github.com
+        git config --global user.email github-actions[bot]@users.noreply.github.com
     fi
 
     git fetch --depth=1 origin +refs/tags/*:refs/tags/* || true
