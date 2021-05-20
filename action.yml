@@ -52,11 +52,11 @@ inputs:
     required: false
     default: "false"
   git-push-user-name:
-    description: If empty the name of the PR author will be used (i.e. `${GITHUB_ACTOR}`)
+    description: If empty the name of the GitHub Actions bot will be used (i.e. `github-actions[bot]`)
     required: false
     default: ""
   git-push-user-email:
-    description: If empty the no-reply email of the PR author will be used (i.e. `${GITHUB_ACTOR}@users.noreply.github.com`)
+    description: If empty the no-reply email of the GitHub Actions bot will be used (i.e. `github-actions[bot]@users.noreply.github.com`)
     required: false
     default: ""
   git-commit-message:
