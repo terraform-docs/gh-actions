@@ -79,23 +79,23 @@ outputs:
 runs:
   using: docker
   image: "docker://quay.io/terraform-docs/gh-actions:edge"
-  args:
-    - ${{ inputs.working-dir }}
-    - ${{ inputs.atlantis-file }}
-    - ${{ inputs.find-dir }}
-    - ${{ inputs.output-format }}
-    - ${{ inputs.output-method }}
-    - ${{ inputs.output-file }}
-    - ${{ inputs.template }}
-    - ${{ inputs.args }}
-    - ${{ inputs.indention }}
-    - ${{ inputs.git-push }}
-    - ${{ inputs.git-commit-message }}
-    - ${{ inputs.config-file }}
-    - ${{ inputs.fail-on-diff }}
-    - ${{ inputs.git-push-sign-off }}
-    - ${{ inputs.git-push-user-name }}
-    - ${{ inputs.git-push-user-email }}
+  env:
+    INPUT_WORKING_DIR: ${{ inputs.working-dir }}
+    INPUT_ATLANTIS_FILE: ${{ inputs.atlantis-file }}
+    INPUT_FIND_DIR: ${{ inputs.find-dir }}
+    INPUT_OUTPUT_FORMAT: ${{ inputs.output-format }}
+    INPUT_OUTPUT_METHOD: ${{ inputs.output-method }}
+    INPUT_OUTPUT_FILE: ${{ inputs.output-file }}
+    INPUT_TEMPLATE: ${{ inputs.template }}
+    INPUT_ARGS: ${{ inputs.args }}
+    INPUT_INDENTION: ${{ inputs.indention }}
+    INPUT_GIT_PUSH: ${{ inputs.git-push }}
+    INPUT_GIT_COMMIT_MESSAGE: ${{ inputs.git-commit-message }}
+    INPUT_CONFIG_FILE: ${{ inputs.config-file }}
+    INPUT_FAIL_ON_DIFF: ${{ inputs.fail-on-diff }}
+    INPUT_GIT_PUSH_SIGN_OFF: ${{ inputs.git-push-sign-off }}
+    INPUT_GIT_PUSH_USER_NAME: ${{ inputs.git-push-user-name }}
+    INPUT_GIT_PUSH_USER_EMAIL: ${{ inputs.git-push-user-email }}
 
 branding:
   icon: file-text
