@@ -142,15 +142,14 @@ update_doc() {
         echo "${generated}"
         ;;
 
-    replace)
-        echo "${generated}" >"${working_dir}/${OUTPUT_FILE}"
-        git_add "${working_dir}/${OUTPUT_FILE}"
-        ;;
-
-    inject)
+    replace | inject)
         # Create file if it doesn't exist
-        if [ ! -f "${working_dir}/${OUTPUT_FILE}" ]; then
+        if [ "${OUTPUT_METHOD}" = "replace" ]; then
             echo "${TEMPLATE}" >"${working_dir}/${OUTPUT_FILE}"
+        else
+            if [ ! -f "${working_dir}/${OUTPUT_FILE}" ]; then
+                echo "${TEMPLATE}" >"${working_dir}/${OUTPUT_FILE}"
+            fi
         fi
 
         local has_delimiter

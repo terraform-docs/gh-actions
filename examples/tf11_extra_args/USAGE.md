@@ -1,3 +1,6 @@
+# Usage
+
+<!--- BEGIN_TF_DOCS --->
 ### Providers
 
 The following providers are used by this module:
@@ -76,3 +79,6 @@ The following outputs are exported:
 #### <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id)
 
 Description: The Id of the VPC
+
+<!--- END_TF_DOCS --->
+
