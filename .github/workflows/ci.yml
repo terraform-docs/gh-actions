@@ -16,7 +16,9 @@ jobs:
           repository: ${{github.event.pull_request.head.repo.full_name}}
 
       - name: Build Docker image
-        run: docker build --pull --tag quay.io/terraform-docs/gh-actions:edge .
+        run: |
+          VERSION=$(grep "docker://quay.io/terraform-docs/gh-actions" action.yml | cut -d: -f4 | sed 's/"//g')
+          docker build --pull --tag quay.io/terraform-docs/gh-actions:${VERSION} .
 
       - name: Should generate USAGE.md for tf11_basic
         uses: ./
