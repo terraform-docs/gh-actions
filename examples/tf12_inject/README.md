@@ -8,7 +8,7 @@
   with:
     working-dir: examples/tf12_inject
     output-file: README.md
-    args: --sort-by-required
+    args: --sort-by required
     indention: 3
     git-push: true
     git-commit-message: "terraform-docs: automated action"
