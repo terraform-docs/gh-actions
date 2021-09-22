@@ -177,18 +177,20 @@ else
     done
 fi
 
+# always set num_changed output
+set +e
+num_changed=$(git_status)
+set -e
+echo "::set-output name=num_changed::${num_changed}"
+
 if [ "${INPUT_GIT_PUSH}" = "true" ]; then
     git_commit
     git push
 else
-    set +e
-    num_changed=$(git_status)
-    set -e
     if [ "${INPUT_FAIL_ON_DIFF}" = "true" ] && [ "${num_changed}" -ne 0 ]; then
         echo "::error file=entrypoint.sh,line=169::Uncommitted change(s) has been found!"
         exit 1
     fi
-    echo "::set-output name=num_changed::${num_changed}"
 fi
 
 exit 0
