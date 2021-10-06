@@ -12,7 +12,7 @@ branch.
 
 ## Version
 
-`{{ $version }}` (uses [terraform-docs] v0.15.0, which is supported and tested on Terraform
+`{{ $version }}` (uses [terraform-docs] v0.16.0, which is supported and tested on Terraform
 version 0.11+ and 0.12+ but may work for others.)
 
 {{- if eq $version "main" }}
