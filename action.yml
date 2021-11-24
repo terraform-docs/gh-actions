@@ -19,6 +19,14 @@ inputs:
     description: Name of root directory to extract list of directories by running `find ./find_dir -name *.tf` (ignored if `atlantis-file` is set)
     required: false
     default: "disabled"
+  recursive:
+    description: If true it will update submodules recursively
+    required: false
+    default: "false"
+  recursive-path:
+    description: Submodules path to recursively update
+    required: false
+    default: "modules"
   output-format:
     description: terraform-docs format to generate content (see [all formats](https://github.com/terraform-docs/terraform-docs/blob/master/docs/FORMATS_GUIDE.md)) (ignored if `config-file` is set)
     required: false
@@ -82,6 +90,8 @@ runs:
     INPUT_WORKING_DIR: ${{ inputs.working-dir }}
     INPUT_ATLANTIS_FILE: ${{ inputs.atlantis-file }}
     INPUT_FIND_DIR: ${{ inputs.find-dir }}
+    INPUT_RECURSIVE: ${{ inputs.recursive }}
+    INPUT_RECURSIVE_PATH: ${{ inputs.recursive-path }}
     INPUT_OUTPUT_FORMAT: ${{ inputs.output-format }}
     INPUT_OUTPUT_METHOD: ${{ inputs.output-method }}
     INPUT_OUTPUT_FILE: ${{ inputs.output-file }}
