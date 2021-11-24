@@ -122,6 +122,13 @@ update_doc() {
         exec_args+=(--output-template "${INPUT_TEMPLATE}")
     fi
 
+    if [ "${INPUT_RECURSIVE}" = "true" ]; then
+        if [ -n "${INPUT_RECURSIVE_PATH}" ]; then
+            exec_args+=(--recursive)
+            exec_args+=(--recursive-path "${INPUT_RECURSIVE_PATH}")
+        fi
+    fi
+
     exec_args+=("${working_dir}")
 
     local success

@@ -68,6 +68,13 @@ jobs:
         with:
           find-dir: examples/tf12_find
 
+      - name: Should generate README.md for tf12_find and its submodules recursively
+        uses: ./
+        with:
+          working-dir: examples/tf12_find
+          recursive: true
+          recursive-path: modules
+
       - name: Should generate README.md for tf12_config
         uses: ./
         with:
