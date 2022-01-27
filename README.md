@@ -28,16 +28,19 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.ref }}
 
-    - name: Render terraform docs inside the USAGE.md and push changes back to PR branch
+    - name: Render terraform docs inside the README.md and push changes back to PR branch
       uses: terraform-docs/gh-actions@v0.11.0
       with:
         working-dir: .
-        output-file: USAGE.md
+        output-file: README.md
         output-method: inject
         git-push: "true"
 ```
 
-| NOTE: If USAGE.md already exists it will need to be updated, with the block delimeters `<!-- BEGIN_TF_DOCS -->` and `<!-- END_TF_DOCS -->`, where the generated markdown will be injected. Otherwise the generated content will be appended at the end of the file. |
+| NOTE: If `output-file` (default README.md) already exists it will need to be updated, with the block delimeters `<!-- BEGIN_TF_DOCS -->` and `<!-- END_TF_DOCS -->`, where the generated markdown will be injected. Otherwise the generated content will be appended at the end of the file. |
+| --- |
+
+| NOTE: If `output-file` (default README.md) doesn't exist it will created and the content will be saved into it. |
 | --- |
 
 ## Configuration
@@ -57,7 +60,7 @@ jobs:
 | git-push-user-email | If empty the no-reply email of the GitHub Actions bot will be used (i.e. `github-actions[bot]@users.noreply.github.com`) | `""` | false |
 | git-push-user-name | If empty the name of the GitHub Actions bot will be used (i.e. `github-actions[bot]`) | `""` | false |
 | indention | Indention level of Markdown sections [1, 2, 3, 4, 5] | `2` | false |
-| output-file | File in module directory where the docs should be placed | `USAGE.md` | false |
+| output-file | File in module directory where the docs should be placed | `README.md` | false |
 | output-format | terraform-docs format to generate content (see [all formats](https://github.com/terraform-docs/terraform-docs/blob/master/docs/FORMATS\_GUIDE.md)) (ignored if `config-file` is set) | `markdown table` | false |
 | output-method | Method should be one of `replace`, `inject`, or `print` | `inject` | false |
 | recursive | If true it will update submodules recursively | `false` | false |
@@ -134,7 +137,6 @@ To enable you need to ensure a few things first:
   uses: terraform-docs/gh-actions@v0.11.0
   with:
     working-dir: .
-    output-file: README.md
 ```
 
 ### Multi folder
@@ -144,7 +146,6 @@ To enable you need to ensure a few things first:
   uses: terraform-docs/gh-actions@v0.11.0
   with:
     working-dir: .,example1,example3/modules/test
-    output-file: README.md
 ```
 
 ### Use `atlantis.yaml` v3 to find all directories
@@ -163,6 +164,17 @@ To enable you need to ensure a few things first:
   uses: terraform-docs/gh-actions@v0.11.0
   with:
     find-dir: examples/
+```
+
+### Recursively under a given directory
+
+```yaml
+- name: Generate TF docs
+  uses: terraform-docs/gh-actions@v0.11.0
+  with:
+    working-dir: examples/
+    recursive: true
+    recursive-path: modules
 ```
 
 Complete examples can be found [here](https://github.com/terraform-docs/gh-actions/tree/v0.11.0/examples).

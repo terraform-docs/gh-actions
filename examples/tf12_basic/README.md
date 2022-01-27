@@ -7,7 +7,6 @@
   uses: ./
   with:
     working-dir: examples/tf12_basic
-    output-file: README.md
     indention: 3
 ```
 

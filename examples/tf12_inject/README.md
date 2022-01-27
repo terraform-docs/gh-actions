@@ -7,7 +7,6 @@
   uses: ./
   with:
     working-dir: examples/tf12_inject
-    output-file: README.md
     args: --sort-by-required
     indention: 3
     git-push: true

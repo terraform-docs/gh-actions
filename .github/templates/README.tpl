@@ -38,16 +38,19 @@ jobs:
       with:
         ref: {{"${{"}} github.event.pull_request.head.ref {{"}}"}}
 
-    - name: Render terraform docs inside the USAGE.md and push changes back to PR branch
+    - name: Render terraform docs inside the README.md and push changes back to PR branch
       uses: terraform-docs/gh-actions@{{ $version }}
       with:
         working-dir: .
-        output-file: USAGE.md
+        output-file: README.md
         output-method: inject
         git-push: "true"
 ```
 
-| NOTE: If USAGE.md already exists it will need to be updated, with the block delimeters `<!-- BEGIN_TF_DOCS -->` and `<!-- END_TF_DOCS -->`, where the generated markdown will be injected. Otherwise the generated content will be appended at the end of the file. |
+| NOTE: If `output-file` (default README.md) already exists it will need to be updated, with the block delimeters `<!-- BEGIN_TF_DOCS -->` and `<!-- END_TF_DOCS -->`, where the generated markdown will be injected. Otherwise the generated content will be appended at the end of the file. |
+| --- |
+
+| NOTE: If `output-file` (default README.md) doesn't exist it will created and the content will be saved into it. |
 | --- |
 
 ## Configuration
@@ -131,7 +134,6 @@ To enable you need to ensure a few things first:
   uses: terraform-docs/gh-actions@{{ $version }}
   with:
     working-dir: .
-    output-file: README.md
 ```
 
 ### Multi folder
@@ -141,7 +143,6 @@ To enable you need to ensure a few things first:
   uses: terraform-docs/gh-actions@{{ $version }}
   with:
     working-dir: .,example1,example3/modules/test
-    output-file: README.md
 ```
 
 ### Use `atlantis.yaml` v3 to find all directories
@@ -160,6 +161,17 @@ To enable you need to ensure a few things first:
   uses: terraform-docs/gh-actions@{{ $version }}
   with:
     find-dir: examples/
+```
+
+### Recursively under a given directory
+
+```yaml
+- name: Generate TF docs
+  uses: terraform-docs/gh-actions@{{ $version }}
+  with:
+    working-dir: examples/
+    recursive: true
+    recursive-path: modules
 ```
 
 Complete examples can be found [here](https://github.com/terraform-docs/gh-actions/tree/{{ $version }}/examples).

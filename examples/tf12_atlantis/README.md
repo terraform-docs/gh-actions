@@ -7,7 +7,6 @@
   uses: ./
   with:
     atlantis-file: atlantis.yaml
-    output-file: README.md
     args: --hide providers
     indention: 3
 ```

@@ -7,7 +7,6 @@
   uses: ./
   with:
     working-dir: examples/tf12_config
-    output-file: README.md
     config-file: .terraform-docs.yml
 ```
 
