@@ -3,10 +3,11 @@
 ## Input
 
 ```yaml
-- name: Should generate README.md for tf12_find and its submodules
+- name: Should generate USAGE.md for tf12_find and its submodules
   uses: ./
   with:
     find-dir: examples/tf12_find
+    output-file: USAGE.md
 ```
 
 ## Verify

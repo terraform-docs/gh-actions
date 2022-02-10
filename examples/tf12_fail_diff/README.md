@@ -7,7 +7,6 @@
   uses: ./
   with:
     working-dir: examples/tf12_fail_diff
-    output-file: README.md
     indention: 3
     fail-on-diff: true
 ```

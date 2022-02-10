@@ -38,7 +38,7 @@ inputs:
   output-file:
     description: File in module directory where the docs should be placed
     required: false
-    default: "USAGE.md"
+    default: "README.md"
   template:
     description: When provided will be used as the template if/when the `output-file` does not exist
     default: |-

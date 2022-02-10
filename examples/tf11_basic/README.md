@@ -7,6 +7,7 @@
   uses: ./
   with:
     working-dir: examples/tf11_basic
+    output-file: USAGE.md
     template: |-
       <!-- BEGIN_TF_DOCS -->
       # Test tf11 basic
