@@ -27,9 +27,7 @@ jobs:
         run: |
           VERSION=$(echo ${{ github.event.release.tag_name }} | sed 's/v//')
           docker build --pull --tag quay.io/terraform-docs/gh-actions:"${VERSION}" .
-          docker build --pull --tag quay.io/terraform-docs/gh-actions:latest .
           docker push quay.io/terraform-docs/gh-actions:"${VERSION}"
-          docker push quay.io/terraform-docs/gh-actions:latest
 
   update-tag:
     runs-on: ubuntu-latest
