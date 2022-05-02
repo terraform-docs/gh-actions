@@ -18,7 +18,6 @@ set -o errexit
 set -o pipefail
 set -o errtrace
 
-set -x
 # shellcheck disable=SC2206
 cmd_args=(${INPUT_OUTPUT_FORMAT})
 
@@ -188,5 +187,4 @@ else
         exit 1
     fi
 fi
-set +x
 exit 0
