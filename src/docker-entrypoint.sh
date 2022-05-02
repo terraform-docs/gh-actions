@@ -21,20 +21,6 @@ set -o errtrace
 # shellcheck disable=SC2206
 cmd_args=(${INPUT_OUTPUT_FORMAT})
 
-# shellcheck disable=SC2206
-cmd_args+=(${INPUT_ARGS})
-
-if [ "${INPUT_CONFIG_FILE}" = "disabled" ]; then
-    case "$INPUT_OUTPUT_FORMAT" in
-    "asciidoc" | "asciidoc table" | "asciidoc document")
-        cmd_args+=(--indent "${INPUT_INDENTION}")
-        ;;
-
-    "markdown" | "markdown table" | "markdown document")
-        cmd_args+=(--indent "${INPUT_INDENTION}")
-        ;;
-    esac
-
     if [ -z "${INPUT_TEMPLATE}" ]; then
         INPUT_TEMPLATE=$(printf '<!-- BEGIN_TF_DOCS -->\n{{ .Content }}\n<!-- END_TF_DOCS -->')
     fi
@@ -52,6 +38,11 @@ git_setup() {
     git config --global user.name "${INPUT_GIT_PUSH_USER_NAME}"
     git config --global user.email "${INPUT_GIT_PUSH_USER_EMAIL}"
     git fetch --depth=1 origin +refs/tags/*:refs/tags/* || true
+
+    # When the runner maps the $GITHUB_WORKSPACE mount, it is owned by the runner user,
+    # while the created folders are owned by the container user, causing this error.
+    # Issue description here: https://github.com/actions/checkout/issues/766
+    git config --global --add safe.directory "$GITHUB_WORKSPACE"
 }
 
 git_add() {
