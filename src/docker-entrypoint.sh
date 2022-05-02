@@ -51,11 +51,11 @@ fi
 git_setup() {
     git config --global user.name "${INPUT_GIT_PUSH_USER_NAME}"
     git config --global user.email "${INPUT_GIT_PUSH_USER_EMAIL}"
-    git fetch --depth=1 origin +refs/tags/*:refs/tags/* || true
     # When the runner maps the $GITHUB_WORKSPACE mount, it is owned by the runner user,
     # while the created folders are owned by the container user, causing this error.
     # Issue description here: https://github.com/actions/checkout/issues/766
     git config --global --add safe.directory "$GITHUB_WORKSPACE"
+    git fetch --depth=1 origin +refs/tags/*:refs/tags/* || true
 }
 
 git_add() {
