@@ -32,7 +32,7 @@ inputs:
     required: false
     default: "markdown table"
   output-method:
-    description: Method should be one of `replace`, `inject`, or `print`
+    description: Method should be one of `replace`, `inject`, or `print`. Set as an empty string if `output.mode` and `output.file` are defined in config-file
     required: false
     default: "inject"
   output-file:
@@ -40,7 +40,7 @@ inputs:
     required: false
     default: "README.md"
   template:
-    description: When provided will be used as the template if/when the `output-file` does not exist
+    description: When provided will be used as the template if/when the `output-file` does not exist. Set as an empty string if `output.template` is defined in config-file
     default: |-
       <!-- BEGIN_TF_DOCS -->
       {{ .Content }}
