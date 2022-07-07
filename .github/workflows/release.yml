@@ -12,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Login to Docker
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         if: env.REGISTRY_USERNAME != ''
         with:
           registry: quay.io
@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - run: |
           VERSION=$(echo ${{ github.event.release.tag_name }} | cut -d. -f1)

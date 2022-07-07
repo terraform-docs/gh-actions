@@ -9,7 +9,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
@@ -105,14 +105,11 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Terraform format
-        uses: hashicorp/terraform-github-actions@master
+        uses: hashicorp/setup-terraform@v2
         with:
-          tf_actions_working_dir: examples
-          tf_actions_version: '0.12.17'
-          tf_actions_subcommand: 'fmt'
-          tf_actions_comment: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          terraform_version: '0.12.17'
+
+      - run: terraform fmt examples
