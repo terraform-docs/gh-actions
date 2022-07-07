@@ -49,6 +49,7 @@ if [ -z "${INPUT_GIT_PUSH_USER_EMAIL}" ]; then
 fi
 
 git_setup() {
+    git config --global --add safe.directory /github/workspace
     git config --global user.name "${INPUT_GIT_PUSH_USER_NAME}"
     git config --global user.email "${INPUT_GIT_PUSH_USER_EMAIL}"
     git fetch --depth=1 origin +refs/tags/*:refs/tags/* || true
