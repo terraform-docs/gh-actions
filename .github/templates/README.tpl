@@ -47,7 +47,7 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         ref: {{"${{"}} github.event.pull_request.head.ref {{"}}"}}
 
@@ -99,7 +99,7 @@ jobs:
 To enable you need to ensure a few things first:
 
 - set `git-push` to `true`
-- use `actions/checkout@v2` with the head ref for PRs or branch name for pushes
+- use `actions/checkout@v3` with the head ref for PRs or branch name for pushes
   - PR
 
     ```yaml
@@ -109,7 +109,7 @@ To enable you need to ensure a few things first:
       docs:
         runs-on: ubuntu-latest
         steps:
-        - uses: actions/checkout@v2
+        - uses: actions/checkout@v3
           with:
             ref: {{"${{"}} github.event.pull_request.head.ref {{"}}"}}
     ```
@@ -125,7 +125,7 @@ To enable you need to ensure a few things first:
       docs:
         runs-on: ubuntu-latest
         steps:
-        - uses: actions/checkout@v2
+        - uses: actions/checkout@v3
           with:
             ref: master
     ```
