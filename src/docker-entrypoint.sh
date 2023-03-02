@@ -129,6 +129,7 @@ update_doc() {
 
     if [ "${INPUT_RECURSIVE}" = "true" ]; then
         if [ -n "${INPUT_RECURSIVE_PATH}" ]; then
+            exec_args+=(--output-file "${INPUT_OUTPUT_FILE}")
             exec_args+=(--recursive)
             exec_args+=(--recursive-path "${INPUT_RECURSIVE_PATH}")
         fi
