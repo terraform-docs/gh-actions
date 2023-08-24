@@ -147,7 +147,7 @@ update_doc() {
     fi
 
     if [ "${INPUT_OUTPUT_METHOD}" == "inject" ] || [ "${INPUT_OUTPUT_METHOD}" == "replace" ]; then
-        for modified_files in $(git ls-files -m | grep -i $(echo ${INPUT_OUTPUT_FILE} | cut -d'/' -f2- )); do
+        for modified_files in $(git ls-files -m | grep -i "$(echo "${INPUT_OUTPUT_FILE}" | cut -d'/' -f2- )"); do
             git_add "${modified_files}"
         done
     fi
@@ -179,7 +179,7 @@ fi
 set +e
 num_changed=$(git_status)
 set -e
-echo "num_changed=${num_changed}" >> $GITHUB_OUTPUT
+echo "num_changed=${num_changed}" >> "$GITHUB_OUTPUT"
 
 if [ "${INPUT_GIT_PUSH}" = "true" ]; then
     git_commit
