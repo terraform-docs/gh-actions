@@ -91,6 +91,10 @@ git_commit() {
         args+=("-s")
     fi
 
+    if [ "${INPUT_GIT_COMMIT_GPG_SIGN}" = "true" ]; then
+        args+=("-S")
+    fi
+
     git commit "${args[@]}"
 }
 
