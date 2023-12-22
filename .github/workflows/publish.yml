@@ -1,9 +1,15 @@
 name: publish
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
+    paths:
+      - .github/workflows/publish.yml
+      - Dockerfile
+      - action.yml
+      - src/docker-entrypoint.sh
 
 env:
   REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
