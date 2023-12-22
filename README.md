@@ -75,10 +75,10 @@ jobs:
 | indention | Indention level of Markdown sections [1, 2, 3, 4, 5] | `2` | false |
 | output-file | File in module directory where the docs should be placed | `README.md` | false |
 | output-format | terraform-docs format to generate content (see [all formats](https://github.com/terraform-docs/terraform-docs/blob/master/docs/FORMATS\_GUIDE.md)) (ignored if `config-file` is set) | `markdown table` | false |
-| output-method | Method should be one of `replace`, `inject`, or `print` | `inject` | false |
+| output-method | Method should be one of `replace`, `inject`, or `print`. Set as an empty string if `output.mode` and `output.file` are defined in config-file | `inject` | false |
 | recursive | If true it will update submodules recursively | `false` | false |
 | recursive-path | Submodules path to recursively update | `modules` | false |
-| template | When provided will be used as the template if/when the `output-file` does not exist | `<!-- BEGIN_TF_DOCS -->\n{{ .Content }}\n<!-- END_TF_DOCS -->` | false |
+| template | When provided will be used as the template if/when the `output-file` does not exist. Set as an empty string if `output.template` is defined in config-file | `<!-- BEGIN_TF_DOCS -->\n{{ .Content }}\n<!-- END_TF_DOCS -->` | false |
 | working-dir | Comma separated list of directories to generate docs for (ignored if `atlantis-file` or `find-dir` is set) | `.` | false |
 
 #### Output Method (output-method)
