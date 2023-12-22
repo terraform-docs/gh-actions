@@ -1,6 +1,7 @@
 name: validate
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -33,8 +34,22 @@ jobs:
           sudo chmod 755 /usr/local/bin/gomplate
 
       - name: Check README content based on action.yml
+        if: ${{ github.repository_owner == 'terraform-docs' }}
         run: |
           ./scripts/update-readme.sh
           if [ $(git status --porcelain | grep -c 'M README.md') -eq 1 ]; then
+            git diff
             exit 1
+          fi
+
+      - name: Check README content based on action.yml
+        if: ${{ github.repository_owner != 'terraform-docs' }}
+        run: |
+          ./scripts/update-readme.sh
+          if [ $(git status --porcelain | grep -c 'M README.md') -eq 1 ]; then
+            git config user.email "noreply.${{ github.actor }}@github.com"
+            git config user.name "${{ github.actor }}"
+            git add README.md
+            git commit -s -m "docs: README.md Updated"
+            git push
           fi
