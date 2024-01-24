@@ -147,7 +147,7 @@ update_doc() {
     fi
 
     if [ "${INPUT_OUTPUT_METHOD}" == "inject" ] || [ "${INPUT_OUTPUT_METHOD}" == "replace" ]; then
-        git_add "${working_dir}/${INPUT_OUTPUT_FILE}"
+        git_add "${working_dir}/${OUTPUT_FILE}"
     fi
 }
 
@@ -177,7 +177,7 @@ fi
 set +e
 num_changed=$(git_status)
 set -e
-echo "num_changed=${num_changed}" >> "$GITHUB_OUTPUT"
+echo "num_changed=${num_changed}" >> $GITHUB_OUTPUT
 
 if [ "${INPUT_GIT_PUSH}" = "true" ]; then
     git_commit
