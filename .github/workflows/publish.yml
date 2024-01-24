@@ -25,8 +25,8 @@ jobs:
       - name: Build Docker image
         if: env.REGISTRY_USERNAME != ''
         run: |
-          docker build --pull --tag quay.io/terraform-docs/gh-actions:edge .
-          docker push ${{ secrets.DOCKERHUBUSERNAME }}/gh-actions:edge
+          docker build --pull --tag ${{ secrets.DOCKERHUBUSERNAME }}/gh-actions-tf-docs:edge .
+          docker push ${{ secrets.DOCKERHUBUSERNAME }}/gh-actions-tf-docs:edge
 
   release-draft:
     runs-on: ubuntu-latest
