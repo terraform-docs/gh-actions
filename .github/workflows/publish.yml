@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+  REGISTRY_USERNAME: ${{ secrets.DOCKERHUBUSERNAME }}
 
 jobs:
   docker:
@@ -20,14 +20,14 @@ jobs:
         if: env.REGISTRY_USERNAME != ''
         with:
           registry: quay.io
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
+          username: ${{ secrets.DOCKERHUBUSERNAME }}
+          password: ${{ secrets.DOCKERHUBACCESSTOKEN }}
 
       - name: Build Docker image
         if: env.REGISTRY_USERNAME != ''
         run: |
           docker build --pull --tag quay.io/terraform-docs/gh-actions:edge .
-          docker push quay.io/terraform-docs/gh-actions:edge
+          docker push ${{ secrets.DOCKERHUBUSERNAME }}/gh-actions:edge
 
   release-draft:
     runs-on: ubuntu-latest
