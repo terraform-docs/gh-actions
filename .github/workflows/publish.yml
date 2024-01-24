@@ -19,7 +19,6 @@ jobs:
         uses: docker/login-action@v3
         if: env.REGISTRY_USERNAME != ''
         with:
-          registry: quay.io
           username: ${{ secrets.DOCKERHUBUSERNAME }}
           password: ${{ secrets.DOCKERHUBACCESSTOKEN }}
 
