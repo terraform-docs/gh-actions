@@ -177,7 +177,7 @@ fi
 set +e
 num_changed=$(git_status)
 set -e
-echo "num_changed=${num_changed}" >> $GITHUB_OUTPUT
+echo "num_changed=${num_changed}" >> "$GITHUB_OUTPUT"
 
 if [ "${INPUT_GIT_PUSH}" = "true" ]; then
     git_commit
