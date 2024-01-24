@@ -85,7 +85,7 @@ outputs:
 
 runs:
   using: docker
-  image: "kamikac/gh-actions-tf-docs:edge"
+  image: "docker://kamikac/gh-actions-tf-docs:edge"
   env:
     INPUT_WORKING_DIR: ${{ inputs.working-dir }}
     INPUT_ATLANTIS_FILE: ${{ inputs.atlantis-file }}
