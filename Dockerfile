@@ -15,9 +15,10 @@
 FROM quay.io/terraform-docs/terraform-docs:0.16.0
 
 # this is explicitly needed because yq v4.x only exists in this repo.
-RUN apk add -X https://dl-4.alpinelinux.org/alpine/edge/community -u alpine-keys && \
-    apk update && \
-    apk add --no-cache \
+RUN set -x \
+    && apk add -X https://dl-4.alpinelinux.org/alpine/edge/community -u alpine-keys \
+    && apk update \
+    && apk add --no-cache \
         bash \
         git \
         git-lfs \
