@@ -74,6 +74,10 @@ inputs:
     description: If true it will sign-off commit
     required: false
     default: "false"
+  git-commit-gpg-sign:
+    description: If true it will sign commit with GPG key
+    required: false
+    default: "false"
   fail-on-diff:
     description: Fail the job if there is any diff found between the generated output and existing file (ignored if `git-push` is set)
     required: false
@@ -100,6 +104,7 @@ runs:
     INPUT_INDENTION: ${{ inputs.indention }}
     INPUT_GIT_PUSH: ${{ inputs.git-push }}
     INPUT_GIT_COMMIT_MESSAGE: ${{ inputs.git-commit-message }}
+    INPUT_GIT_COMMIT_GPG_SIGN: ${{ inputs.git-commit-gpg-sign }}
     INPUT_CONFIG_FILE: ${{ inputs.config-file }}
     INPUT_FAIL_ON_DIFF: ${{ inputs.fail-on-diff }}
     INPUT_GIT_PUSH_SIGN_OFF: ${{ inputs.git-push-sign-off }}
