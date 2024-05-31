@@ -8,7 +8,7 @@ branch.
 
 ## Version
 
-`v1.2.0` (uses [terraform-docs] v0.17.0, which is supported and tested on Terraform
+`v1.2.0` (uses [terraform-docs] v0.18.0, which is supported and tested on Terraform
 version 0.11+ and 0.12+ but may work for others.)
 
 ### Upgrade v0 to v1
