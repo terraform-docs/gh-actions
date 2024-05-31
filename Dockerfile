@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM quay.io/terraform-docs/terraform-docs:edge
+FROM quay.io/terraform-docs/terraform-docs:0.18.0
 
 RUN set -x \
     && apk update \
