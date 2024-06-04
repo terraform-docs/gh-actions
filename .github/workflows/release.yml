@@ -1,18 +1,66 @@
 name: release
+run-name: release v${{ github.event.inputs.version }}
 
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "gh-actions version to be released (without leading v)"
+        required: true
+        type: string
 
 env:
+  GOMPLATE_VERSION: "v3.8.0"
   REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
 
 jobs:
-  docker:
+  release:
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.COMMITTER_TOKEN }}
+
+      - name: Install gomplate
+        run: |
+          sudo curl -o /usr/local/bin/gomplate -sSL https://github.com/hairyhenderson/gomplate/releases/download/${{ env.GOMPLATE_VERSION }}/gomplate_linux-amd64
+          sudo chmod 755 /usr/local/bin/gomplate
+
+      - name: Get variables
+        run: |
+          release_version="${{ inputs.version }}"
+          echo "release_version=${release_version//v/}" >> "$GITHUB_ENV"
+
+      - name: Prepare v${{ env.release_version }} Release
+        run: |
+          ./.github/scripts/prepare-release.sh ${{ env.release_version }}
+
+      - name: Push v${{ env.release_version }} Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
+        with:
+          file_pattern: "README.md action.yml"
+          commit_message: "chore: prepare release v${{ env.release_version }}"
+          commit_user_name: terraform-docs-bot
+          commit_user_email: bot@terraform-docs.io
+          commit_author: "terraform-docs-bot <bot@terraform-docs.io>"
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: [release]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
 
       - name: Login to Docker
         uses: docker/login-action@v3
@@ -25,19 +73,30 @@ jobs:
       - name: Build Docker image
         if: env.REGISTRY_USERNAME != ''
         run: |
-          VERSION=$(echo ${{ github.event.release.tag_name }} | sed 's/v//')
-          docker build --pull --tag quay.io/terraform-docs/gh-actions:"${VERSION}" .
+          docker build --pull --tag quay.io/terraform-docs/gh-actions:${{ env.release_version }} .
           docker build --pull --tag quay.io/terraform-docs/gh-actions:latest .
-          docker push quay.io/terraform-docs/gh-actions:"${VERSION}"
+          docker push quay.io/terraform-docs/gh-actions:${{ env.release_version }}
           docker push quay.io/terraform-docs/gh-actions:latest
 
   update-tag:
     runs-on: ubuntu-latest
+    needs: [release]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.COMMITTER_TOKEN }}
 
-      - run: |
-          VERSION=$(echo ${{ github.event.release.tag_name }} | cut -d. -f1)
-          git tag -f "${VERSION}"
-          git push -f --tags
+      - name: Cut v${{ env.release_version }} Release
+        run: |
+          git config --global user.name terraform-docs-bot
+          git config --global user.email bot@terraform-docs.io
+
+          git tag "v${{ env.release_version }}"
+          git push origin "v${{ env.release_version }}"
+
+          VERSION=$(echo ${{ env.release_version }} | cut -d. -f1)
+          git tag -f v${VERSION}
+          git push -f v${VERSION}
