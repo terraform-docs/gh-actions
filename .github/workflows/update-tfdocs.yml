@@ -1,0 +1,58 @@
+name: update-terraform-docs
+run-name: update terraform-docs version
+
+on:
+  repository_dispatch:
+    types: [trigger-workflow]
+  workflow_dispatch:
+    inputs:
+      release-version:
+        description: "terraform-docs new release version"
+        required: true
+        type: string
+
+env:
+  GOMPLATE_VERSION: "v3.8.0"
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.COMMITTER_TOKEN }}
+
+      - name: Install gomplate
+        run: |
+          sudo curl -sSLo /usr/local/bin/gomplate https://github.com/hairyhenderson/gomplate/releases/download/${{ env.GOMPLATE_VERSION }}/gomplate_linux-amd64
+          sudo chmod 755 /usr/local/bin/gomplate
+
+      - name: Get variables
+        run: |
+          if [ -n "${{ github.event.client_payload.release-version }}" ]; then
+            release_version="${{ github.event.client_payload.release-version }}"
+          else
+            release_version="${{ inputs.release-version }}"
+          fi
+          echo "release_version=${release_version//v/}" >> "$GITHUB_ENV"
+
+      - name: Bump to terraform-docs v${{ env.release_version }}
+        run: |
+          ./.github/scripts/prepare-release.sh "" ${{ env.release_version }}
+
+      - name: Push terraform-docs v${{ env.release_version }} Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
+        with:
+          file_pattern: "README.md Dockerfile"
+          commit_message: "chore: bump terraform-docs to v${{ env.release_version }}"
+          commit_user_name: terraform-docs-bot
+          commit_user_email: bot@terraform-docs.io
+          commit_author: "terraform-docs-bot <bot@terraform-docs.io>"
