@@ -27,7 +27,7 @@ first to see if there's already an issue relating to the thing you'd like to
 contribute. If there isn't, please raise a new one! Let us know what you'd like
 to work on, and why.
 
-Be sure to practice [good git commit hygiene] as you make your changes. All but
+Be sure to practice good git commit hygiene as you make your changes. All but
 the smallest changes should be broken up into a few commits that tell a story.
 Use your git commits to provide context for the folks who will review PR, and
 the folks who will be spelunking the codebase in the months and years to come.
@@ -57,6 +57,17 @@ Thank you for reading through our contributing guide! We appreciate you taking
 the time to ensure your contributions are high quality and easy for our community
 to review and accept.
 
+## Testing Code
+The [test workflow] uses [shellcheck] then [gomplate] to run [scripts/update-readme.sh].
+Run [shellcheck] against any shell files eg `shellcheck src/docker-entrypoint.sh`
+[scripts/update-readme.sh] can be run as is eg `./scripts/update-readme.sh`
+ note the default output is `README.md updated.` so you will need to use git diff or
+ similar to check for changes
+
+
 [Slack]: https://slack.terraform-docs.io/
-[good git commit hygiene]: https://www.futurelearn.com/info/blog/telling-stories-with-your-git-history
 [Developer Certificate of Origin]: https://github.com/apps/dco
+[test workflow]: https://github.com/terraform-docs/gh-actions/blob/main/.github/workflows/test.yml
+[shellcheck]: https://github.com/koalaman/shellcheck
+[gomplate]: https://github.com/hairyhenderson/gomplate/
+[scripts/update-readme.sh]: https://github.com/terraform-docs/gh-actions/blob/main/scripts/update-readme.sh

@@ -8,7 +8,7 @@ branch.
 
 ## Version
 
-`v1.2.0` (uses [terraform-docs] v0.18.0, which is supported and tested on Terraform
+`v1.2.1` (uses [terraform-docs] v0.18.0, which is supported and tested on Terraform
 version 0.11+ and 0.12+ but may work for others.)
 
 ### Upgrade v0 to v1
@@ -42,7 +42,7 @@ jobs:
         ref: ${{ github.event.pull_request.head.ref }}
 
     - name: Render terraform docs inside the README.md and push changes back to PR branch
-      uses: terraform-docs/gh-actions@v1.2.0
+      uses: terraform-docs/gh-actions@v1.2.1
       with:
         working-dir: .
         output-file: README.md
@@ -72,6 +72,7 @@ jobs:
 | git-push-sign-off | If true it will sign-off commit | `false` | false |
 | git-push-user-email | If empty the no-reply email of the GitHub Actions bot will be used (i.e. `github-actions[bot]@users.noreply.github.com`) | `""` | false |
 | git-push-user-name | If empty the name of the GitHub Actions bot will be used (i.e. `github-actions[bot]`) | `""` | false |
+| git-sub-dir | Subdirectory that terraform code is checked out into | `""` | false |
 | indention | Indention level of Markdown sections [1, 2, 3, 4, 5] | `2` | false |
 | output-file | File in module directory where the docs should be placed | `README.md` | false |
 | output-format | terraform-docs format to generate content (see [all formats](https://github.com/terraform-docs/terraform-docs/blob/master/docs/FORMATS\_GUIDE.md)) (ignored if `config-file` is set) | `markdown table` | false |
@@ -147,7 +148,7 @@ To enable you need to ensure a few things first:
 
 ```yaml
 - name: Generate TF Docs
-  uses: terraform-docs/gh-actions@v1.2.0
+  uses: terraform-docs/gh-actions@v1.2.1
   with:
     working-dir: .
 ```
@@ -156,7 +157,7 @@ To enable you need to ensure a few things first:
 
 ```yaml
 - name: Generate TF Docs
-  uses: terraform-docs/gh-actions@v1.2.0
+  uses: terraform-docs/gh-actions@v1.2.1
   with:
     working-dir: .,example1,example3/modules/test
 ```
@@ -165,7 +166,7 @@ To enable you need to ensure a few things first:
 
 ```yaml
 - name: Generate TF docs
-  uses: terraform-docs/gh-actions@v1.2.0
+  uses: terraform-docs/gh-actions@v1.2.1
   with:
     atlantis-file: atlantis.yaml
 ```
@@ -174,7 +175,7 @@ To enable you need to ensure a few things first:
 
 ```yaml
 - name: Generate TF docs
-  uses: terraform-docs/gh-actions@v1.2.0
+  uses: terraform-docs/gh-actions@v1.2.1
   with:
     find-dir: examples/
 ```
@@ -183,13 +184,13 @@ To enable you need to ensure a few things first:
 
 ```yaml
 - name: Generate TF docs
-  uses: terraform-docs/gh-actions@v1.2.0
+  uses: terraform-docs/gh-actions@v1.2.1
   with:
     working-dir: examples/
     recursive: true
     recursive-path: modules
 ```
 
-Complete examples can be found [here](https://github.com/terraform-docs/gh-actions/tree/v1.2.0/examples).
+Complete examples can be found [here](https://github.com/terraform-docs/gh-actions/tree/v1.2.1/examples).
 
 [terraform-docs]: https://github.com/terraform-docs/terraform-docs

@@ -48,11 +48,16 @@ if [ -z "${INPUT_GIT_PUSH_USER_EMAIL}" ]; then
     INPUT_GIT_PUSH_USER_EMAIL="github-actions[bot]@users.noreply.github.com"
 fi
 
+if [ -n "${INPUT_GIT_SUB_DIR}" ]; then
+    GITHUB_WORKSPACE="${GITHUB_WORKSPACE}/${INPUT_GIT_SUB_DIR}"
+    echo "Using non-standard GITHUB_WORKSPACE of ${GITHUB_WORKSPACE}"
+fi
+
 git_setup() {
     # When the runner maps the $GITHUB_WORKSPACE mount, it is owned by the runner
     # user while the created folders are owned by the container user, causing this
     # error. Issue description here: https://github.com/actions/checkout/issues/766
-    git config --global --add safe.directory /github/workspace
+    git config --global --add safe.directory "${GITHUB_WORKSPACE}"
 
     git config --global user.name "${INPUT_GIT_PUSH_USER_NAME}"
     git config --global user.email "${INPUT_GIT_PUSH_USER_EMAIL}"

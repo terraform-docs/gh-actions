@@ -74,6 +74,10 @@ inputs:
     description: If true it will sign-off commit
     required: false
     default: "false"
+  git-sub-dir:
+    description: Subdirectory that terraform code is checked out into
+    required: false
+    default: ""
   fail-on-diff:
     description: Fail the job if there is any diff found between the generated output and existing file (ignored if `git-push` is set)
     required: false
@@ -85,7 +89,7 @@ outputs:
 
 runs:
   using: docker
-  image: "docker://quay.io/terraform-docs/gh-actions:1.2.0"
+  image: "docker://quay.io/terraform-docs/gh-actions:1.2.1"
   env:
     INPUT_WORKING_DIR: ${{ inputs.working-dir }}
     INPUT_ATLANTIS_FILE: ${{ inputs.atlantis-file }}
@@ -105,6 +109,7 @@ runs:
     INPUT_GIT_PUSH_SIGN_OFF: ${{ inputs.git-push-sign-off }}
     INPUT_GIT_PUSH_USER_NAME: ${{ inputs.git-push-user-name }}
     INPUT_GIT_PUSH_USER_EMAIL: ${{ inputs.git-push-user-email }}
+    INPUT_GIT_SUB_DIR: ${{ inputs.git-sub-dir }}
 
 branding:
   icon: file-text
