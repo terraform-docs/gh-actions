@@ -32,7 +32,7 @@ if [ -z "${NEW_VERSION}" ]; then
 fi
 
 if [ -z "${TF_DOCS_VERSION}" ]; then
-    TF_DOCS_VERSION=$(grep "FROM quay.io/terraform-docs/terraform-docs" "${PWD}"/../Dockerfile | tr -s ' ' | uniq | cut -d":" -f2)
+    TF_DOCS_VERSION=$(grep "FROM quay.io/terraform-docs/terraform-docs" "${PWD}"/../../Dockerfile | tr -s ' ' | uniq | cut -d":" -f2)
 fi
 if [ -z "${TF_DOCS_VERSION}" ]; then
     echo "Usage: pre-release.sh <NEW_VERSION> <TF_DOCS_VERSION>"
