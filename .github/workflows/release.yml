@@ -92,6 +92,7 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
+          fetch-tags: true
           token: ${{ secrets.COMMITTER_TOKEN }}
 
       - name: Get variables
