@@ -64,6 +64,11 @@ Run [shellcheck] against any shell files eg `shellcheck src/docker-entrypoint.sh
  note the default output is `README.md updated.` so you will need to use git diff or
  similar to check for changes
 
+## Creating a release
+Run the `release` GitHub Action. It will take care of everything.
+
+After this is done head to the Release page and edit the latest Draft on top, select the
+tag you just released and make sure `Set as a pre-release` is unchecked.
 
 [Slack]: https://slack.terraform-docs.io/
 [Developer Certificate of Origin]: https://github.com/apps/dco
