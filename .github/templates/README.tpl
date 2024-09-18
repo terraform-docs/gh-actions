@@ -6,7 +6,8 @@
 {{- $tfdocsversion := or (getenv "TERRAFORM_DOCS_VERSION") "v0.0.0" -}}
 # terraform-docs GitHub Actions
 
-{{ $action.description }}
+{{ $action.description }}.
+
 In addition to statically defined directory modules, this module can search specific
 subfolders or parse `atlantis.yaml` for module identification and doc generation. This
 action has the ability to auto commit docs to an open PR or after a push to a specific
