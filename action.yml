@@ -1,6 +1,6 @@
-name: terraform-docs-gh-actions
+name: terraform-docs
 author: terraform-docs Authors
-description: A Github action for generating Terraform module documentation using terraform-docs and gomplate.
+description: Generate Terraform module documentation in pull requests
 
 inputs:
   config-file:
