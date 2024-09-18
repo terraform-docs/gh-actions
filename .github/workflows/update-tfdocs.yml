@@ -56,3 +56,4 @@ jobs:
           commit_user_name: terraform-docs-bot
           commit_user_email: bot@terraform-docs.io
           commit_author: "terraform-docs-bot <bot@terraform-docs.io>"
+          commit_options: "--signoff"
