@@ -189,7 +189,7 @@ if [ "${INPUT_GIT_PUSH}" = "true" ]; then
     git push
 else
     if [ "${INPUT_FAIL_ON_DIFF}" = "true" ] && [ "${num_changed}" -ne 0 ]; then
-        echo "::error ::Uncommitted change(s) has been found!"
+        printf "::error :: %s Uncommitted change(s) have been found" "$(git status)"
         exit 1
     fi
 fi
