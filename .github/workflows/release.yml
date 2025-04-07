@@ -16,7 +16,6 @@ env:
 jobs:
   release:
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[ci skip]')"
     permissions:
       contents: write
     steps:
@@ -68,6 +67,12 @@ jobs:
           release_version="${{ inputs.version }}"
           echo "release_version=${release_version//v/}" >> "$GITHUB_ENV"
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Login to Docker
         uses: docker/login-action@v3
         if: env.REGISTRY_USERNAME != ''
@@ -76,13 +81,14 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      - name: Build Docker image
+      - name: Build and push Docker image
         if: env.REGISTRY_USERNAME != ''
-        run: |
-          docker build --pull --tag quay.io/terraform-docs/gh-actions:${{ env.release_version }} .
-          docker build --pull --tag quay.io/terraform-docs/gh-actions:latest .
-          docker push quay.io/terraform-docs/gh-actions:${{ env.release_version }}
-          docker push quay.io/terraform-docs/gh-actions:latest
+        uses: docker/build-push-action@v6
+        with:
+          outputs: "type=registry"
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: quay.io/${{ github.event.repository.name }}/gh-actions:latest,quay.io/${{ github.event.repository.name }}/gh-actions:${{ env.release_version }}
 
   update-tag:
     runs-on: ubuntu-latest
