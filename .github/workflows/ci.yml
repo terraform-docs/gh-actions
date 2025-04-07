@@ -15,10 +15,24 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
 
-      - name: Build Docker image
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Get variables
         run: |
-          VERSION=$(grep "docker://quay.io/terraform-docs/gh-actions" action.yml | cut -d: -f4 | sed 's/"//g')
-          docker build --pull --tag quay.io/terraform-docs/gh-actions:${VERSION} .
+          image_version=$(grep "docker://quay.io/terraform-docs/gh-actions" action.yml | cut -d: -f4 | sed 's/"//g')
+          echo "image_version=${image_version}" >> "$GITHUB_ENV"
+
+      - name: Build Docker images
+        uses: docker/build-push-action@v6
+        with:
+          outputs: "type=image"
+          platforms: linux/amd64,linux/arm64
+          push: false
+          tags: quay.io/${{ github.event.repository.name }}/gh-actions:${{ env.image_version }}
 
       - name: Should generate USAGE.md for tf11_basic
         uses: ./
@@ -94,6 +108,7 @@ jobs:
           git-commit-message: "terraform-docs: automated action"
 
       - name: Should generate README.md for tf12_fail_diff and fail on diff
+        continue-on-error: true
         uses: ./
         with:
           working-dir: examples/tf12_fail_diff
