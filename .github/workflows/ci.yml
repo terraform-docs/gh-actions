@@ -108,6 +108,7 @@ jobs:
           git-commit-message: "terraform-docs: automated action"
 
       - name: Should generate README.md for tf12_fail_diff and fail on diff
+        continue-on-error: true
         uses: ./
         with:
           working-dir: examples/tf12_fail_diff
