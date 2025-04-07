@@ -88,7 +88,7 @@ jobs:
           outputs: "type=registry"
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: quay.io/${{ github.event.repository.name }}/gh-actions:latest,quay.io/${{ github.event.repository.name }}/gh-actions:${{ env.release_version }}
+          tags: quay.io/terraform-docs/gh-actions:latest,quay.io/terraform-docs/gh-actions:${{ env.release_version }}
 
   update-tag:
     runs-on: ubuntu-latest
