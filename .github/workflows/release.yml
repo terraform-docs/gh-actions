@@ -117,4 +117,4 @@ jobs:
 
           VERSION=$(echo ${{ env.release_version }} | cut -d. -f1)
           git tag -f v${VERSION}
-          git push -f v${VERSION}
+          git push -f origin v${VERSION}
