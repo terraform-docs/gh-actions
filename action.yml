@@ -1,4 +1,4 @@
-name: terraform-docs-gh-actions
+name: terraform-docs
 author: terraform-docs Authors
 description: Generate Terraform module documentation in pull requests
 
