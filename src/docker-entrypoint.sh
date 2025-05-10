@@ -151,7 +151,7 @@ update_doc() {
         exit $success
     fi
 
-    if [ "${INPUT_OUTPUT_METHOD}" == "inject" ] || [ "${INPUT_OUTPUT_METHOD}" == "replace" ]; then
+    if { [ "${INPUT_OUTPUT_METHOD}" = "inject" ] || [ "${INPUT_OUTPUT_METHOD}" = "replace" ]; } && [ "${INPUT_GIT_PUSH}" = "true" ]; then
         git_add "${working_dir}/${OUTPUT_FILE}"
     fi
 }
@@ -159,7 +159,9 @@ update_doc() {
 # go to github repo
 cd "${GITHUB_WORKSPACE}"
 
-git_setup
+if [ "${INPUT_GIT_PUSH}" = "true" ] || [ "${INPUT_FAIL_ON_DIFF}" = "true" ]; then
+    git_setup
+fi
 
 if [ -f "${GITHUB_WORKSPACE}/${INPUT_ATLANTIS_FILE}" ]; then
     # Parse an atlantis yaml file
@@ -178,11 +180,13 @@ else
     done
 fi
 
-# always set num_changed output
-set +e
-num_changed=$(git_status)
-set -e
-echo "num_changed=${num_changed}" >> "$GITHUB_OUTPUT"
+if [ "${INPUT_GIT_PUSH}" = "true" ] || [ "${INPUT_FAIL_ON_DIFF}" = "true" ]; then
+    # set num_changed output only if git is enabled
+    set +e
+    num_changed=$(git_status)
+    set -e
+    echo "num_changed=${num_changed}" >> "$GITHUB_OUTPUT"
+fi
 
 if [ "${INPUT_GIT_PUSH}" = "true" ]; then
     git_commit
