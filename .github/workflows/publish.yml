@@ -41,6 +41,6 @@ jobs:
   release-draft:
     runs-on: ubuntu-latest
     steps:
-      - uses: release-drafter/release-drafter@v6
+      - uses: release-drafter/release-drafter@v7
         env:
           GITHUB_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
