@@ -7,7 +7,7 @@
   uses: ./
   with:
     working-dir: examples/tf11_extra_args
-    output-format: markdown document
+    output-format: markdown table
     output-file: USAGE.md
     output-method: replace
     args: --sensitive=false --hide requirements --required=false

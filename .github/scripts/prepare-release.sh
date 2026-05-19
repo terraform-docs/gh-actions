@@ -32,7 +32,7 @@ if [ -z "${NEW_VERSION}" ]; then
 fi
 
 if [ -z "${TF_DOCS_VERSION}" ]; then
-    TF_DOCS_VERSION=$(grep "FROM quay.io/terraform-docs/terraform-docs" "${PWD}"/../../Dockerfile | tr -s ' ' | uniq | cut -d":" -f2)
+    TF_DOCS_VERSION=$(grep "FROM quay.io/terraform-docs/terraform-docs" "${PWD}/../Dockerfile" | sed -E 's/.*:([0-9.]+)-.*/\1/')
 fi
 if [ -z "${TF_DOCS_VERSION}" ]; then
     echo "Usage: pre-release.sh <NEW_VERSION> <TF_DOCS_VERSION>"
@@ -47,7 +47,7 @@ VERSION=v${NEW_VERSION//v/} TERRAFORM_DOCS_VERSION=v${TF_DOCS_VERSION//v/} \
     -o "${PWD}"/../../README.md
 
 # Update Dockerfile
-sed -i -E "s|FROM quay.io/terraform-docs/terraform-docs:(.*)|FROM quay.io/terraform-docs/terraform-docs:${TF_DOCS_VERSION//v/}|g" "${PWD}"/../../Dockerfile
+sed -i -E "s|FROM quay.io/terraform-docs/terraform-docs:(.*)|FROM quay.io/terraform-docs/terraform-docs:${TF_DOCS_VERSION//v/}-\${TARGETARCH}|g" "${PWD}"/../../Dockerfile
 
 # Update action.yml
 sed -i -E "s|docker://quay.io/terraform-docs/gh-actions:(.*)\"|docker://quay.io/terraform-docs/gh-actions:${NEW_VERSION//v/}\"|g" "${PWD}"/../../action.yml

@@ -17,7 +17,7 @@
       Should use the template defined instead of the default
       Should inject the table under usage
 
-      # Usage
+      ## Usage
 
       {{ .Content }}
       <!-- END_TF_DOCS -->

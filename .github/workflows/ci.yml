@@ -48,7 +48,7 @@ jobs:
             Should use the template defined instead of the default
             Should inject the table under usage
 
-            # Usage
+            ## Usage
 
             {{ .Content }}
             <!-- END_TF_DOCS -->
@@ -64,7 +64,7 @@ jobs:
           args: --sensitive=false --hide requirements --required=false
           indention: 3
 
-      - name: Should generate README.md for tf12_bsic
+      - name: Should generate README.md for tf12_basic
         uses: ./
         with:
           working-dir: examples/tf12_basic
